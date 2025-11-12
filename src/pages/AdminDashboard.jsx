@@ -172,7 +172,6 @@ const AdminDashboard = () => {
                       <div className={`p-3 rounded-lg ${stat.bgColor}`}>
                         <Icon className={`w-6 h-6 ${stat.color}`} />
                       </div>
-                      
                     </div>
                     <div className="text-3xl font-bold text-neutral-900 dark:text-white mb-1">
                       {formatNumber(stat.value)}
@@ -207,7 +206,11 @@ const AdminDashboard = () => {
               <div className="h-64">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={tierChartData}>
-                    <CartesianGrid strokeDasharray="3 3" className="dark:stroke-neutral-700" stroke="#e5e7eb" />
+                    <CartesianGrid
+                      strokeDasharray="3 3"
+                      className="dark:stroke-neutral-700"
+                      stroke="#e5e7eb"
+                    />
                     <XAxis
                       dataKey="name"
                       className="dark:stroke-neutral-400"
