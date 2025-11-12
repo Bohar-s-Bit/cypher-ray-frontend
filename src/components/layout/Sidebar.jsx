@@ -64,13 +64,13 @@ const Sidebar = () => {
       <motion.aside
         initial={false}
         animate={{ width: sidebarOpen ? 256 : 80 }}
-        className="hidden md:flex flex-col bg-white border-r border-neutral-200 h-screen sticky top-0"
+        className="hidden md:flex flex-col bg-white dark:bg-neutral-800 border-r border-neutral-200 dark:border-neutral-700 h-screen sticky top-0"
       >
         {/* Toggle Button */}
-        <div className="flex items-center justify-end p-4 border-b border-neutral-200">
+        <div className="flex items-center justify-end p-4 border-b border-neutral-200 dark:border-neutral-700">
           <button
             onClick={toggleSidebar}
-            className="p-2 rounded-lg hover:bg-neutral-100 text-neutral-600"
+            className="p-2 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700 text-neutral-600 dark:text-neutral-300"
           >
             {sidebarOpen ? (
               <ChevronLeft className="w-5 h-5" />
@@ -93,8 +93,8 @@ const Sidebar = () => {
                   cn(
                     "flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200",
                     isActive
-                      ? "bg-primary-50 text-primary-600 font-medium"
-                      : "text-neutral-600 hover:bg-neutral-100",
+                      ? "bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400 font-medium"
+                      : "text-neutral-600 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-700",
                     !sidebarOpen && "justify-center"
                   )
                 }
@@ -108,16 +108,16 @@ const Sidebar = () => {
 
         {/* User Info */}
         {sidebarOpen && (
-          <div className="p-4 border-t border-neutral-200">
+          <div className="p-4 border-t border-neutral-200 dark:border-neutral-700">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-full bg-primary-500 flex items-center justify-center text-white font-medium">
                 {user?.username?.[0]?.toUpperCase() || "U"}
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-neutral-900 truncate">
+                <p className="text-sm font-medium text-neutral-900 dark:text-white truncate">
                   {user?.username}
                 </p>
-                <p className="text-xs text-neutral-500 truncate">
+                <p className="text-xs text-neutral-500 dark:text-neutral-400 truncate">
                   {user?.email}
                 </p>
               </div>

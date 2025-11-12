@@ -12,6 +12,7 @@ import { ErrorBoundary } from "react-error-boundary";
 
 // Store
 import useAuthStore from "./store/authStore";
+import useUIStore from "./store/uiStore";
 
 // Layouts
 import PublicLayout from "./components/layout/PublicLayout";
@@ -41,7 +42,7 @@ const queryClient = new QueryClient({
     queries: {
       retry: 1,
       refetchOnWindowFocus: false,
-      staleTime: 5 * 60 * 1000, // 5 minutes
+      staleTime: 5 * 60 * 1000,
     },
   },
 });
@@ -49,11 +50,11 @@ const queryClient = new QueryClient({
 // Error Fallback Component
 const ErrorFallback = ({ error, resetErrorBoundary }) => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-neutral-50 p-4">
-      <div className="max-w-md w-full bg-white rounded-xl shadow-lg p-8 text-center">
-        <div className="w-16 h-16 bg-error-100 rounded-full flex items-center justify-center mx-auto mb-4">
+    <div className="min-h-screen flex items-center justify-center bg-neutral-50 dark:bg-neutral-900 p-4">
+      <div className="max-w-md w-full bg-white dark:bg-neutral-800 rounded-xl shadow-lg p-8 text-center">
+        <div className="w-16 h-16 bg-error-100 dark:bg-error-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
           <svg
-            className="w-8 h-8 text-error-600"
+            className="w-8 h-8 text-error-600 dark:text-error-400"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -66,15 +67,15 @@ const ErrorFallback = ({ error, resetErrorBoundary }) => {
             />
           </svg>
         </div>
-        <h2 className="text-2xl font-bold text-neutral-900 mb-2">
+        <h2 className="text-2xl font-bold text-neutral-900 dark:text-white mb-2">
           Oops! Something went wrong
         </h2>
-        <p className="text-neutral-600 mb-6">
+        <p className="text-neutral-600 dark:text-neutral-400 mb-6">
           {error.message || "An unexpected error occurred"}
         </p>
         <button
           onClick={resetErrorBoundary}
-          className="px-6 py-3 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors"
+          className="px-6 py-3 bg-primary-500 dark:bg-primary-600 text-white rounded-lg hover:bg-primary-600 dark:hover:bg-primary-700 transition-colors"
         >
           Try again
         </button>
@@ -85,11 +86,13 @@ const ErrorFallback = ({ error, resetErrorBoundary }) => {
 
 function App() {
   const { initAuth } = useAuthStore();
+  const { initTheme } = useUIStore();
 
-  // Initialize auth on mount
+  // Initialize auth and theme on mount
   React.useEffect(() => {
     initAuth();
-  }, [initAuth]);
+    initTheme();
+  }, [initAuth, initTheme]);
 
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>

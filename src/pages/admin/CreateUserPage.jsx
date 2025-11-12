@@ -77,10 +77,10 @@ const CreateUserPage = () => {
         >
           Back to Users
         </Button>
-        <h1 className="text-3xl font-display font-bold text-neutral-900">
+        <h1 className="text-3xl font-display font-bold text-neutral-900 dark:text-white">
           Create New User
         </h1>
-        <p className="text-neutral-600 mt-2">
+        <p className="text-neutral-600 dark:text-neutral-400 mt-2">
           Add a new user or organization to the platform
         </p>
       </div>
@@ -122,15 +122,15 @@ const CreateUserPage = () => {
 
               {/* User Type */}
               <div>
-                <label className="text-sm font-medium text-neutral-700 mb-2 block">
+                <label className="text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2 block">
                   User Type <span className="text-error-500">*</span>
                 </label>
                 <div className="grid grid-cols-2 gap-4">
                   <label
                     className={`relative flex flex-col items-center justify-center p-6 border-2 rounded-xl cursor-pointer transition-all ${
                       userType === "user"
-                        ? "border-primary-500 bg-primary-50"
-                        : "border-neutral-200 hover:border-neutral-300"
+                        ? "border-primary-500 bg-primary-50 dark:bg-primary-900/20"
+                        : "border-neutral-200 dark:border-neutral-700 hover:border-neutral-300 dark:hover:border-neutral-600"
                     }`}
                   >
                     <input
@@ -142,20 +142,20 @@ const CreateUserPage = () => {
                     <UserPlus
                       className={`w-8 h-8 mb-2 ${
                         userType === "user"
-                          ? "text-primary-600"
-                          : "text-neutral-400"
+                          ? "text-primary-600 dark:text-primary-400"
+                          : "text-neutral-400 dark:text-neutral-500"
                       }`}
                     />
                     <span
                       className={`font-semibold ${
                         userType === "user"
-                          ? "text-primary-900"
-                          : "text-neutral-700"
+                          ? "text-primary-900 dark:text-primary-300"
+                          : "text-neutral-700 dark:text-neutral-300"
                       }`}
                     >
                       Regular User
                     </span>
-                    <span className="text-sm text-neutral-600 mt-1">
+                    <span className="text-sm text-neutral-600 dark:text-neutral-400 mt-1">
                       Standard account access
                     </span>
                   </label>
@@ -163,8 +163,8 @@ const CreateUserPage = () => {
                   <label
                     className={`relative flex flex-col items-center justify-center p-6 border-2 rounded-xl cursor-pointer transition-all ${
                       userType === "admin"
-                        ? "border-secondary-500 bg-secondary-50"
-                        : "border-neutral-200 hover:border-neutral-300"
+                        ? "border-secondary-500 bg-secondary-50 dark:bg-secondary-900/20"
+                        : "border-neutral-200 dark:border-neutral-700 hover:border-neutral-300 dark:hover:border-neutral-600"
                     }`}
                   >
                     <input
@@ -176,20 +176,20 @@ const CreateUserPage = () => {
                     <UserPlus
                       className={`w-8 h-8 mb-2 ${
                         userType === "admin"
-                          ? "text-secondary-600"
-                          : "text-neutral-400"
+                          ? "text-secondary-600 dark:text-secondary-400"
+                          : "text-neutral-400 dark:text-neutral-500"
                       }`}
                     />
                     <span
                       className={`font-semibold ${
                         userType === "admin"
-                          ? "text-secondary-900"
-                          : "text-neutral-700"
+                          ? "text-secondary-900 dark:text-secondary-300"
+                          : "text-neutral-700 dark:text-neutral-300"
                       }`}
                     >
                       Administrator
                     </span>
-                    <span className="text-sm text-neutral-600 mt-1">
+                    <span className="text-sm text-neutral-600 dark:text-neutral-400 mt-1">
                       Full platform access
                     </span>
                   </label>
@@ -204,7 +204,7 @@ const CreateUserPage = () => {
               {/* Tier Selection - Only for regular users */}
               {userType === "user" && (
                 <div>
-                  <label className="text-sm font-medium text-neutral-700 mb-3 block">
+                  <label className="text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-3 block">
                     Select Tier (Optional)
                   </label>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -213,8 +213,8 @@ const CreateUserPage = () => {
                         key={tier.value}
                         className={`relative flex flex-col p-6 border-2 rounded-xl cursor-pointer transition-all ${
                           watch("tier") === tier.value
-                            ? "border-primary-500 bg-primary-50"
-                            : "border-neutral-200 hover:border-neutral-300"
+                            ? "border-primary-500 bg-primary-50 dark:bg-primary-900/20"
+                            : "border-neutral-200 dark:border-neutral-700 hover:border-neutral-300 dark:hover:border-neutral-600"
                         }`}
                       >
                         <input
@@ -227,26 +227,26 @@ const CreateUserPage = () => {
                           <h4
                             className={`text-lg font-semibold ${
                               watch("tier") === tier.value
-                                ? "text-primary-900"
-                                : "text-neutral-900"
+                                ? "text-primary-900 dark:text-primary-300"
+                                : "text-neutral-900 dark:text-white"
                             }`}
                           >
                             {tier.name}
                           </h4>
-                          <span className="text-2xl font-bold text-neutral-900">
+                          <span className="text-2xl font-bold text-neutral-900 dark:text-white">
                             ₹{tier.pricePerYear.toLocaleString()}
                           </span>
                         </div>
-                        <p className="text-sm text-neutral-600 mb-4">
+                        <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-4">
                           {tier.monthlyCredits} credits per month
                         </p>
                         <ul className="space-y-2">
                           {tier.features.map((feature, index) => (
                             <li
                               key={index}
-                              className="flex items-center gap-2 text-sm text-neutral-700"
+                              className="flex items-center gap-2 text-sm text-neutral-700 dark:text-neutral-300"
                             >
-                              <span className="w-1.5 h-1.5 bg-primary-500 rounded-full"></span>
+                              <span className="w-1.5 h-1.5 bg-primary-500 dark:bg-primary-400 rounded-full"></span>
                               {feature}
                             </li>
                           ))}

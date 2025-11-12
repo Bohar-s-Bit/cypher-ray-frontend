@@ -18,7 +18,7 @@ export const TableSkeleton = ({ rows = 5, columns = 5 }) => {
 
 export const CardSkeleton = () => {
   return (
-    <div className="bg-white p-6 rounded-xl border border-neutral-200">
+    <div className="bg-white dark:bg-neutral-800 p-6 rounded-xl border border-neutral-200 dark:border-neutral-700">
       <Skeleton height={24} width={150} className="mb-2" />
       <Skeleton height={32} width={100} className="mb-4" />
       <Skeleton count={2} height={16} />
@@ -28,7 +28,7 @@ export const CardSkeleton = () => {
 
 export const StatCardSkeleton = () => {
   return (
-    <div className="bg-white p-6 rounded-xl border border-neutral-200">
+    <div className="bg-white dark:bg-neutral-800 p-6 rounded-xl border border-neutral-200 dark:border-neutral-700">
       <div className="flex items-center justify-between mb-4">
         <Skeleton circle width={48} height={48} />
         <Skeleton width={60} height={20} />

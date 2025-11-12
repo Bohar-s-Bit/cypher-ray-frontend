@@ -92,10 +92,10 @@ const UsersListPage = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-display font-bold text-neutral-900">
+          <h1 className="text-3xl font-display font-bold text-neutral-900 dark:text-white">
             User Management
           </h1>
-          <p className="text-neutral-600 mt-1">
+          <p className="text-neutral-600 dark:text-neutral-400 mt-1">
             Manage all users and organizations
           </p>
         </div>
@@ -122,49 +122,49 @@ const UsersListPage = () => {
             <>
               <div className="overflow-x-auto">
                 <table className="w-full">
-                  <thead className="bg-neutral-50 border-y border-neutral-200">
+                  <thead className="bg-neutral-50 dark:bg-neutral-800 border-y border-neutral-200 dark:border-neutral-700">
                     <tr>
-                      <th className="text-left px-6 py-3 text-sm font-semibold text-neutral-700">
+                      <th className="text-left px-6 py-3 text-sm font-semibold text-neutral-700 dark:text-neutral-300">
                         User
                       </th>
-                      <th className="text-left px-6 py-3 text-sm font-semibold text-neutral-700">
+                      <th className="text-left px-6 py-3 text-sm font-semibold text-neutral-700 dark:text-neutral-300">
                         Organization
                       </th>
-                      <th className="text-left px-6 py-3 text-sm font-semibold text-neutral-700">
+                      <th className="text-left px-6 py-3 text-sm font-semibold text-neutral-700 dark:text-neutral-300">
                         Type
                       </th>
-                      <th className="text-left px-6 py-3 text-sm font-semibold text-neutral-700">
+                      <th className="text-left px-6 py-3 text-sm font-semibold text-neutral-700 dark:text-neutral-300">
                         Tier
                       </th>
-                      <th className="text-left px-6 py-3 text-sm font-semibold text-neutral-700">
+                      <th className="text-left px-6 py-3 text-sm font-semibold text-neutral-700 dark:text-neutral-300">
                         Credits
                       </th>
-                      <th className="text-left px-6 py-3 text-sm font-semibold text-neutral-700">
+                      <th className="text-left px-6 py-3 text-sm font-semibold text-neutral-700 dark:text-neutral-300">
                         Status
                       </th>
-                      <th className="text-right px-6 py-3 text-sm font-semibold text-neutral-700">
+                      <th className="text-right px-6 py-3 text-sm font-semibold text-neutral-700 dark:text-neutral-300">
                         Actions
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-neutral-200">
+                  <tbody className="divide-y divide-neutral-200 dark:divide-neutral-700">
                     {users.map((user) => (
                       <tr
                         key={user._id}
-                        className="hover:bg-neutral-50 transition-colors"
+                        className="hover:bg-neutral-50 dark:hover:bg-neutral-800 transition-colors"
                       >
                         <td className="px-6 py-4">
                           <div>
-                            <p className="font-medium text-neutral-900">
+                            <p className="font-medium text-neutral-900 dark:text-white">
                               {user.username}
                             </p>
-                            <p className="text-sm text-neutral-600">
+                            <p className="text-sm text-neutral-600 dark:text-neutral-400">
                               {user.email}
                             </p>
                           </div>
                         </td>
                         <td className="px-6 py-4">
-                          <p className="text-neutral-900">
+                          <p className="text-neutral-900 dark:text-white">
                             {user.organizationName || "N/A"}
                           </p>
                         </td>
@@ -183,14 +183,16 @@ const UsersListPage = () => {
                               {user.tierInfo?.name}
                             </Badge>
                           ) : (
-                            <span className="text-neutral-500">N/A</span>
+                            <span className="text-neutral-500 dark:text-neutral-500">
+                              N/A
+                            </span>
                           )}
                         </td>
                         <td className="px-6 py-4">
-                          <p className="text-neutral-900 font-medium">
+                          <p className="text-neutral-900 dark:text-white font-medium">
                             {user.credits?.remaining || 0}
                           </p>
-                          <p className="text-sm text-neutral-600">
+                          <p className="text-sm text-neutral-600 dark:text-neutral-400">
                             of {user.credits?.total || 0}
                           </p>
                         </td>
@@ -210,30 +212,30 @@ const UsersListPage = () => {
                                   )
                                 )
                               }
-                              className="p-2 hover:bg-neutral-100 rounded-lg transition-colors"
+                              className="p-2 hover:bg-neutral-100 dark:hover:bg-neutral-700 rounded-lg transition-colors"
                               title="View Details"
                             >
-                              <Eye className="w-4 h-4 text-neutral-600" />
+                              <Eye className="w-4 h-4 text-neutral-600 dark:text-neutral-400" />
                             </button>
                             <button
                               onClick={() =>
                                 handleToggleStatus(user._id, user.isActive)
                               }
-                              className="p-2 hover:bg-neutral-100 rounded-lg transition-colors"
+                              className="p-2 hover:bg-neutral-100 dark:hover:bg-neutral-700 rounded-lg transition-colors"
                               title={user.isActive ? "Deactivate" : "Activate"}
                             >
                               {user.isActive ? (
-                                <XCircle className="w-4 h-4 text-error-600" />
+                                <XCircle className="w-4 h-4 text-error-600 dark:text-error-400" />
                               ) : (
-                                <CheckCircle className="w-4 h-4 text-success-600" />
+                                <CheckCircle className="w-4 h-4 text-success-600 dark:text-success-400" />
                               )}
                             </button>
                             <button
                               onClick={() => handleDeleteUser(user._id)}
-                              className="p-2 hover:bg-error-50 rounded-lg transition-colors"
+                              className="p-2 hover:bg-error-50 dark:hover:bg-error-900/20 rounded-lg transition-colors"
                               title="Delete User"
                             >
-                              <Trash2 className="w-4 h-4 text-error-600" />
+                              <Trash2 className="w-4 h-4 text-error-600 dark:text-error-400" />
                             </button>
                           </div>
                         </td>
@@ -245,8 +247,8 @@ const UsersListPage = () => {
 
               {/* Pagination */}
               {pagination.totalPages > 1 && (
-                <div className="flex items-center justify-between px-6 py-4 border-t border-neutral-200">
-                  <p className="text-sm text-neutral-600">
+                <div className="flex items-center justify-between px-6 py-4 border-t border-neutral-200 dark:border-neutral-700">
+                  <p className="text-sm text-neutral-600 dark:text-neutral-400">
                     Showing{" "}
                     {(pagination.currentPage - 1) * pagination.limit + 1} to{" "}
                     {Math.min(
@@ -282,7 +284,9 @@ const UsersListPage = () => {
             </>
           ) : (
             <div className="text-center py-12">
-              <p className="text-neutral-500">No users found</p>
+              <p className="text-neutral-500 dark:text-neutral-500">
+                No users found
+              </p>
             </div>
           )}
         </CardContent>

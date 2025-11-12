@@ -16,6 +16,16 @@
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 
+  /* Dark mode styles */
+  .dark body {
+    background-color: theme("colors.neutral.900");
+    color: theme("colors.neutral.100");
+  }
+
+  .dark * {
+    border-color: theme("colors.neutral.700");
+  }
+
   h1,
   h2,
   h3,
@@ -52,17 +62,34 @@
   background: #f1f5f9;
 }
 
+.dark ::-webkit-scrollbar-track {
+  background: #1e293b;
+}
+
 ::-webkit-scrollbar-thumb {
   background: #cbd5e1;
   border-radius: 4px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #475569;
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: #94a3b8;
 }
 
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
+}
+
 /* React Loading Skeleton */
 .react-loading-skeleton {
   --base-color: #f1f5f9;
   --highlight-color: #e2e8f0;
+}
+
+.dark .react-loading-skeleton {
+  --base-color: #1e293b;
+  --highlight-color: #334155;
 }

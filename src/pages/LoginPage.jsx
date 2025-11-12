@@ -65,7 +65,7 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 via-white to-secondary-50 p-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 via-white to-secondary-50 dark:from-neutral-900 dark:via-neutral-900 dark:to-neutral-800 p-4">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -116,11 +116,11 @@ const LoginPage = () => {
             </form>
 
             {/* Info Box */}
-            <div className="mt-6 p-4 bg-primary-50 border border-primary-200 rounded-lg flex gap-3">
-              <AlertCircle className="w-5 h-5 text-primary-600 flex-shrink-0 mt-0.5" />
-              <div className="text-sm text-primary-800">
+            <div className="mt-6 p-4 bg-primary-50 dark:bg-primary-900/20 border border-primary-200 dark:border-primary-800 rounded-lg flex gap-3">
+              <AlertCircle className="w-5 h-5 text-primary-600 dark:text-primary-400 flex-shrink-0 mt-0.5" />
+              <div className="text-sm text-primary-800 dark:text-primary-300">
                 <p className="font-medium mb-1">Note:</p>
-                <p className="text-primary-700">
+                <p className="text-primary-700 dark:text-primary-400">
                   Use credentials provided by your administrator
                 </p>
               </div>
@@ -131,7 +131,7 @@ const LoginPage = () => {
               <button
                 type="button"
                 onClick={() => navigate(ROUTES.HOME)}
-                className="text-sm text-primary-600 hover:text-primary-700 font-medium"
+                className="text-sm text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-medium"
               >
                 ← Back to Home
               </button>
@@ -140,7 +140,7 @@ const LoginPage = () => {
         </Card>
 
         {/* Footer */}
-        <p className="text-center text-sm text-neutral-600 mt-6">
+        <p className="text-center text-sm text-neutral-600 dark:text-neutral-400 mt-6">
           © 2025 {APP_NAME}. A Government of India Initiative.
         </p>
       </motion.div>

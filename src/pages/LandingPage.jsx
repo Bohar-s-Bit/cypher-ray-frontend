@@ -76,8 +76,8 @@ const LandingPage = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-primary-50 via-white to-secondary-50 py-20 md:py-32">
-        <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
+      <section className="relative overflow-hidden bg-gradient-to-br from-primary-50 via-white to-secondary-50 dark:from-neutral-900 dark:via-neutral-900 dark:to-neutral-800 py-20 md:py-32">
+        <div className="absolute inset-0 bg-grid-pattern opacity-5 dark:opacity-10"></div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <motion.div
@@ -86,12 +86,12 @@ const LandingPage = () => {
             transition={{ duration: 0.6 }}
             className="text-center"
           >
-            <div className="inline-flex items-center gap-2 bg-primary-100 text-primary-700 px-4 py-2 rounded-full mb-6 font-medium">
+            <div className="inline-flex items-center gap-2 bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-400 px-4 py-2 rounded-full mb-6 font-medium">
               <Shield className="w-4 h-4" />
               <span>Trusted by Government & Enterprise</span>
             </div>
 
-            <h1 className="text-5xl md:text-7xl font-display font-bold text-neutral-900 mb-6 leading-tight">
+            <h1 className="text-5xl md:text-7xl font-display font-bold text-neutral-900 dark:text-white mb-6 leading-tight">
               Secure Your Firmware
               <br />
               <span className="bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent">
@@ -99,7 +99,7 @@ const LandingPage = () => {
               </span>
             </h1>
 
-            <p className="text-xl md:text-2xl text-neutral-600 mb-10 max-w-3xl mx-auto">
+            <p className="text-xl md:text-2xl text-neutral-600 dark:text-neutral-400 mb-10 max-w-3xl mx-auto">
               {APP_NAME} provides enterprise-grade firmware security analysis
               for government organizations and businesses across India.
             </p>
@@ -134,11 +134,13 @@ const LandingPage = () => {
               const Icon = stat.icon;
               return (
                 <Card key={index} className="text-center" padding="lg">
-                  <Icon className="w-8 h-8 text-primary-500 mx-auto mb-3" />
-                  <div className="text-3xl font-bold text-neutral-900 mb-1">
+                  <Icon className="w-8 h-8 text-primary-500 dark:text-primary-400 mx-auto mb-3" />
+                  <div className="text-3xl font-bold text-neutral-900 dark:text-white mb-1">
                     {stat.value}
                   </div>
-                  <div className="text-sm text-neutral-600">{stat.label}</div>
+                  <div className="text-sm text-neutral-600 dark:text-neutral-400">
+                    {stat.label}
+                  </div>
                 </Card>
               );
             })}
@@ -147,19 +149,19 @@ const LandingPage = () => {
       </section>
 
       {/* Features Section */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-white dark:bg-neutral-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-display font-bold text-neutral-900 mb-4">
-              Powerful Features
+            <h2 className="text-4xl md:text-5xl font-display font-bold text-neutral-900 dark:text-white mb-4">
+              Advanced Security Features
             </h2>
-            <p className="text-xl text-neutral-600 max-w-2xl mx-auto">
-              Everything you need to ensure firmware security and compliance
+            <p className="text-xl text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto">
+              Comprehensive firmware analysis powered by cutting-edge technology
             </p>
           </motion.div>
 
@@ -180,10 +182,12 @@ const LandingPage = () => {
                     >
                       <Icon className={`w-6 h-6 ${feature.color}`} />
                     </div>
-                    <h3 className="text-xl font-semibold text-neutral-900 mb-2">
+                    <h3 className="text-xl font-semibold text-neutral-900 dark:text-white mb-2">
                       {feature.title}
                     </h3>
-                    <p className="text-neutral-600">{feature.description}</p>
+                    <p className="text-neutral-600 dark:text-neutral-400">
+                      {feature.description}
+                    </p>
                   </Card>
                 </motion.div>
               );
@@ -193,7 +197,7 @@ const LandingPage = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-br from-primary-600 to-primary-800">
+      <section className="py-20 bg-gradient-to-br from-primary-600 to-primary-800 dark:from-primary-700 dark:to-primary-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

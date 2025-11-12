@@ -3,24 +3,25 @@ import { cva } from "class-variance-authority";
 import { cn } from "../../lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none",
+  "inline-flex items-center justify-center rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-neutral-900 disabled:opacity-50 disabled:pointer-events-none",
   {
     variants: {
       variant: {
         primary:
-          "bg-primary-500 text-white hover:bg-primary-600 focus:ring-primary-500 shadow-sm",
+          "bg-primary-500 text-white hover:bg-primary-600 dark:bg-primary-600 dark:hover:bg-primary-700 focus:ring-primary-500 shadow-sm",
         secondary:
-          "bg-secondary-500 text-white hover:bg-secondary-600 focus:ring-secondary-500 shadow-sm",
+          "bg-secondary-500 text-white hover:bg-secondary-600 dark:bg-secondary-600 dark:hover:bg-secondary-700 focus:ring-secondary-500 shadow-sm",
         success:
-          "bg-success-500 text-white hover:bg-success-600 focus:ring-success-500",
+          "bg-success-500 text-white hover:bg-success-600 dark:bg-success-600 dark:hover:bg-success-700 focus:ring-success-500",
         warning:
-          "bg-warning-500 text-white hover:bg-warning-600 focus:ring-warning-500",
+          "bg-warning-500 text-white hover:bg-warning-600 dark:bg-warning-600 dark:hover:bg-warning-700 focus:ring-warning-500",
         error:
-          "bg-error-500 text-white hover:bg-error-600 focus:ring-error-500",
+          "bg-error-500 text-white hover:bg-error-600 dark:bg-error-600 dark:hover:bg-error-700 focus:ring-error-500",
         outline:
-          "border-2 border-primary-500 text-primary-500 hover:bg-primary-50 focus:ring-primary-500",
-        ghost: "text-neutral-700 hover:bg-neutral-100 focus:ring-neutral-500",
-        link: "text-primary-500 hover:text-primary-600 underline-offset-4 hover:underline",
+          "border-2 border-primary-500 text-primary-500 hover:bg-primary-50 dark:border-primary-400 dark:text-primary-400 dark:hover:bg-primary-900/20 focus:ring-primary-500",
+        ghost:
+          "text-neutral-700 hover:bg-neutral-100 dark:text-neutral-300 dark:hover:bg-neutral-800 focus:ring-neutral-500",
+        link: "text-primary-500 hover:text-primary-600 dark:text-primary-400 dark:hover:text-primary-300 underline-offset-4 hover:underline",
       },
       size: {
         sm: "px-3 py-1.5 text-sm",
