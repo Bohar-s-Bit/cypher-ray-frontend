@@ -263,11 +263,14 @@ const CreateUserPage = () => {
               )}
 
               {/* Info Box */}
-              <div className="p-4 bg-primary-50 border border-primary-200 rounded-lg">
-                <p className="text-sm text-primary-800">
-                  <strong>Note:</strong> A temporary password will be generated
-                  and sent to the user's email address. They will be required to
-                  change it on first login.
+              <div className="p-4 bg-primary-50 dark:bg-primary-900/20 border border-primary-200 dark:border-primary-800/50 rounded-lg">
+                <p className="text-sm text-neutral-700 dark:text-neutral-300">
+                  <strong className="text-neutral-900 dark:text-white">
+                    Note:
+                  </strong>{" "}
+                  A temporary password will be generated and sent to the user's
+                  email address. They will be required to change it on first
+                  login.
                 </p>
               </div>
 

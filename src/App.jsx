@@ -29,6 +29,9 @@ import {
 import LandingPage from "./pages/LandingPage";
 import LoginPage from "./pages/LoginPage";
 import UserDashboard from "./pages/UserDashboard";
+import ProfilePage from "./pages/ProfilePage";
+import SettingsPage from "./pages/SettingsPage";
+import CreditsPage from "./pages/CreditsPage";
 import AdminDashboard from "./pages/AdminDashboard";
 import UsersListPage from "./pages/admin/UsersListPage";
 import CreateUserPage from "./pages/admin/CreateUserPage";
@@ -86,7 +89,7 @@ const ErrorFallback = ({ error, resetErrorBoundary }) => {
 
 function App() {
   const { initAuth } = useAuthStore();
-  const { initTheme } = useUIStore();
+  const { initTheme, theme } = useUIStore();
 
   // Initialize auth and theme on mount
   React.useEffect(() => {
@@ -122,13 +125,17 @@ function App() {
 
               {/* Protected User Routes */}
               <Route
+                path="/"
                 element={
                   <ProtectedRoute>
                     <DashboardLayout />
                   </ProtectedRoute>
                 }
               >
-                <Route path={ROUTES.DASHBOARD} element={<UserDashboard />} />
+                <Route path="dashboard" element={<UserDashboard />} />
+                <Route path="profile" element={<ProfilePage />} />
+                <Route path="settings" element={<SettingsPage />} />
+                <Route path="credits" element={<CreditsPage />} />
               </Route>
 
               {/* Protected Admin Routes */}
@@ -160,23 +167,25 @@ function App() {
             position="top-right"
             toastOptions={{
               duration: 4000,
+              className: theme === "dark" ? "dark-toast" : "",
               style: {
-                background: "#fff",
-                color: "#0f172a",
+                background: theme === "dark" ? "#1f2937" : "#fff",
+                color: theme === "dark" ? "#f9fafb" : "#0f172a",
                 padding: "16px",
                 borderRadius: "12px",
                 boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.1)",
+                border: theme === "dark" ? "1px solid #374151" : "none",
               },
               success: {
                 iconTheme: {
                   primary: "#22c55e",
-                  secondary: "#fff",
+                  secondary: theme === "dark" ? "#1f2937" : "#fff",
                 },
               },
               error: {
                 iconTheme: {
                   primary: "#ef4444",
-                  secondary: "#fff",
+                  secondary: theme === "dark" ? "#1f2937" : "#fff",
                 },
               },
             }}

@@ -133,138 +133,66 @@ const UserDashboard = () => {
         )}
       </div>
 
-      {/* Account Info & Recent Activity */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Account Information */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Account Information</CardTitle>
-            <CardDescription>
-              Your account details and tier information
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-1">
-                  Organization
-                </p>
-                <p className="font-medium text-neutral-900 dark:text-white">
-                  {userData?.organizationName || "N/A"}
-                </p>
-              </div>
-              <div>
-                <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-1">
-                  Email
-                </p>
-                <p className="font-medium text-neutral-900 dark:text-white truncate">
-                  {userData?.email}
-                </p>
-              </div>
-              <div>
-                <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-1">
-                  Account Status
-                </p>
-                <Badge variant={userData?.isActive ? "success" : "error"}>
-                  {userData?.isActive ? "Active" : "Inactive"}
-                </Badge>
-              </div>
-              <div>
-                <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-1">
-                  Last Login
-                </p>
-                <p className="font-medium text-neutral-900 dark:text-white">
-                  {userData?.lastLogin
-                    ? format(new Date(userData.lastLogin), "MMM dd, yyyy")
-                    : "N/A"}
-                </p>
-              </div>
+      {/* Recent Credit History */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Recent Activity</CardTitle>
+          <CardDescription>Your latest credit transactions</CardDescription>
+        </CardHeader>
+        <CardContent>
+          {historyLoading ? (
+            <div className="space-y-3">
+              {[...Array(5)].map((_, i) => (
+                <div
+                  key={i}
+                  className="h-16 bg-neutral-100 dark:bg-neutral-800 rounded-lg animate-pulse"
+                ></div>
+              ))}
             </div>
-
-            {userData?.tier && (
-              <div className="mt-6 p-4 bg-primary-50 dark:bg-primary-900/20 rounded-lg border border-primary-200 dark:border-primary-800">
-                <h4 className="font-semibold text-primary-900 dark:text-primary-300 mb-2">
-                  {TIERS[userData.tier.toUpperCase()]?.name} Features
-                </h4>
-                <ul className="space-y-1">
-                  {TIERS[userData.tier.toUpperCase()]?.features.map(
-                    (feature, i) => (
-                      <li
-                        key={i}
-                        className="text-sm text-primary-800 dark:text-primary-400 flex items-center gap-2"
-                      >
-                        <span className="w-1.5 h-1.5 bg-primary-500 dark:bg-primary-400 rounded-full"></span>
-                        {feature}
-                      </li>
-                    )
-                  )}
-                </ul>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-
-        {/* Recent Credit History */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Recent Activity</CardTitle>
-            <CardDescription>Your latest credit transactions</CardDescription>
-          </CardHeader>
-          <CardContent>
-            {historyLoading ? (
-              <div className="space-y-3">
-                {[...Array(5)].map((_, i) => (
-                  <div
-                    key={i}
-                    className="h-16 bg-neutral-100 dark:bg-neutral-800 rounded-lg animate-pulse"
-                  ></div>
-                ))}
-              </div>
-            ) : creditHistory.length > 0 ? (
-              <div className="space-y-3">
-                {creditHistory.slice(0, 5).map((transaction) => (
-                  <div
-                    key={transaction._id}
-                    className="flex items-center justify-between p-3 bg-neutral-50 dark:bg-neutral-800 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700 transition-colors"
-                  >
-                    <div>
-                      <p className="font-medium text-neutral-900 dark:text-white">
-                        {transaction.description}
-                      </p>
-                      <p className="text-sm text-neutral-600 dark:text-neutral-400">
-                        {format(
-                          new Date(transaction.createdAt),
-                          "MMM dd, yyyy HH:mm"
-                        )}
-                      </p>
-                    </div>
-                    <div className="text-right">
-                      <p
-                        className={`font-semibold ${
-                          transaction.amount >= 0
-                            ? "text-success-600 dark:text-success-400"
-                            : "text-error-600 dark:text-error-400"
-                        }`}
-                      >
-                        {transaction.amount >= 0 ? "+" : ""}
-                        {transaction.amount}
-                      </p>
-                      <p className="text-sm text-neutral-600 dark:text-neutral-400">
-                        Balance: {transaction.balanceAfter}
-                      </p>
-                    </div>
+          ) : creditHistory.length > 0 ? (
+            <div className="space-y-3">
+              {creditHistory.slice(0, 5).map((transaction) => (
+                <div
+                  key={transaction._id}
+                  className="flex items-center justify-between p-3 bg-neutral-50 dark:bg-neutral-800 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700 transition-colors"
+                >
+                  <div>
+                    <p className="font-medium text-neutral-900 dark:text-white">
+                      {transaction.description}
+                    </p>
+                    <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                      {format(
+                        new Date(transaction.createdAt),
+                        "MMM dd, yyyy HH:mm"
+                      )}
+                    </p>
                   </div>
-                ))}
-              </div>
-            ) : (
-              <div className="text-center py-8 text-neutral-500 dark:text-neutral-400">
-                <Activity className="w-12 h-12 mx-auto mb-3 opacity-50" />
-                <p>No recent activity</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
+                  <div className="text-right">
+                    <p
+                      className={`font-semibold ${
+                        transaction.amount >= 0
+                          ? "text-success-600 dark:text-success-400"
+                          : "text-error-600 dark:text-error-400"
+                      }`}
+                    >
+                      {transaction.amount >= 0 ? "+" : ""}
+                      {transaction.amount}
+                    </p>
+                    <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                      Balance: {transaction.balanceAfter}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-8 text-neutral-500 dark:text-neutral-400">
+              <Activity className="w-12 h-12 mx-auto mb-3 opacity-50" />
+              <p>No recent activity</p>
+            </div>
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 };

@@ -9,6 +9,8 @@ import {
   Settings,
   ChevronLeft,
   ChevronRight,
+  User,
+  CreditCard,
 } from "lucide-react";
 import useUIStore from "../../store/uiStore";
 import useAuthStore from "../../store/authStore";
@@ -25,6 +27,18 @@ const Sidebar = () => {
       label: "Dashboard",
       icon: LayoutDashboard,
       path: ROUTES.DASHBOARD,
+      end: true,
+    },
+    {
+      label: "Profile",
+      icon: User,
+      path: ROUTES.PROFILE,
+      end: true,
+    },
+    {
+      label: "Credits",
+      icon: CreditCard,
+      path: ROUTES.CREDITS,
       end: true,
     },
     {
