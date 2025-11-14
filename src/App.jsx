@@ -78,7 +78,7 @@ const ErrorFallback = ({ error, resetErrorBoundary }) => {
         </p>
         <button
           onClick={resetErrorBoundary}
-          className="px-6 py-4 bg-primary-500 dark:bg-primary-600 text-white rounded-lg hover:bg-primary-600 dark:hover:bg-primary-700 transition-colors"
+          className="px-6 py-3 bg-primary-500 dark:bg-primary-600 text-white rounded-lg hover:bg-primary-600 dark:hover:bg-primary-700 transition-colors"
         >
           Try again
         </button>
