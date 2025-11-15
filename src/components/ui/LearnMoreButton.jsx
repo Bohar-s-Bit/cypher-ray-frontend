@@ -7,25 +7,25 @@ const LearnMoreButton = ({ onClick, text = "Learn More" }) => {
     <StyledWrapper>
       <button className="button" onClick={onClick}>
         <div className="icon">
-          <span className="text-icon hide">Icon</span>
+          <span className="text-icon hide">SDK</span>
           <FileText className="css-i6dzq1" size={20} />
         </div>
         <span className="title">{text}</span>
         <div className="padding-left hide">
           <div className="padding-left-line">
-            <span className="padding-left-text">Left Padding</span>
+            <span className="padding-left-text">API</span>
           </div>
         </div>
         <div className="padding-right hide">
           <div className="padding-right-line">
-            <span className="padding-right-text">Right Padding</span>
+            <span className="padding-right-text">Docs</span>
           </div>
         </div>
         <div className="background hide">
-          <span className="background-text">Background</span>
+          <span className="background-text">Webapp</span>
         </div>
         <div className="border hide">
-          <span className="border-text">Border Radius</span>
+          <span className="border-text">SDK</span>
         </div>
       </button>
     </StyledWrapper>
@@ -96,8 +96,8 @@ const StyledWrapper = styled.div`
     color: #ffffff;
     position: absolute;
     font-size: 12px;
-    left: -37px;
-    top: -38px;
+    left: -25px;
+    top: -28px;
   }
   .icon .css-i6dzq1 {
     width: 20px;
@@ -163,8 +163,8 @@ const StyledWrapper = styled.div`
     position: absolute;
     white-space: nowrap;
     transform: rotate(50deg);
-    bottom: 30px;
-    left: -67px;
+    bottom: 25px;
+    left: -40px;
   }
 
   .padding-right {
@@ -222,8 +222,8 @@ const StyledWrapper = styled.div`
     position: absolute;
     white-space: nowrap;
     transform: rotate(-50deg);
-    bottom: 34px;
-    left: 21px;
+    bottom: 25px;
+    left: 5px;
   }
   .background {
     position: absolute;
@@ -254,8 +254,8 @@ const StyledWrapper = styled.div`
     position: absolute;
     color: #ffffff;
     font-size: 12px;
-    bottom: -70px;
-    left: -115px;
+    bottom: -55px;
+    left: -85px;
   }
   .border {
     position: absolute;
@@ -287,8 +287,8 @@ const StyledWrapper = styled.div`
     position: absolute;
     color: #ffffff;
     font-size: 12px;
-    right: -112px;
-    top: -30px;
+    right: -80px;
+    top: -25px;
     white-space: nowrap;
   }
 `;
