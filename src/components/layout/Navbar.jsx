@@ -7,8 +7,8 @@ import {
   LogOut,
   User,
   Settings,
-  Sun,
-  Moon,
+  // Sun,     // COMMENTED OUT - Theme toggle disabled
+  // Moon,    // COMMENTED OUT - Theme toggle disabled
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import useAuthStore from "../../store/authStore";
@@ -20,7 +20,7 @@ import Button from "../ui/Button";
 const Navbar = () => {
   const navigate = useNavigate();
   const { isAuthenticated, logout, user } = useAuthStore();
-  const { mobileMenuOpen, toggleMobileMenu, theme, toggleTheme } = useUIStore();
+  const { mobileMenuOpen, toggleMobileMenu } = useUIStore(); // Removed theme, toggleTheme
   const [showUserMenu, setShowUserMenu] = React.useState(false);
 
   const handleLogout = () => {
@@ -29,7 +29,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-white dark:bg-neutral-800 border-b border-neutral-200 dark:border-neutral-700 sticky top-0 z-30">
+    <nav className="bg-neutral-800 border-b border-neutral-700 sticky top-0 z-30">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -65,8 +65,8 @@ const Navbar = () => {
                   Features
                 </Link>
 
-                {/* Theme Toggle */}
-                <button
+                {/* COMMENTED OUT - Theme Toggle Disabled */}
+                {/* <button
                   onClick={toggleTheme}
                   className="p-2 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700 text-neutral-600 dark:text-neutral-300 hover:text-primary-500 dark:hover:text-primary-400 transition-colors"
                   title={
@@ -80,7 +80,7 @@ const Navbar = () => {
                   ) : (
                     <Sun className="w-5 h-5" />
                   )}
-                </button>
+                </button> */}
 
                 <Button
                   variant="primary"
@@ -92,8 +92,8 @@ const Navbar = () => {
               </>
             ) : (
               <>
-                {/* Theme Toggle */}
-                <button
+                {/* COMMENTED OUT - Theme Toggle Disabled */}
+                {/* <button
                   onClick={toggleTheme}
                   className="p-2 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700 text-neutral-600 dark:text-neutral-300 hover:text-primary-500 dark:hover:text-primary-400 transition-colors"
                   title={
@@ -107,7 +107,7 @@ const Navbar = () => {
                   ) : (
                     <Sun className="w-5 h-5" />
                   )}
-                </button>
+                </button> */}
 
                 <div className="relative">
                   <button
@@ -183,7 +183,7 @@ const Navbar = () => {
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            className="md:hidden border-t border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 overflow-hidden"
+            className="md:hidden border-t border-neutral-700 bg-neutral-800 overflow-hidden"
           >
             <div className="px-4 py-4 space-y-3">
               {!isAuthenticated ? (
@@ -210,8 +210,8 @@ const Navbar = () => {
                     Features
                   </Link>
 
-                  {/* Theme Toggle */}
-                  <button
+                  {/* COMMENTED OUT - Theme Toggle Disabled */}
+                  {/* <button
                     onClick={toggleTheme}
                     className="flex items-center justify-between w-full px-4 py-2 text-neutral-600 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-700 rounded-lg"
                   >
@@ -221,7 +221,7 @@ const Navbar = () => {
                     ) : (
                       <Sun className="w-5 h-5" />
                     )}
-                  </button>
+                  </button> */}
 
                   <Button
                     variant="primary"
@@ -251,8 +251,8 @@ const Navbar = () => {
                     Profile
                   </Link>
 
-                  {/* Theme Toggle */}
-                  <button
+                  {/* COMMENTED OUT - Theme Toggle Disabled */}
+                  {/* <button
                     onClick={toggleTheme}
                     className="flex items-center justify-between w-full px-4 py-2 text-neutral-600 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-700 rounded-lg"
                   >
@@ -262,7 +262,7 @@ const Navbar = () => {
                     ) : (
                       <Sun className="w-5 h-5" />
                     )}
-                  </button>
+                  </button> */}
 
                   <Button
                     variant="error"

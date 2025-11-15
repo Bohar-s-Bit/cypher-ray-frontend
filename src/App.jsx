@@ -53,11 +53,11 @@ const queryClient = new QueryClient({
 // Error Fallback Component
 const ErrorFallback = ({ error, resetErrorBoundary }) => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-neutral-50 dark:bg-neutral-900 p-4">
-      <div className="max-w-md w-full bg-white dark:bg-neutral-800 rounded-xl shadow-lg p-8 text-center">
-        <div className="w-16 h-16 bg-error-100 dark:bg-error-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+    <div className="min-h-screen flex items-center justify-center bg-neutral-900 p-4">
+      <div className="max-w-md w-full bg-neutral-800 rounded-xl shadow-lg p-8 text-center">
+        <div className="w-16 h-16 bg-error-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
           <svg
-            className="w-8 h-8 text-error-600 dark:text-error-400"
+            className="w-8 h-8 text-error-400"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -70,15 +70,15 @@ const ErrorFallback = ({ error, resetErrorBoundary }) => {
             />
           </svg>
         </div>
-        <h2 className="text-2xl font-bold text-neutral-900 dark:text-white mb-2">
+        <h2 className="text-2xl font-bold text-white mb-2">
           Oops! Something went wrong
         </h2>
-        <p className="text-neutral-600 dark:text-neutral-400 mb-6">
+        <p className="text-neutral-400 mb-6">
           {error.message || "An unexpected error occurred"}
         </p>
         <button
           onClick={resetErrorBoundary}
-          className="px-6 py-3 bg-primary-500 dark:bg-primary-600 text-white rounded-lg hover:bg-primary-600 dark:hover:bg-primary-700 transition-colors"
+          className="px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
         >
           Try again
         </button>
@@ -89,7 +89,7 @@ const ErrorFallback = ({ error, resetErrorBoundary }) => {
 
 function App() {
   const { initAuth } = useAuthStore();
-  const { initTheme, theme } = useUIStore();
+  const { initTheme } = useUIStore(); // Removed theme variable
 
   // Initialize auth and theme on mount
   React.useEffect(() => {
@@ -162,30 +162,30 @@ function App() {
             </Routes>
           </Router>
 
-          {/* Toast Notifications */}
+          {/* Toast Notifications - Dark Mode Only */}
           <Toaster
             position="top-right"
             toastOptions={{
               duration: 4000,
-              className: theme === "dark" ? "dark-toast" : "",
+              className: "dark-toast",
               style: {
-                background: theme === "dark" ? "#1f2937" : "#fff",
-                color: theme === "dark" ? "#f9fafb" : "#0f172a",
+                background: "#2a2a2a",
+                color: "#e5e5e5",
                 padding: "16px",
                 borderRadius: "12px",
-                boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.1)",
-                border: theme === "dark" ? "1px solid #374151" : "none",
+                boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.3)",
+                border: "1px solid #3d3d3d",
               },
               success: {
                 iconTheme: {
                   primary: "#22c55e",
-                  secondary: theme === "dark" ? "#1f2937" : "#fff",
+                  secondary: "#2a2a2a",
                 },
               },
               error: {
                 iconTheme: {
                   primary: "#ef4444",
-                  secondary: theme === "dark" ? "#1f2937" : "#fff",
+                  secondary: "#2a2a2a",
                 },
               },
             }}

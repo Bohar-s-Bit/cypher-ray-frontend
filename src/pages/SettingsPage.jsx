@@ -3,9 +3,9 @@ import { useMutation } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { Helmet } from "react-helmet-async";
 import toast from "react-hot-toast";
-import { Lock, Moon, Sun, Bell, Shield, Key, AlertCircle } from "lucide-react";
+import { Lock, /* Moon, Sun, */ Bell, Shield, Key, AlertCircle } from "lucide-react"; // COMMENTED OUT - Theme icons disabled
 import { authService } from "../services/authService";
-import useUIStore from "../store/uiStore";
+// import useUIStore from "../store/uiStore"; // COMMENTED OUT - Theme toggle disabled
 import { APP_NAME } from "../config/constants";
 import {
   Card,
@@ -18,7 +18,7 @@ import Button from "../components/ui/Button";
 import Input from "../components/ui/Input";
 
 const SettingsPage = () => {
-  const { theme, toggleTheme } = useUIStore();
+  // const { theme, toggleTheme } = useUIStore(); // COMMENTED OUT - Theme toggle disabled
   const [passwordData, setPasswordData] = useState({
     currentPassword: "",
     newPassword: "",
@@ -68,10 +68,11 @@ const SettingsPage = () => {
     });
   };
 
-  const handleThemeToggle = () => {
-    toggleTheme();
-    toast.success(`Switched to ${theme === "light" ? "dark" : "light"} mode`);
-  };
+  // COMMENTED OUT - Theme toggle functionality disabled
+  // const handleThemeToggle = () => {
+  //   toggleTheme();
+  //   toast.success(`Switched to ${theme === "light" ? "dark" : "light"} mode`);
+  // };
 
   return (
     <>
@@ -169,8 +170,8 @@ const SettingsPage = () => {
             </form>
           </Card>
 
-          {/* Appearance Settings */}
-          <Card className="p-6">
+          {/* COMMENTED OUT - Appearance Settings (Theme Toggle Disabled) */}
+          {/* <Card className="p-6">
             <div className="flex items-center gap-3 mb-6">
               <div className="p-2 bg-primary-100 dark:bg-primary-900/30 rounded-lg">
                 {theme === "light" ? (
@@ -252,7 +253,7 @@ const SettingsPage = () => {
                 </motion.button>
               </div>
             </div>
-          </Card>
+          </Card> */}
 
           {/* Notifications Settings */}
           <Card className="p-6">

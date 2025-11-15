@@ -16,38 +16,37 @@ const useUIStore = create(
         set((state) => ({ mobileMenuOpen: !state.mobileMenuOpen })),
       setMobileMenuOpen: (open) => set({ mobileMenuOpen: open }),
 
-      // Theme
-      theme: "light",
-      setTheme: (theme) => {
-        // Update document class for Tailwind dark mode
-        if (theme === "dark") {
-          document.documentElement.classList.add("dark");
-        } else {
-          document.documentElement.classList.remove("dark");
-        }
-        set({ theme });
-      },
-      toggleTheme: () =>
-        set((state) => {
-          const newTheme = state.theme === "light" ? "dark" : "light";
-          // Update document class for Tailwind dark mode
-          if (newTheme === "dark") {
-            document.documentElement.classList.add("dark");
-          } else {
-            document.documentElement.classList.remove("dark");
-          }
-          return { theme: newTheme };
-        }),
+      // Theme - FORCED TO DARK MODE ONLY
+      theme: "dark", // Always dark mode
+      
+      // COMMENTED OUT - Theme toggle functionality disabled
+      // setTheme: (theme) => {
+      //   // Update document class for Tailwind dark mode
+      //   if (theme === "dark") {
+      //     document.documentElement.classList.add("dark");
+      //   } else {
+      //     document.documentElement.classList.remove("dark");
+      //   }
+      //   set({ theme });
+      // },
+      // toggleTheme: () =>
+      //   set((state) => {
+      //     const newTheme = state.theme === "light" ? "dark" : "light";
+      //     // Update document class for Tailwind dark mode
+      //     if (newTheme === "dark") {
+      //       document.documentElement.classList.add("dark");
+      //     } else {
+      //       document.documentElement.classList.remove("dark");
+      //     }
+      //     return { theme: newTheme };
+      //   }),
 
-      // Initialize theme from storage
+      // Initialize theme - Always set to dark mode
       initTheme: () =>
-        set((state) => {
-          if (state.theme === "dark") {
-            document.documentElement.classList.add("dark");
-          } else {
-            document.documentElement.classList.remove("dark");
-          }
-          return state;
+        set(() => {
+          // Always force dark mode
+          document.documentElement.classList.add("dark");
+          return { theme: "dark" };
         }),
 
       // Loading states
