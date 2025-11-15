@@ -3,9 +3,9 @@ import { useMutation } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { Helmet } from "react-helmet-async";
 import toast from "react-hot-toast";
-import { Lock, Moon, Sun, Bell, Shield, Key, AlertCircle } from "lucide-react";
+import { Lock, /* Moon, Sun, */ Bell, Shield, Key, AlertCircle } from "lucide-react"; // COMMENTED OUT - Theme icons disabled
 import { authService } from "../services/authService";
-import useUIStore from "../store/uiStore";
+// import useUIStore from "../store/uiStore"; // COMMENTED OUT - Theme toggle disabled
 import { APP_NAME } from "../config/constants";
 import {
   Card,
@@ -18,7 +18,7 @@ import Button from "../components/ui/Button";
 import Input from "../components/ui/Input";
 
 const SettingsPage = () => {
-  const { theme, toggleTheme } = useUIStore();
+  // const { theme, toggleTheme } = useUIStore(); // COMMENTED OUT - Theme toggle disabled
   const [passwordData, setPasswordData] = useState({
     currentPassword: "",
     newPassword: "",
@@ -68,10 +68,11 @@ const SettingsPage = () => {
     });
   };
 
-  const handleThemeToggle = () => {
-    toggleTheme();
-    toast.success(`Switched to ${theme === "light" ? "dark" : "light"} mode`);
-  };
+  // COMMENTED OUT - Theme toggle functionality disabled
+  // const handleThemeToggle = () => {
+  //   toggleTheme();
+  //   toast.success(`Switched to ${theme === "light" ? "dark" : "light"} mode`);
+  // };
 
   return (
     <>
@@ -261,15 +262,7 @@ const SettingsPage = () => {
             <div className="p-2 bg-primary-100 dark:bg-primary-900/30 rounded-lg">
               <Bell className="w-6 h-6 text-primary-600 dark:text-primary-400" />
             </div>
-            <div>
-              <h2 className="text-xl font-semibold text-neutral-900 dark:text-white">
-                Notifications
-              </h2>
-              <p className="text-sm text-neutral-600 dark:text-neutral-400">
-                Manage your notification preferences
-              </p>
-            </div>
-          </div>
+          </Card> */}
 
           <div className="space-y-4">
             <div className="flex items-center justify-between p-4 bg-neutral-50 dark:bg-neutral-800 rounded-lg">

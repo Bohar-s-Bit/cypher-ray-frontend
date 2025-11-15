@@ -60,6 +60,21 @@ export default {
           500: "#ef4444",
           600: "#dc2626",
         },
+        // Enhanced Dark Mode Neutral Colors with #212121
+        neutral: {
+          50: "#fafafa",
+          100: "#f5f5f5",
+          200: "#e5e5e5",
+          300: "#d4d4d4",
+          400: "#a3a3a3",
+          500: "#737373",
+          600: "#525252",
+          700: "#3d3d3d",  // Enhanced for better borders
+          800: "#2a2a2a",  // Enhanced for cards/elevated surfaces
+          850: "#242424",  // New shade for subtle elevation
+          900: "#212121",  // Main dark background
+          950: "#1a1a1a",  // Deeper dark for contrast
+        },
       },
       fontFamily: {
         sans: ["Inter", "system-ui", "sans-serif"],
