@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense, lazy } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
@@ -14,7 +14,17 @@ import {
 } from "lucide-react";
 import Button from "../components/ui/Button";
 import { Card, CardContent } from "../components/ui/Card";
+import BookmarkButton from "../components/ui/BookmarkButton";
+import LearnMoreButton from "../components/ui/LearnMoreButton";
+import { HyperText } from "../components/ui/HyperText";
 import { ROUTES, APP_NAME } from "../config/constants";
+
+// Lazy load heavy components
+const FloatingLines = lazy(() => import("../components/ui/FloatingLines"));
+const MagicBento = lazy(() => import("../components/ui/MagicBento"));
+const Terminal = lazy(() => import("../components/ui/Terminal").then(module => ({ default: module.Terminal })));
+const TypingAnimation = lazy(() => import("../components/ui/Terminal").then(module => ({ default: module.TypingAnimation })));
+const AnimatedSpan = lazy(() => import("../components/ui/Terminal").then(module => ({ default: module.AnimatedSpan })));
 
 const LandingPage = () => {
   const navigate = useNavigate();
@@ -76,80 +86,83 @@ const LandingPage = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-primary-50 via-white to-secondary-50 dark:from-neutral-900 dark:via-neutral-900 dark:to-neutral-800 py-20 md:py-32">
-        <div className="absolute inset-0 bg-grid-pattern opacity-5 dark:opacity-10"></div>
+      <section className="relative overflow-hidden min-h-screen flex items-center justify-center">
+        {/* Dark Background Base */}
+        <div className="absolute inset-0 w-full h-full" style={{ background: 'linear-gradient(135deg, #060010 0%, #0a0015 50%, #060010 100%)' }}></div>
+        
+        {/* FloatingLines Background */}
+        <div className="absolute inset-0 w-full h-full">
+          <Suspense fallback={<div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 to-transparent animate-pulse" />}>
+            <FloatingLines 
+              enabledWaves={['top', 'middle', 'bottom']}
+              lineCount={5}
+              lineDistance={5}
+              bendRadius={5.0}
+              bendStrength={-0.5}
+              interactive={true}
+              parallax={true}
+              parallaxStrength={0.2}
+              animationSpeed={1}
+              mouseDamping={0.05}
+              mixBlendMode="screen"
+              linesGradient={['#2d1b47', '#4a0582', '#7808d0', '#a855f7', '#c084fc']}
+              topWavePosition={{ x: 10.0, y: 0.5, rotate: -0.4 }}
+              middleWavePosition={{ x: 5.0, y: 0.0, rotate: 0.2 }}
+              bottomWavePosition={{ x: 2.0, y: -0.7, rotate: -1 }}
+            />
+          </Suspense>
+        </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+        {/* Gradient Overlay for smooth transition */}
+        <div className="absolute bottom-0 left-0 right-0 h-24 z-5" style={{ background: 'linear-gradient(to top, #060010 0%, rgba(10, 0, 21, 0.6) 60%, transparent 100%)' }}></div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             className="text-center"
           >
-            <div className="inline-flex items-center gap-2 bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-400 px-4 py-2 rounded-full mb-6 font-medium">
+            <div className="inline-flex items-center gap-2 bg-black/20 backdrop-blur-sm border border-white/10 text-white px-4 py-2 rounded-full mb-6 font-medium">
               <Shield className="w-4 h-4" />
               <span>Trusted by Government & Enterprise</span>
             </div>
 
-            <h1 className="text-5xl md:text-7xl font-display font-bold text-neutral-900 dark:text-white mb-6 leading-tight">
+            <h1 className="text-5xl md:text-7xl font-display font-bold text-white mb-6 leading-tight">
               Secure Your Firmware
               <br />
-              <span className="bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent">
+              <HyperText 
+                className="text-5xl md:text-7xl font-display font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent"
+                startOnView={true}
+                delay={500}
+                duration={1000}
+                animateOnHover={true}
+              >
                 Protect Your Future
-              </span>
+              </HyperText>
             </h1>
 
-            <p className="text-xl md:text-2xl text-neutral-600 dark:text-neutral-400 mb-10 max-w-3xl mx-auto">
+            <p className="text-xl md:text-2xl text-white/80 mb-10 max-w-3xl mx-auto">
               {APP_NAME} provides enterprise-grade firmware security analysis
               for government organizations and businesses across India.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <Button
-                variant="primary"
-                size="lg"
+            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+              <BookmarkButton
                 onClick={() => navigate(ROUTES.LOGIN)}
-                rightIcon={<ArrowRight className="w-5 h-5" />}
-              >
-                Get Started
-              </Button>
-              <Button
-                variant="outline"
-                size="lg"
+                text="Get Started"
+              />
+              <LearnMoreButton
                 onClick={() => navigate("/about")}
-              >
-                Learn More
-              </Button>
+                text="Learn More"
+              />
             </div>
-          </motion.div>
-
-          {/* Stats */}
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-20"
-          >
-            {stats.map((stat, index) => {
-              const Icon = stat.icon;
-              return (
-                <Card key={index} className="text-center" padding="lg">
-                  <Icon className="w-8 h-8 text-primary-500 dark:text-primary-400 mx-auto mb-3" />
-                  <div className="text-3xl font-bold text-neutral-900 dark:text-white mb-1">
-                    {stat.value}
-                  </div>
-                  <div className="text-sm text-neutral-600 dark:text-neutral-400">
-                    {stat.label}
-                  </div>
-                </Card>
-              );
-            })}
           </motion.div>
         </div>
       </section>
 
       {/* Features Section */}
-      <section className="py-20 bg-white dark:bg-neutral-900">
+      <section className="py-20 bg-transparent -mt-12 pt-20" style={{ background: 'linear-gradient(135deg, #060010 0%, #0a0015 50%, #060010 100%)' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -165,39 +178,124 @@ const LandingPage = () => {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {features.map((feature, index) => {
-              const Icon = feature.icon;
-              return (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
-                >
-                  <Card hoverable padding="lg" className="h-full">
-                    <div
-                      className={`inline-flex p-3 rounded-xl ${feature.bgColor} mb-4`}
-                    >
-                      <Icon className={`w-6 h-6 ${feature.color}`} />
-                    </div>
-                    <h3 className="text-xl font-semibold text-neutral-900 dark:text-white mb-2">
-                      {feature.title}
-                    </h3>
-                    <p className="text-neutral-600 dark:text-neutral-400">
-                      {feature.description}
-                    </p>
-                  </Card>
-                </motion.div>
-              );
-            })}
-          </div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="flex justify-center"
+          >
+            <Suspense fallback={
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl w-full">
+                {[...Array(6)].map((_, i) => (
+                  <div key={i} className="h-40 bg-neutral-800 rounded-xl animate-pulse" />
+                ))}
+              </div>
+            }>
+              <MagicBento 
+                textAutoHide={true}
+                enableStars={true}
+                enableSpotlight={true}
+                enableBorderGlow={true}
+                enableTilt={true}
+                enableMagnetism={true}
+                clickEffect={true}
+                spotlightRadius={300}
+                particleCount={12}
+                glowColor="132, 0, 255"
+              />
+            </Suspense>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* SDK for Big Organizations Section */}
+      <section className="py-20 bg-transparent" style={{ background: 'linear-gradient(135deg, #060010 0%, #0a0015 50%, #060010 100%)' }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl md:text-5xl font-display font-bold text-white mb-4">
+              SDK for Big Organizations
+            </h2>
+            <p className="text-xl text-neutral-400 max-w-2xl mx-auto">
+              Integrate Cypher-Ray's powerful security analysis directly into your development workflow
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="flex justify-center"
+          >
+            <Suspense fallback={
+              <div className="border border-purple-800/30 bg-gradient-to-br from-neutral-900 to-purple-900/20 max-w-6xl w-full rounded-xl shadow-2xl shadow-purple-900/20 h-96">
+                <div className="border-b border-purple-800/30 flex flex-col gap-y-2 p-4">
+                  <div className="flex flex-row gap-x-2">
+                    <div className="h-2 w-2 rounded-full bg-red-500"></div>
+                    <div className="h-2 w-2 rounded-full bg-yellow-500"></div>
+                    <div className="h-2 w-2 rounded-full bg-green-500"></div>
+                  </div>
+                </div>
+                <div className="p-4 space-y-3">
+                  <div className="h-4 bg-neutral-700 rounded animate-pulse"></div>
+                  <div className="h-4 bg-neutral-700 rounded animate-pulse w-3/4"></div>
+                  <div className="h-4 bg-neutral-700 rounded animate-pulse w-1/2"></div>
+                </div>
+              </div>
+            }>
+              <Terminal className="bg-neutral-900 border-neutral-700 max-w-6xl w-full">
+                <TypingAnimation>&gt; npm install @cypher-ray/security-sdk</TypingAnimation>
+                <AnimatedSpan className="text-green-500">
+                  ✔ Preflight checks.
+                </AnimatedSpan>
+                <AnimatedSpan className="text-green-500">
+                  ✔ Verifying framework compatibility.
+                </AnimatedSpan>
+                <AnimatedSpan className="text-green-500">
+                  ✔ Validating security configurations.
+                </AnimatedSpan>
+                <AnimatedSpan className="text-green-500">
+                  ✔ Validating API credentials.
+                </AnimatedSpan>
+                <AnimatedSpan className="text-green-500">
+                  ✔ Writing cypher-ray.config.js.
+                </AnimatedSpan>
+                <AnimatedSpan className="text-green-500">
+                  ✔ Checking registry.
+                </AnimatedSpan>
+                <AnimatedSpan className="text-green-500">
+                  ✔ Updating security.config.ts
+                </AnimatedSpan>
+                <AnimatedSpan className="text-green-500">
+                  ✔ Updating app/security.css
+                </AnimatedSpan>
+                <AnimatedSpan className="text-green-500">
+                  ✔ Installing dependencies.
+                </AnimatedSpan>
+                <AnimatedSpan className="text-blue-500">
+                  <span>ℹ Updated 3 files:</span>
+                  <span className="pl-2">- lib/security.ts</span>
+                </AnimatedSpan>
+                <TypingAnimation className="text-neutral-400">
+                  Success! Cypher-Ray SDK initialization completed.
+                </TypingAnimation>
+                <TypingAnimation className="text-neutral-400">
+                  You may now start scanning firmware.
+                </TypingAnimation>
+              </Terminal>
+            </Suspense>
+          </motion.div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-br from-primary-600 to-primary-800 dark:from-primary-700 dark:to-primary-900">
+      <section className="py-20" style={{ background: 'linear-gradient(135deg, #7808d0 0%, #5c0699 50%, #4a0582 100%)' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -224,7 +322,7 @@ const LandingPage = () => {
       </section>
 
       {/* Footer */}
-      <footer className="bg-neutral-900 text-white py-12">
+      <footer className="py-12" style={{ background: '#060010', color: '#ffffff' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="flex items-center gap-3 mb-4 md:mb-0">

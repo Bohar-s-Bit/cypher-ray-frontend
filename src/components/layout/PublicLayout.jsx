@@ -4,7 +4,7 @@ import Navbar from "./Navbar";
 
 const PublicLayout = () => {
   return (
-    <div className="min-h-screen bg-neutral-50 dark:bg-neutral-900">
+    <div className="min-h-screen" style={{ background: 'linear-gradient(135deg, #060010 0%, #0a0015 50%, #060010 100%)' }}>
       <Navbar />
       <main>
         <Outlet />

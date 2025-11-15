@@ -1,5 +1,37 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700;800;900&display=swap");
 
+@font-face {
+  font-family: 'Roboto';
+  src: url('/fonts/roboto/Roboto-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src: url('/fonts/roboto/Roboto-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src: url('/fonts/roboto/Roboto-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src: url('/fonts/roboto/Roboto-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -9,21 +41,30 @@
     border-color: theme("colors.neutral.200");
   }
 
-  body {
+  /* LIGHT MODE DISABLED - Keeping styles commented for reference */
+  /* body {
     background-color: theme("colors.white");
     color: theme("colors.neutral.900");
     font-family: "Inter", system-ui, -apple-system, sans-serif;
     font-feature-settings: "rlig" 1, "calt" 1;
+  } */
+
+  /* DARK MODE ONLY - Enhanced with MagicBento theme */
+  body {
+    background: linear-gradient(135deg, #060010 0%, #0a0015 50%, #060010 100%);
+    color: #ffffff;
+    font-family: "Roboto", "Inter", system-ui, -apple-system, sans-serif;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    min-height: 100vh;
   }
 
-  /* Dark mode styles */
   .dark body {
-    background-color: theme("colors.neutral.900");
-    color: theme("colors.neutral.100");
+    background: linear-gradient(135deg, #060010 0%, #0a0015 50%, #060010 100%);
+    color: #ffffff;
   }
 
   .dark * {
-    border-color: theme("colors.neutral.700");
+    border-color: #3d3d3d;
   }
 
   h1,
@@ -44,52 +85,88 @@
   .bg-grid-pattern {
     background-image: linear-gradient(
         to right,
-        rgba(0, 0, 0, 0.1) 1px,
+        rgba(255, 255, 255, 0.05) 1px,
         transparent 1px
       ),
-      linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 1px, transparent 1px);
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
     background-size: 20px 20px;
   }
 }
 
-/* Custom Scrollbar */
+/* Custom Scrollbar - Dark Mode Enhanced */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f5f9;
-}
-
-.dark ::-webkit-scrollbar-track {
-  background: #1e293b;
+  background: #2a2a2a;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  background: #4a4a4a;
   border-radius: 4px;
 }
 
-.dark ::-webkit-scrollbar-thumb {
-  background: #475569;
-}
-
 ::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  background: #5a5a5a;
 }
 
-.dark ::-webkit-scrollbar-thumb:hover {
-  background: #64748b;
-}
-
-/* React Loading Skeleton */
+/* React Loading Skeleton - Dark Mode */
 .react-loading-skeleton {
-  --base-color: #f1f5f9;
-  --highlight-color: #e2e8f0;
+  --base-color: #2a2a2a;
+  --highlight-color: #3a3a3a;
 }
 
-.dark .react-loading-skeleton {
-  --base-color: #1e293b;
-  --highlight-color: #334155;
+/* Performance Optimizations */
+.gpu-accelerated {
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+.animation-optimized {
+  will-change: transform, opacity;
+  transform: translateZ(0);
+}
+
+.text-rendering-optimized {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Floating Lines Container Optimization */
+.floating-lines-container {
+  contain: layout style paint;
+  will-change: auto;
+}
+
+.floating-lines-container canvas {
+  display: block;
+  image-rendering: auto;
+  image-rendering: crisp-edges;
+  image-rendering: -webkit-optimize-contrast;
+}
+
+/* Terminal Animation Optimization */
+.terminal-container {
+  contain: layout style;
+  will-change: auto;
+}
+
+/* Card Navigation Optimization */
+.card-nav {
+  contain: layout style;
+}
+
+.card-nav-content {
+  will-change: height, opacity;
+}
+
+/* HyperText Animation Optimization */
+.hypertext-container {
+  contain: layout style;
+  will-change: auto;
 }
