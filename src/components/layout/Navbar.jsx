@@ -8,11 +8,11 @@ const Navbar = () => {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuthStore();
 
-  // Navigation items for the card navigation - using exact colors from provided code
+  // Navigation items for the card navigation - matching hero gradient theme
   const items = [
     {
       label: "Features",
-      bgColor: "#0D0716",
+      bgColor: "#1a0d2e",
       textColor: "#fff",
       links: [
         { 
@@ -39,7 +39,7 @@ const Navbar = () => {
     },
     {
       label: "Solutions", 
-      bgColor: "#170D27",
+      bgColor: "#2d1b47",
       textColor: "#fff",
       links: [
         { 
@@ -66,7 +66,7 @@ const Navbar = () => {
     },
     {
       label: "About",
-      bgColor: "#271E37", 
+      bgColor: "#4a0582", 
       textColor: "#fff",
       links: [
         { 
@@ -98,7 +98,7 @@ const Navbar = () => {
       logo="/images/Cypher-ray_horizontal.png"
       logoAlt="Cypher-Ray Logo"
       items={items}
-      baseColor="#060010"
+      baseColor="#0a0015"
       menuColor="#fff"
       buttonBgColor="#7808d0"
       buttonTextColor="#fff"

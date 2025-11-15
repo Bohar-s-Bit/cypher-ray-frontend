@@ -1,5 +1,37 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700;800;900&display=swap");
 
+@font-face {
+  font-family: 'Roboto';
+  src: url('/fonts/roboto/Roboto-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src: url('/fonts/roboto/Roboto-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src: url('/fonts/roboto/Roboto-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src: url('/fonts/roboto/Roboto-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -21,7 +53,7 @@
   body {
     background: linear-gradient(135deg, #060010 0%, #0a0015 50%, #060010 100%);
     color: #ffffff;
-    font-family: "Inter", system-ui, -apple-system, sans-serif;
+    font-family: "Roboto", "Inter", system-ui, -apple-system, sans-serif;
     font-feature-settings: "rlig" 1, "calt" 1;
     min-height: 100vh;
   }
@@ -84,4 +116,57 @@
 .react-loading-skeleton {
   --base-color: #2a2a2a;
   --highlight-color: #3a3a3a;
+}
+
+/* Performance Optimizations */
+.gpu-accelerated {
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+.animation-optimized {
+  will-change: transform, opacity;
+  transform: translateZ(0);
+}
+
+.text-rendering-optimized {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Floating Lines Container Optimization */
+.floating-lines-container {
+  contain: layout style paint;
+  will-change: auto;
+}
+
+.floating-lines-container canvas {
+  display: block;
+  image-rendering: auto;
+  image-rendering: crisp-edges;
+  image-rendering: -webkit-optimize-contrast;
+}
+
+/* Terminal Animation Optimization */
+.terminal-container {
+  contain: layout style;
+  will-change: auto;
+}
+
+/* Card Navigation Optimization */
+.card-nav {
+  contain: layout style;
+}
+
+.card-nav-content {
+  will-change: height, opacity;
+}
+
+/* HyperText Animation Optimization */
+.hypertext-container {
+  contain: layout style;
+  will-change: auto;
 }

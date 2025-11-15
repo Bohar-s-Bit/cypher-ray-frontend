@@ -1,6 +1,7 @@
 import { useLayoutEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { GoArrowUpRight } from 'react-icons/go';
+import BookmarkButton from './BookmarkButton';
 
 const CardNav = ({
   logo,
@@ -163,17 +164,21 @@ const CardNav = ({
           </div>
 
           <div className="logo-container flex items-center md:absolute md:left-1/2 md:top-1/2 md:-translate-x-1/2 md:-translate-y-1/2 order-1 md:order-none">
-            <img src={logo} alt={logoAlt} className="logo h-[50px] md:h-[60px] max-w-none object-contain" />
+            <img 
+              src={logo} 
+              alt={logoAlt} 
+              className="logo h-[50px] md:h-[55px] max-w-none object-contain scale-150" 
+              loading="lazy"
+              decoding="async"
+            />
           </div>
 
-          <button
-            type="button"
-            className="card-nav-cta-button hidden md:inline-flex border-0 rounded-[calc(0.75rem-0.2rem)] px-4 items-center h-full font-medium cursor-pointer transition-colors duration-300 hover:opacity-80"
-            style={{ backgroundColor: buttonBgColor, color: buttonTextColor }}
-            onClick={onGetStartedClick}
-          >
-            Get Started
-          </button>
+          <div className="hidden md:block">
+            <BookmarkButton 
+              onClick={onGetStartedClick}
+              text="Get Started"
+            />
+          </div>
         </div>
 
         <div

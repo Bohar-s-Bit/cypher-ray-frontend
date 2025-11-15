@@ -14,6 +14,9 @@ import { ErrorBoundary } from "react-error-boundary";
 import useAuthStore from "./store/authStore";
 import useUIStore from "./store/uiStore";
 
+// Performance Monitoring
+import PerformanceMonitor from "./components/ui/PerformanceMonitor";
+
 // Layouts
 import PublicLayout from "./components/layout/PublicLayout";
 import DashboardLayout from "./components/layout/DashboardLayout";
@@ -190,6 +193,7 @@ function App() {
               },
             }}
           />
+          <PerformanceMonitor />
         </QueryClientProvider>
       </HelmetProvider>
     </ErrorBoundary>

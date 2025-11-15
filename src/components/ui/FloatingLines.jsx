@@ -56,9 +56,9 @@ uniform vec3 lineGradient[8];
 uniform int lineGradientCount;
 
 const vec3 BLACK = vec3(0.0);
-const vec3 DARK_PURPLE = vec3(6.0, 0.0, 16.0) / 255.0;
-const vec3 DEEP_PURPLE = vec3(26.0, 13.0, 46.0) / 255.0;
-const vec3 BRAND_PURPLE = vec3(120.0, 8.0, 208.0) / 255.0;
+const vec3 DARK_PURPLE = vec3(45.0, 27.0, 71.0) / 255.0;   // #2d1b47
+const vec3 DEEP_PURPLE = vec3(74.0, 5.0, 130.0) / 255.0;   // #4a0582
+const vec3 BRAND_PURPLE = vec3(120.0, 8.0, 208.0) / 255.0; // #7808d0
 
 mat2 rotate(float r) {
   return mat2(cos(r), sin(r), -sin(r), cos(r));
@@ -70,10 +70,10 @@ vec3 background_color(vec2 uv) {
   float y = sin(uv.x - 0.2) * 0.2 - 0.05;
   float m = uv.y - y;
 
-  // Create subtle dark gradients that match the website theme
-  col += mix(DEEP_PURPLE, BLACK, smoothstep(0.0, 1.5, abs(m)));
-  col += mix(DARK_PURPLE, BLACK, smoothstep(0.0, 2.0, abs(m - 0.6)));
-  return col * 0.3; // Much darker overall
+  // Create more visible gradients with better contrast
+  col += mix(DEEP_PURPLE, DARK_PURPLE, smoothstep(0.0, 1.5, abs(m)));
+  col += mix(BRAND_PURPLE, DEEP_PURPLE, smoothstep(0.0, 2.0, abs(m - 0.6)));
+  return col * 0.5; // Darker while still visible
 }
 
 vec3 getLineColor(float t, vec3 baseColor) {
@@ -98,8 +98,8 @@ vec3 getLineColor(float t, vec3 baseColor) {
     gradientColor = mix(c1, c2, f);
   }
   
-  // Adjust brightness for dark theme - make lines more subtle
-  return gradientColor * 0.8;
+  // Adjust brightness for dark theme - make lines visible but balanced
+  return gradientColor * 1.0;
 }
 
   float wave(vec2 uv, float offset, vec2 screenUv, vec2 mouseUv, bool shouldBend) {
@@ -154,7 +154,7 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
         baseUv,
         mouseUv,
         interactive
-      ) * 0.15;
+      ) * 0.25;
     }
   }
 
@@ -172,7 +172,7 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
         baseUv,
         mouseUv,
         interactive
-      ) * 0.6;
+      ) * 0.5;
     }
   }
 
@@ -191,7 +191,7 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
         baseUv,
         mouseUv,
         interactive
-      ) * 0.08;
+      ) * 0.18;
     }
   }
 
@@ -286,7 +286,13 @@ export default function FloatingLines({
     const camera = new OrthographicCamera(-1, 1, 1, -1, 0, 1);
     camera.position.z = 1;
 
-    const renderer = new WebGLRenderer({ antialias: true, alpha: false });
+    const renderer = new WebGLRenderer({ 
+      antialias: true, 
+      alpha: false,
+      depth: false,
+      stencil: false,
+      powerPreference: "high-performance"
+    });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     renderer.domElement.style.width = '100%';
     renderer.domElement.style.height = '100%';
@@ -474,7 +480,7 @@ export default function FloatingLines({
   return (
     <div
       ref={containerRef}
-      className="w-full h-full relative overflow-hidden floating-lines-container"
+      className="w-full h-full relative overflow-hidden floating-lines-container gpu-accelerated"
       style={{
         mixBlendMode: mixBlendMode
       }}
