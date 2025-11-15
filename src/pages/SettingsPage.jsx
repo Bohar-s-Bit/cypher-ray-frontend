@@ -3,7 +3,13 @@ import { useMutation } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { Helmet } from "react-helmet-async";
 import toast from "react-hot-toast";
-import { Lock, /* Moon, Sun, */ Bell, Shield, Key, AlertCircle } from "lucide-react"; // COMMENTED OUT - Theme icons disabled
+import {
+  Lock,
+  /* Moon, Sun, */ Bell,
+  Shield,
+  Key,
+  AlertCircle,
+} from "lucide-react"; // COMMENTED OUT - Theme icons disabled
 import { authService } from "../services/authService";
 // import useUIStore from "../store/uiStore"; // COMMENTED OUT - Theme toggle disabled
 import { APP_NAME } from "../config/constants";
@@ -171,149 +177,57 @@ const SettingsPage = () => {
           </form>
         </Card>
 
-        {/* Appearance Settings */}
-        <Card className="p-6">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="p-2 bg-primary-100 dark:bg-primary-900/30 rounded-lg">
-              {theme === "light" ? (
-                <Sun className="w-6 h-6 text-primary-600 dark:text-primary-400" />
-              ) : (
-                <Moon className="w-6 h-6 text-primary-600 dark:text-primary-400" />
-              )}
-            </div>
-            <div>
-              <h2 className="text-xl font-semibold text-neutral-900 dark:text-white">
-                Appearance
-              </h2>
+    
+
+        <div className="space-y-4">
+          <div className="flex items-center justify-between p-4 bg-neutral-50 dark:bg-neutral-800 rounded-lg">
+            <div className="flex-1">
+              <p className="font-medium text-neutral-900 dark:text-white">
+                Email Notifications
+              </p>
               <p className="text-sm text-neutral-600 dark:text-neutral-400">
-                Customize how the application looks
+                Receive email updates about your account
               </p>
             </div>
+            <input
+              type="checkbox"
+              defaultChecked
+              className="w-5 h-5 text-primary-600 bg-neutral-100 border-neutral-300 rounded focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-neutral-800 focus:ring-2 dark:bg-neutral-700 dark:border-neutral-600"
+            />
           </div>
 
-          <div className="space-y-4">
-            <div className="flex items-center justify-between p-4 bg-neutral-50 dark:bg-neutral-800 rounded-lg">
-              <div className="flex-1">
-                <p className="font-medium text-neutral-900 dark:text-white">
-                  Dark Mode
-                </p>
-                <p className="text-sm text-neutral-600 dark:text-neutral-400">
-                  Switch between light and dark themes
-                </p>
-              </div>
-              <button
-                onClick={handleThemeToggle}
-                className="relative inline-flex h-8 w-14 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-neutral-900"
-                style={{
-                  backgroundColor: theme === "dark" ? "#3b82f6" : "#cbd5e1",
-                }}
-              >
-                <span
-                  className={`inline-block h-6 w-6 transform rounded-full bg-white transition-transform ${
-                    theme === "dark" ? "translate-x-7" : "translate-x-1"
-                  }`}
-                />
-              </button>
+          <div className="flex items-center justify-between p-4 bg-neutral-50 dark:bg-neutral-800 rounded-lg">
+            <div className="flex-1">
+              <p className="font-medium text-neutral-900 dark:text-white">
+                Credit Alerts
+              </p>
+              <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                Get notified when credits are low
+              </p>
             </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={() => theme === "dark" && handleThemeToggle()}
-                className={`p-4 rounded-lg border-2 transition-all ${
-                  theme === "light"
-                    ? "border-primary-500 bg-primary-50 dark:bg-primary-900/20"
-                    : "border-neutral-200 dark:border-neutral-700 hover:border-primary-300 dark:hover:border-primary-700"
-                }`}
-              >
-                <div className="flex flex-col items-center gap-2">
-                  <Sun className="w-8 h-8 text-neutral-900 dark:text-white" />
-                  <span className="font-medium text-neutral-900 dark:text-white">
-                    Light
-                  </span>
-                </div>
-              </motion.button>
-
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={() => theme === "light" && handleTheme.goggle()}
-                className={`p-4 rounded-lg border-2 transition-all ${
-                  theme === "dark"
-                    ? "border-primary-500 bg-primary-50 dark:bg-primary-900/20"
-                    : "border-neutral-200 dark:border-neutral-700 hover:border-primary-300 dark:hover:border-primary-700"
-                }`}
-              >
-                <div className="flex flex-col items-center gap-2">
-                  <Moon className="w-8 h-8 text-neutral-900 dark:text-white" />
-                  <span className="font-medium text-neutral-900 dark:text-white">
-                    Dark
-                  </span>
-                </div>
-              </motion.button>
-            </div>
+            <input
+              type="checkbox"
+              defaultChecked
+              className="w-5 h-5 text-primary-600 bg-neutral-100 border-neutral-300 rounded focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-neutral-800 focus:ring-2 dark:bg-neutral-700 dark:border-neutral-600"
+            />
           </div>
-        </Card>
 
-        {/* Notifications Settings */}
-        <Card className="p-6">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="p-2 bg-primary-100 dark:bg-primary-900/30 rounded-lg">
-              <Bell className="w-6 h-6 text-primary-600 dark:text-primary-400" />
+          <div className="flex items-center justify-between p-4 bg-neutral-50 dark:bg-neutral-800 rounded-lg">
+            <div classNameAme="flex-1">
+              <p className="font-medium text-neutral-900 dark:text-white">
+                Security Alerts
+              </p>
+              <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                Important security updates and alerts
+              </p>
             </div>
-          </Card> */}
-
-          <div className="space-y-4">
-            <div className="flex items-center justify-between p-4 bg-neutral-50 dark:bg-neutral-800 rounded-lg">
-              <div className="flex-1">
-                <p className="font-medium text-neutral-900 dark:text-white">
-                  Email Notifications
-                </p>
-                <p className="text-sm text-neutral-600 dark:text-neutral-400">
-                  Receive email updates about your account
-                </p>
-              </div>
-              <input
-                type="checkbox"
-                defaultChecked
-                className="w-5 h-5 text-primary-600 bg-neutral-100 border-neutral-300 rounded focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-neutral-800 focus:ring-2 dark:bg-neutral-700 dark:border-neutral-600"
-              />
-            </div>
-
-            <div className="flex items-center justify-between p-4 bg-neutral-50 dark:bg-neutral-800 rounded-lg">
-              <div className="flex-1">
-                <p className="font-medium text-neutral-900 dark:text-white">
-                  Credit Alerts
-                </p>
-                <p className="text-sm text-neutral-600 dark:text-neutral-400">
-                  Get notified when credits are low
-                </p>
-              </div>
-              <input
-                type="checkbox"
-                defaultChecked
-                className="w-5 h-5 text-primary-600 bg-neutral-100 border-neutral-300 rounded focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-neutral-800 focus:ring-2 dark:bg-neutral-700 dark:border-neutral-600"
-              />
-            </div>
-
-            <div className="flex items-center justify-between p-4 bg-neutral-50 dark:bg-neutral-800 rounded-lg">
-              <div classNameAme="flex-1">
-                <p className="font-medium text-neutral-900 dark:text-white">
-                  Security Alerts
-                </p>
-                <p className="text-sm text-neutral-600 dark:text-neutral-400">
-                  Important security updates and alerts
-                </p>
-              </div>
-              <input
-                type="checkbox"
-                defaultChecked
-                className="w-5 h-5 text-primary-600 bg-neutral-100 border-neutral-300 rounded focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-neutral-800 focus:ring-2 dark:bg-neutral-700 dark:border-neutral-600"
-              />
-            </div>
+            <input
+              type="checkbox"
+              defaultChecked
+              className="w-5 h-5 text-primary-600 bg-neutral-100 border-neutral-300 rounded focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-neutral-800 focus:ring-2 dark:bg-neutral-700 dark:border-neutral-600"
+            />
           </div>
-        </Card>
+        </div>
 
         {/* Account Information */}
         <Card className="p-6">
