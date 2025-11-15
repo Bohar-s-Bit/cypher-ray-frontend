@@ -167,7 +167,7 @@ const CardNav = ({
             <img 
               src={logo} 
               alt={logoAlt} 
-              className="logo h-[50px] md:h-[55px] max-w-none object-contain scale-150" 
+              className="logo h-[100px] md:h-[130px] max-w-none object-contain scale-150" 
               loading="lazy"
               decoding="async"
             />
