@@ -14,6 +14,8 @@ import {
 } from "lucide-react";
 import Button from "../components/ui/Button";
 import { Card, CardContent } from "../components/ui/Card";
+import MagicBento from "../components/ui/MagicBento";
+import FloatingLines from "../components/ui/FloatingLines";
 import { ROUTES, APP_NAME } from "../config/constants";
 
 const LandingPage = () => {
@@ -76,30 +78,55 @@ const LandingPage = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-primary-50 via-white to-secondary-50 dark:from-neutral-900 dark:via-neutral-900 dark:to-neutral-800 py-20 md:py-32">
-        <div className="absolute inset-0 bg-grid-pattern opacity-5 dark:opacity-10"></div>
+      <section className="relative overflow-hidden min-h-screen flex items-center justify-center">
+        {/* Dark Background Base */}
+        <div className="absolute inset-0 w-full h-full" style={{ background: 'linear-gradient(135deg, #060010 0%, #0a0015 50%, #060010 100%)' }}></div>
+        
+        {/* FloatingLines Background */}
+        <div className="absolute inset-0 w-full h-full">
+          <FloatingLines 
+            enabledWaves={['top', 'middle', 'bottom']}
+            lineCount={[8, 12, 15]}
+            lineDistance={[6, 5, 4]}
+            bendRadius={8.0}
+            bendStrength={-0.3}
+            interactive={true}
+            parallax={true}
+            parallaxStrength={0.1}
+            animationSpeed={0.8}
+            mouseDamping={0.08}
+            mixBlendMode="overlay"
+            linesGradient={['#060010', '#0a0015', '#1a0d2e', '#2d1b47', '#7808d0']}
+            topWavePosition={{ x: 8.0, y: 0.3, rotate: -0.2 }}
+            middleWavePosition={{ x: 4.0, y: 0.0, rotate: 0.1 }}
+            bottomWavePosition={{ x: 2.0, y: -0.5, rotate: 0.3 }}
+          />
+        </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+        {/* Gradient Overlay for smooth transition */}
+        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black/20 to-transparent z-5"></div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             className="text-center"
           >
-            <div className="inline-flex items-center gap-2 bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-400 px-4 py-2 rounded-full mb-6 font-medium">
+            <div className="inline-flex items-center gap-2 bg-black/20 backdrop-blur-sm border border-white/10 text-white px-4 py-2 rounded-full mb-6 font-medium">
               <Shield className="w-4 h-4" />
               <span>Trusted by Government & Enterprise</span>
             </div>
 
-            <h1 className="text-5xl md:text-7xl font-display font-bold text-neutral-900 dark:text-white mb-6 leading-tight">
+            <h1 className="text-5xl md:text-7xl font-display font-bold text-white mb-6 leading-tight">
               Secure Your Firmware
               <br />
-              <span className="bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
                 Protect Your Future
               </span>
             </h1>
 
-            <p className="text-xl md:text-2xl text-neutral-600 dark:text-neutral-400 mb-10 max-w-3xl mx-auto">
+            <p className="text-xl md:text-2xl text-white/80 mb-10 max-w-3xl mx-auto">
               {APP_NAME} provides enterprise-grade firmware security analysis
               for government organizations and businesses across India.
             </p>
@@ -122,34 +149,11 @@ const LandingPage = () => {
               </Button>
             </div>
           </motion.div>
-
-          {/* Stats */}
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-20"
-          >
-            {stats.map((stat, index) => {
-              const Icon = stat.icon;
-              return (
-                <Card key={index} className="text-center" padding="lg">
-                  <Icon className="w-8 h-8 text-primary-500 dark:text-primary-400 mx-auto mb-3" />
-                  <div className="text-3xl font-bold text-neutral-900 dark:text-white mb-1">
-                    {stat.value}
-                  </div>
-                  <div className="text-sm text-neutral-600 dark:text-neutral-400">
-                    {stat.label}
-                  </div>
-                </Card>
-              );
-            })}
-          </motion.div>
         </div>
       </section>
 
       {/* Features Section */}
-      <section className="py-20 bg-white dark:bg-neutral-900">
+      <section className="py-20 bg-transparent" style={{ background: 'linear-gradient(135deg, #060010 0%, #0a0015 50%, #060010 100%)' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -165,39 +169,31 @@ const LandingPage = () => {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {features.map((feature, index) => {
-              const Icon = feature.icon;
-              return (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
-                >
-                  <Card hoverable padding="lg" className="h-full">
-                    <div
-                      className={`inline-flex p-3 rounded-xl ${feature.bgColor} mb-4`}
-                    >
-                      <Icon className={`w-6 h-6 ${feature.color}`} />
-                    </div>
-                    <h3 className="text-xl font-semibold text-neutral-900 dark:text-white mb-2">
-                      {feature.title}
-                    </h3>
-                    <p className="text-neutral-600 dark:text-neutral-400">
-                      {feature.description}
-                    </p>
-                  </Card>
-                </motion.div>
-              );
-            })}
-          </div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="flex justify-center"
+          >
+            <MagicBento 
+              textAutoHide={true}
+              enableStars={true}
+              enableSpotlight={true}
+              enableBorderGlow={true}
+              enableTilt={true}
+              enableMagnetism={true}
+              clickEffect={true}
+              spotlightRadius={300}
+              particleCount={12}
+              glowColor="132, 0, 255"
+            />
+          </motion.div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-br from-primary-600 to-primary-800 dark:from-primary-700 dark:to-primary-900">
+      <section className="py-20" style={{ background: 'linear-gradient(135deg, #7808d0 0%, #5c0699 50%, #4a0582 100%)' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -224,7 +220,7 @@ const LandingPage = () => {
       </section>
 
       {/* Footer */}
-      <footer className="bg-neutral-900 text-white py-12">
+      <footer className="py-12" style={{ background: '#060010', color: '#ffffff' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="flex items-center gap-3 mb-4 md:mb-0">

@@ -17,17 +17,18 @@
     font-feature-settings: "rlig" 1, "calt" 1;
   } */
 
-  /* DARK MODE ONLY - Enhanced with #212121 */
+  /* DARK MODE ONLY - Enhanced with MagicBento theme */
   body {
-    background-color: #212121;
-    color: #e5e5e5;
+    background: linear-gradient(135deg, #060010 0%, #0a0015 50%, #060010 100%);
+    color: #ffffff;
     font-family: "Inter", system-ui, -apple-system, sans-serif;
     font-feature-settings: "rlig" 1, "calt" 1;
+    min-height: 100vh;
   }
 
   .dark body {
-    background-color: #212121;
-    color: #e5e5e5;
+    background: linear-gradient(135deg, #060010 0%, #0a0015 50%, #060010 100%);
+    color: #ffffff;
   }
 
   .dark * {
