@@ -74,6 +74,9 @@ export const ROUTES = {
   PROFILE: "/profile",
   CREDITS: "/credits",
   SETTINGS: "/settings",
+  ANALYZE: "/analyze",
+  RESULTS: "/results",
+  API_DOCS: "/api-docs",
 
   // Admin Routes
   ADMIN: {
@@ -92,6 +95,9 @@ export const QUERY_KEYS = {
   USERS_LIST: "users_list",
   USER_DETAILS: "user_details",
   PLATFORM_STATS: "platform_stats",
+  USER_API_KEYS: "user_api_keys",
+  ANALYSIS_JOB: "analysis_job",
+  ANALYSIS_HISTORY: "analysis_history",
 };
 
 // API Endpoints
@@ -105,6 +111,12 @@ export const ENDPOINTS = {
   UPDATE_PROFILE: "/user/profile",
   CHANGE_PASSWORD: "/user/password/change",
   CREDIT_HISTORY: "/user/credits/history",
+  USER_ANALYZE: "/user/analyze",
+  USER_JOB_RESULT: "/user/analyze/:jobId",
+  USER_ANALYSIS_HISTORY: "/user/analyze",
+  USER_API_KEYS: "/user/api-keys",
+  CREATE_USER_API_KEY: "/user/api-keys",
+  REVOKE_USER_API_KEY: "/user/api-keys/:keyId",
 
   // Admin
   CREATE_USER: "/admin/users/create",

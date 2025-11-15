@@ -11,6 +11,8 @@ import {
   ChevronRight,
   User,
   CreditCard,
+  Search,
+  Code2,
 } from "lucide-react";
 import useUIStore from "../../store/uiStore";
 import useAuthStore from "../../store/authStore";
@@ -27,6 +29,24 @@ const Sidebar = () => {
       label: "Dashboard",
       icon: LayoutDashboard,
       path: ROUTES.DASHBOARD,
+      end: true,
+    },
+    {
+      label: "Analysis",
+      icon: Search,
+      path: ROUTES.ANALYZE,
+      end: true,
+    },
+    {
+      label: "Results",
+      icon: BarChart3,
+      path: ROUTES.RESULTS,
+      end: true,
+    },
+    {
+      label: "API Docs",
+      icon: Code2,
+      path: ROUTES.API_DOCS,
       end: true,
     },
     {
