@@ -13,20 +13,27 @@ export default defineConfig({
   build: {
     // Enable production optimizations
     minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+      },
+    },
     rollupOptions: {
       output: {
         // Split chunks for better caching
         manualChunks: {
           vendor: ['react', 'react-dom'],
+          router: ['react-router-dom'],
+          query: ['@tanstack/react-query'],
           ui: ['framer-motion', 'gsap'],
-          three: ['three'],
-          styling: ['styled-components', 'tailwindcss'],
+          icons: ['lucide-react', '@tabler/icons-react'],
         },
       },
     },
     // Optimize chunk size warning limit
     chunkSizeWarningLimit: 1000,
-    // Enable source map for debugging (disable in production)
+    // Disable source map for production
     sourcemap: false,
   },
   // Optimize dev server
@@ -40,10 +47,10 @@ export default defineConfig({
     include: [
       'react',
       'react-dom',
+      'react-router-dom',
+      '@tanstack/react-query',
       'framer-motion',
       'gsap',
-      'three',
-      'styled-components'
     ],
   },
 });
