@@ -34,6 +34,12 @@ const Sidebar = () => {
     {
       label: "Analysis",
       icon: Search,
+      path: ROUTES.ANALYZE,
+      end: true,
+    },
+    {
+      label: "Results",
+      icon: BarChart3,
       path: ROUTES.RESULTS,
       end: true,
     },

@@ -149,6 +149,14 @@ curl -X GET ${apiUrl}/results/JOB_ID \\
 curl -X GET "${apiUrl}/check-hash?hash=FILE_HASH" \\
   -H "X-API-Key: YOUR_API_KEY"`,
   };
+  // Languages for selector
+  const codeLanguages = [
+    { key: "javascript", label: "JavaScript/Node.js (with SDK)" },
+    { key: "python", label: "Python" },
+    { key: "curl", label: "cURL" },
+  ];
+
+  const [selectedLang, setSelectedLang] = useState(codeLanguages[0].key);
 
   return (
     <div className="space-y-8">
@@ -162,14 +170,15 @@ curl -X GET "${apiUrl}/check-hash?hash=FILE_HASH" \\
         </p>
       </div>
 
-      {/* API Keys Management */}
+      {/* --- GRID LAYOUT REMOVED --- */}
+      {/* API Keys Card */}
       <Card>
         <CardHeader>
           <div className="flex items-center justify-between">
             <div>
               <CardTitle>API Keys</CardTitle>
               <CardDescription>
-                Manage your API keys for programmatic access
+                Manage and revoke API keys for programmatic access
               </CardDescription>
             </div>
             <Button onClick={() => setShowCreateModal(true)}>
@@ -245,8 +254,8 @@ curl -X GET "${apiUrl}/check-hash?hash=FILE_HASH" \\
         </CardContent>
       </Card>
 
-      {/* Getting Started */}
-      <Card>
+      {/* Getting Started Card */}
+      <Card> {/* <-- Removed h-full */}
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Book className="w-5 h-5" />
@@ -259,7 +268,7 @@ curl -X GET "${apiUrl}/check-hash?hash=FILE_HASH" \\
               API Base URL
             </h3>
             <div className="flex items-center gap-2">
-              <code className="flex-1 bg-neutral-100 dark:bg-neutral-800 px-4 py-2 rounded-lg text-sm">
+              <code className="flex-1 bg-neutral-100 dark:bg-neutral-800 px-4 py-2 rounded-lg text-sm truncate">
                 {apiUrl}
               </code>
               <CopyButton text={apiUrl} label="API URL" />
@@ -292,36 +301,46 @@ curl -X GET "${apiUrl}/check-hash?hash=FILE_HASH" \\
           </div>
         </CardContent>
       </Card>
+      {/* --- END OF CHANGED SECTION --- */}
 
-      {/* Code Examples */}
+      {/* Code Examples with language selector */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Code className="w-5 h-5" />
-            Code Examples
-          </CardTitle>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Code className="w-5 h-5" />
+              <CardTitle>Code Examples</CardTitle>
+            </div>
+            <div className="flex items-center gap-3">
+              <label className="text-sm text-neutral-600 dark:text-neutral-400">Language</label>
+              <select
+                aria-label="Select code language"
+                value={selectedLang}
+                onChange={(e) => setSelectedLang(e.target.value)}
+                className="px-3 py-2 bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-lg text-sm"
+              >
+                {codeLanguages.map((lang) => (
+                  <option key={lang.key} value={lang.key}>
+                    {lang.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
         </CardHeader>
-        <CardContent className="space-y-6">
-          <div>
-            <h3 className="font-semibold text-neutral-900 dark:text-white mb-3">
-              JavaScript/Node.js (with SDK)
-            </h3>
-            <CodeBlock code={examples.javascript} language="javascript" />
+        <CardContent>
+          <div className="mb-3 flex items-center justify-between">
+            <div className="text-sm text-neutral-700 dark:text-neutral-300">
+              Example: {codeLanguages.find(l => l.key === selectedLang)?.label}
+            </div>
+            <div>
+              <CopyButton text={examples[selectedLang]} label="Copy code" />
+            </div>
           </div>
-
-          <div>
-            <h3 className="font-semibold text-neutral-900 dark:text-white mb-3">
-              Python
-            </h3>
-            <CodeBlock code={examples.python} language="python" />
-          </div>
-
-          <div>
-            <h3 className="font-semibold text-neutral-900 dark:text-white mb-3">
-              cURL
-            </h3>
-            <CodeBlock code={examples.curl} language="bash" />
-          </div>
+          <CodeBlock
+            code={examples[selectedLang]}
+            language={selectedLang === 'curl' ? 'bash' : selectedLang}
+          />
         </CardContent>
       </Card>
 
@@ -399,83 +418,85 @@ curl -X GET "${apiUrl}/check-hash?hash=FILE_HASH" \\
         }}
         title={createdKey ? "API Key Created" : "Create API Key"}
       >
-        {createdKey ? (
-          <div className="space-y-4">
-            <div className="p-4 bg-warning-50 dark:bg-warning-900/20 border border-warning-200 dark:border-warning-800 rounded-lg">
-              <p className="text-sm text-warning-800 dark:text-warning-200 font-medium">
-                ⚠️ Save this API key now! It won't be shown again.
-              </p>
-            </div>
+        <div className="p-6">
+          {createdKey ? (
+            <div className="space-y-4">
+              <div className="p-4 bg-warning-50 dark:bg-warning-900/20 border border-warning-200 dark:border-warning-800 rounded-lg">
+                <p className="text-sm text-warning-800 dark:text-warning-200 font-medium">
+                  ⚠️ Save this API key now! It won't be shown again.
+                </p>
+              </div>
 
-            <div>
-              <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
-                API Key
-              </label>
-              <div className="flex items-center gap-2">
-                <Input
-                  value={showFullKey ? createdKey.key : "••••••••••••••••"}
-                  readOnly
-                  className="flex-1 font-mono text-sm"
-                />
+              <div>
+                <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">
+                  API Key
+                </label>
+                <div className="flex items-center gap-2">
+                  <Input
+                    value={showFullKey ? createdKey.key : "••••••••••••••••"}
+                    readOnly
+                    className="flex-1 font-mono text-sm"
+                  />
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setShowFullKey(!showFullKey)}
+                  >
+                    {showFullKey ? (
+                      <EyeOff className="w-4 h-4" />
+                    ) : (
+                      <Eye className="w-4 h-4" />
+                    )}
+                  </Button>
+                  <CopyButton text={createdKey.key} label="API Key" />
+                </div>
+              </div>
+
+              <div className="flex justify-end gap-2 pt-4">
                 <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setShowFullKey(!showFullKey)}
+                  variant="outline"
+                  onClick={() => {
+                    setCreatedKey(null);
+                    setShowFullKey(false);
+                  }}
                 >
-                  {showFullKey ? (
-                    <EyeOff className="w-4 h-4" />
-                  ) : (
-                    <Eye className="w-4 h-4" />
-                  )}
+                  Close
                 </Button>
-                <CopyButton text={createdKey.key} label="API Key" />
               </div>
             </div>
-
-            <div className="flex justify-end gap-2">
-              <Button
-                variant="outline"
-                onClick={() => {
-                  setCreatedKey(null);
-                  setShowFullKey(false);
-                }}
-              >
-                Close
-              </Button>
+          ) : (
+            <div className="space-y-4">
+              <Input
+                label="Key Name"
+                placeholder="My API Key"
+                value={newKeyName}
+                onChange={(e) => setNewKeyName(e.target.value)}
+              />
+              <Input
+                label="Expires In (days)"
+                type="number"
+                placeholder="365"
+                value={newKeyExpiry}
+                onChange={(e) => setNewKeyExpiry(parseInt(e.target.value))}
+                helperText="Set to 0 for no expiration"
+              />
+              <div className="flex justify-end gap-2 pt-4 border-t border-neutral-200 dark:border-neutral-700">
+                <Button
+                  variant="outline"
+                  onClick={() => setShowCreateModal(false)}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  onClick={handleCreateKey}
+                  disabled={createKeyMutation.isPending}
+                >
+                  {createKeyMutation.isPending ? "Creating..." : "Create Key"}
+                </Button>
+              </div>
             </div>
-          </div>
-        ) : (
-          <div className="space-y-4">
-            <Input
-              label="Key Name"
-              placeholder="My API Key"
-              value={newKeyName}
-              onChange={(e) => setNewKeyName(e.target.value)}
-            />
-            <Input
-              label="Expires In (days)"
-              type="number"
-              placeholder="365"
-              value={newKeyExpiry}
-              onChange={(e) => setNewKeyExpiry(parseInt(e.target.value))}
-              helperText="Set to 0 for no expiration"
-            />
-            <div className="flex justify-end gap-2">
-              <Button
-                variant="outline"
-                onClick={() => setShowCreateModal(false)}
-              >
-                Cancel
-              </Button>
-              <Button
-                onClick={handleCreateKey}
-                disabled={createKeyMutation.isPending}
-              >
-                {createKeyMutation.isPending ? "Creating..." : "Create Key"}
-              </Button>
-            </div>
-          </div>
-        )}
+          )}
+        </div>
       </Modal>
     </div>
   );

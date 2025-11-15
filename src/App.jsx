@@ -14,6 +14,9 @@ import { ErrorBoundary } from "react-error-boundary";
 import useAuthStore from "./store/authStore";
 import useUIStore from "./store/uiStore";
 
+// Contexts
+import { AnalysisProvider } from "./contexts/AnalysisContext";
+
 // Layouts
 import PublicLayout from "./components/layout/PublicLayout";
 import DashboardLayout from "./components/layout/DashboardLayout";
@@ -105,7 +108,8 @@ function App() {
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       <HelmetProvider>
         <QueryClientProvider client={queryClient}>
-          <Router>
+          <AnalysisProvider>
+            <Router>
             <Routes>
               {/* Public Routes */}
               <Route element={<PublicLayout />}>
@@ -169,6 +173,7 @@ function App() {
               <Route path="*" element={<Navigate to={ROUTES.HOME} replace />} />
             </Routes>
           </Router>
+          </AnalysisProvider>
 
           {/* Toast Notifications */}
           <Toaster

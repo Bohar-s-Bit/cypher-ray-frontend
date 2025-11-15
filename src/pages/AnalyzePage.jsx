@@ -14,11 +14,17 @@ import Button from "../components/ui/Button";
 import FileUpload from "../components/ui/FileUpload";
 import Spinner from "../components/ui/Spinner";
 import { analysisService } from "../services/analysisService";
+import { useAnalysis } from "../contexts/AnalysisContext";
 import { ROUTES } from "../config/constants";
 
 const AnalyzePage = () => {
   const navigate = useNavigate();
   const [selectedFile, setSelectedFile] = useState(null);
+  const { startMonitoring, getActiveJob } = useAnalysis();
+
+  // Check if there's any active analysis
+  const currentJob = getActiveJob();
+  const hasActiveAnalysis = !!currentJob;
 
   // Analyze file mutation
   const analyzeMutation = useMutation({
@@ -35,12 +41,18 @@ const AnalyzePage = () => {
 
       if (response.cached) {
         toast.success("Analysis result loaded from cache!");
+        // If cached, redirect immediately
+        navigate(`${ROUTES.RESULTS}/${jobId}`);
       } else {
         toast.success("Analysis started!");
+        // Start monitoring the job globally with auto-redirect
+        startMonitoring(jobId, "queued", (completedJobId, status) => {
+          // Auto-redirect to results page when analysis completes
+          navigate(`${ROUTES.RESULTS}/${completedJobId}`);
+        });
+        // Clear selected file since analysis has started
+        setSelectedFile(null);
       }
-
-      // Redirect to result detail page
-      navigate(`${ROUTES.RESULTS}/${jobId}`);
     },
     onError: (error) => {
       console.error("Analysis error:", error);
@@ -59,6 +71,27 @@ const AnalyzePage = () => {
     }
     analyzeMutation.mutate(selectedFile);
   };
+
+  const getAnalysisStatusText = () => {
+    if (analyzeMutation.isPending) {
+      return "Uploading and queuing analysis...";
+    }
+    
+    if (hasActiveAnalysis) {
+      switch (currentJob.status) {
+        case "queued":
+          return "Analysis queued...";
+        case "processing":
+          return "Analyzing binary file...";
+        default:
+          return "Analysis in progress...";
+      }
+    }
+    
+    return "Ready to analyze";
+  };
+
+  const isAnalyzing = analyzeMutation.isPending || hasActiveAnalysis;
 
   return (
     <div className="space-y-8">
@@ -79,49 +112,70 @@ const AnalyzePage = () => {
       </div>
 
       {/* Upload Section */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Upload Binary File</CardTitle>
-          <CardDescription>
-            Select a binary file to analyze. We support firmware, executables,
-            and other binary formats.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <FileUpload
-            onFileSelect={handleFileSelect}
-            accept=".bin,.elf,.hex,.out"
-            maxSize={100 * 1024 * 1024}
-            disabled={analyzeMutation.isPending}
-          />
-
-          {selectedFile && !analyzeMutation.isPending && (
-            <div className="flex justify-end">
-              <Button
-                onClick={handleStartAnalysis}
-                size="lg"
-                disabled={!selectedFile}
-              >
-                <Search className="w-5 h-5 mr-2" />
-                Start Analysis
-              </Button>
-            </div>
-          )}
-
-          {analyzeMutation.isPending && (
+     <Card>
+        {isAnalyzing ? (
+          // --- ANALYSIS IN PROGRESS ---
+          // This content is shown when isAnalyzing is true
+          <CardContent>
             <div className="flex flex-col items-center justify-center py-12 space-y-4">
               <Spinner size="lg" />
               <div className="text-center">
                 <p className="text-lg font-medium text-neutral-900 dark:text-white">
-                  Uploading and queuing analysis...
+                  {getAnalysisStatusText()}
                 </p>
                 <p className="text-sm text-neutral-600 dark:text-neutral-400 mt-1">
-                  You will be redirected to the results page
+                  {hasActiveAnalysis
+                    ? "You can navigate freely while analysis is in progress."
+                    : "Analysis will start shortly"}
                 </p>
+                {hasActiveAnalysis && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => navigate(ROUTES.RESULTS)}
+                    className="mt-4"
+                  >
+                    View Results
+                  </Button>
+                )}
               </div>
             </div>
-          )}
-        </CardContent>
+          </CardContent>
+        ) : (
+          // --- READY TO UPLOAD ---
+          // This content is shown when isAnalyzing is false
+          <>
+            <CardHeader>
+              <CardTitle>Upload Binary File</CardTitle>
+              <CardDescription>
+                Select a binary file to analyze. We support firmware, executables,
+                and other binary formats.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <FileUpload
+                onFileSelect={handleFileSelect}
+                accept=".bin,.elf,.hex,.out"
+                maxSize={100 * 1024 * 1024}
+                // No 'disabled' prop needed here, as this whole
+                // block is hidden when isAnalyzing is true
+              />
+
+              {selectedFile && (
+                <div className="flex justify-end">
+                  <Button
+                    onClick={handleStartAnalysis}
+                    size="lg"
+                    disabled={!selectedFile}
+                  >
+                    <Search className="w-5 h-5 mr-2" />
+                    Start Analysis
+                  </Button>
+                </div>
+              )}
+            </CardContent>
+          </>
+        )}
       </Card>
     </div>
   );

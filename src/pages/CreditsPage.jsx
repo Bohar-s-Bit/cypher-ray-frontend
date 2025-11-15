@@ -45,7 +45,7 @@ const CreditsPage = () => {
   const pagination = historyData?.data?.pagination || {};
 
   // Get credit statistics from user data (not calculated from transactions)
-  const availableCredits = userData?.credits?.available || 0;
+  const availableCredits = userData?.credits?.remaining || 0;
   const totalEarned = userData?.credits?.total || 0;
   const totalSpent = userData?.credits?.used || 0;
 
