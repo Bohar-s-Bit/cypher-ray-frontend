@@ -32,6 +32,10 @@ import UserDashboard from "./pages/UserDashboard";
 import ProfilePage from "./pages/ProfilePage";
 import SettingsPage from "./pages/SettingsPage";
 import CreditsPage from "./pages/CreditsPage";
+import AnalyzePage from "./pages/AnalyzePage";
+import ResultsPage from "./pages/ResultsPage";
+import ResultDetailPage from "./pages/ResultDetailPage";
+import ApiDocsPage from "./pages/ApiDocsPage";
 import AdminDashboard from "./pages/AdminDashboard";
 import UsersListPage from "./pages/admin/UsersListPage";
 import CreateUserPage from "./pages/admin/CreateUserPage";
@@ -136,6 +140,10 @@ function App() {
                 <Route path="profile" element={<ProfilePage />} />
                 <Route path="settings" element={<SettingsPage />} />
                 <Route path="credits" element={<CreditsPage />} />
+                <Route path="analyze" element={<AnalyzePage />} />
+                <Route path="results" element={<ResultsPage />} />
+                <Route path="results/:jobId" element={<ResultDetailPage />} />
+                <Route path="api-docs" element={<ApiDocsPage />} />
               </Route>
 
               {/* Protected Admin Routes */}
