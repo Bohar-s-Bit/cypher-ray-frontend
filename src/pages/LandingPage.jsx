@@ -15,7 +15,6 @@ import {
 import Button from "../components/ui/Button";
 import { Card, CardContent } from "../components/ui/Card";
 import BookmarkButton from "../components/ui/BookmarkButton";
-import LearnMoreButton from "../components/ui/LearnMoreButton";
 import { HyperText } from "../components/ui/HyperText";
 import { ROUTES, APP_NAME } from "../config/constants";
 
@@ -147,14 +146,10 @@ const LandingPage = () => {
               for government organizations and businesses across India.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+            <div className="flex justify-center items-center">
               <BookmarkButton
                 onClick={() => navigate(ROUTES.LOGIN)}
                 text="Get Started"
-              />
-              <LearnMoreButton
-                onClick={() => navigate("/about")}
-                text="Learn More"
               />
             </div>
           </motion.div>
@@ -290,33 +285,6 @@ const LandingPage = () => {
                 </TypingAnimation>
               </Terminal>
             </Suspense>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-20" style={{ background: 'linear-gradient(135deg, #7808d0 0%, #5c0699 50%, #4a0582 100%)' }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="text-4xl md:text-5xl font-display font-bold text-white mb-6">
-              Ready to Secure Your Firmware?
-            </h2>
-            <p className="text-xl text-primary-100 mb-10 max-w-2xl mx-auto">
-              Join hundreds of organizations protecting their digital
-              infrastructure
-            </p>
-            <Button
-              variant="secondary"
-              size="lg"
-              onClick={() => navigate(ROUTES.LOGIN)}
-              rightIcon={<ArrowRight className="w-5 h-5" />}
-            >
-              Start Your Journey
-            </Button>
           </motion.div>
         </div>
       </section>
