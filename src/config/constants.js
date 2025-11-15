@@ -92,6 +92,8 @@ export const QUERY_KEYS = {
   USERS_LIST: "users_list",
   USER_DETAILS: "user_details",
   PLATFORM_STATS: "platform_stats",
+  PAYMENT_PLANS: "payment_plans",
+  PAYMENT_HISTORY: "payment_history",
 };
 
 // API Endpoints
