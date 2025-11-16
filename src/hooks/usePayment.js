@@ -45,7 +45,7 @@ export const useVerifyPayment = () => {
         queryKey: [QUERY_KEYS.PAYMENT_HISTORY],
       });
 
-      const credits = data?.payment?.creditsAmount || 0;
+      const credits = data?.credits || 0;
       toast.success(
         `🎉 Payment successful! ${credits} credits added to your account`,
         {
