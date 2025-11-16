@@ -107,10 +107,10 @@ const ProfilePage = () => {
       <div className="space-y-6">
         {/* Header */}
         <div>
-          <h1 className="text-3xl font-bold text-neutral-900 dark:text-white">
+          <h1 className="text-3xl font-bold text-white">
             Profile
           </h1>
-          <p className="text-neutral-600 dark:text-neutral-400 mt-2">
+          <p className="text-white/70 mt-2">
             Manage your account information and preferences
           </p>
         </div>
@@ -120,7 +120,7 @@ const ProfilePage = () => {
           <div className="lg:col-span-2">
             <Card className="p-6">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-semibold text-neutral-900 dark:text-white">
+                <h2 className="text-xl font-semibold text-white">
                   Personal Information
                 </h2>
                 {!isEditing && (
@@ -176,43 +176,43 @@ const ProfilePage = () => {
                 </form>
               ) : (
                 <div className="space-y-4">
-                  <div className="flex items-start gap-3 p-4 bg-neutral-50 dark:bg-neutral-800 rounded-lg">
+                  <div className="flex items-start gap-3 p-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg">
                     <div className="p-2 bg-primary-100 dark:bg-primary-900/30 rounded-lg">
                       <User className="w-5 h-5 text-primary-600 dark:text-primary-400" />
                     </div>
                     <div className="flex-1">
-                      <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                      <p className="text-sm text-white/70">
                         Username
                       </p>
-                      <p className="font-medium text-neutral-900 dark:text-white">
+                      <p className="font-medium text-white">
                         {userData?.username || "Not set"}
                       </p>
                     </div>
                   </div>
 
-                  <div className="flex items-start gap-3 p-4 bg-neutral-50 dark:bg-neutral-800 rounded-lg">
+                  <div className="flex items-start gap-3 p-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg">
                     <div className="p-2 bg-primary-100 dark:bg-primary-900/30 rounded-lg">
                       <Mail className="w-5 h-5 text-primary-600 dark:text-primary-400" />
                     </div>
                     <div className="flex-1">
-                      <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                      <p className="text-sm text-white/70">
                         Email Address
                       </p>
-                      <p className="font-medium text-neutral-900 dark:text-white">
+                      <p className="font-medium text-white">
                         {userData?.email || "Not set"}
                       </p>
                     </div>
                   </div>
 
-                  <div className="flex items-start gap-3 p-4 bg-neutral-50 dark:bg-neutral-800 rounded-lg">
+                  <div className="flex items-start gap-3 p-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg">
                     <div className="p-2 bg-primary-100 dark:bg-primary-900/30 rounded-lg">
                       <Calendar className="w-5 h-5 text-primary-600 dark:text-primary-400" />
                     </div>
                     <div className="flex-1">
-                      <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                      <p className="text-sm text-white/70">
                         Member Since
                       </p>
-                      <p className="font-medium text-neutral-900 dark:text-white">
+                      <p className="font-medium text-white">
                         {userData?.createdAt
                           ? new Date(userData.createdAt).toLocaleDateString(
                               "en-US",
@@ -227,15 +227,15 @@ const ProfilePage = () => {
                     </div>
                   </div>
 
-                  <div className="flex items-start gap-3 p-4 bg-neutral-50 dark:bg-neutral-800 rounded-lg">
+                  <div className="flex items-start gap-3 p-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg">
                     <div className="p-2 bg-primary-100 dark:bg-primary-900/30 rounded-lg">
                       <Calendar className="w-5 h-5 text-primary-600 dark:text-primary-400" />
                     </div>
                     <div className="flex-1">
-                      <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                      <p className="text-sm text-white/70">
                         Last Login
                       </p>
-                      <p className="font-medium text-neutral-900 dark:text-white">
+                      <p className="font-medium text-white">
                         {userData?.lastLogin
                           ? new Date(userData.lastLogin).toLocaleString(
                               "en-US",
@@ -265,7 +265,7 @@ const ProfilePage = () => {
                   <Shield className="w-5 h-5 text-success-600 dark:text-success-400" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-neutral-900 dark:text-white">
+                  <h3 className="font-semibold text-white">
                     Account Status
                   </h3>
                 </div>
@@ -285,7 +285,7 @@ const ProfilePage = () => {
                   <CreditCard className="w-5 h-5 text-primary-600 dark:text-primary-400" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-neutral-900 dark:text-white">
+                  <h3 className="font-semibold text-white">
                     Subscription Tier
                   </h3>
                 </div>
@@ -297,11 +297,11 @@ const ProfilePage = () => {
                     <p className="text-2xl font-bold text-primary-600 dark:text-primary-400">
                       {tierInfo.name}
                     </p>
-                    <p className="text-sm text-neutral-600 dark:text-neutral-400 mt-1">
+                    <p className="text-sm text-white/70 mt-1">
                       {tierInfo.monthlyCredits} credits/month
                     </p>
                   </div>
-                  <div className="text-sm text-neutral-600 dark:text-neutral-400">
+                  <div className="text-sm text-white/70">
                     <p className="font-medium mb-2">Features:</p>
                     <ul className="space-y-1">
                       {tierInfo.features.map((feature, index) => (
@@ -316,7 +316,7 @@ const ProfilePage = () => {
                   </div>
                 </div>
               ) : (
-                <p className="text-neutral-600 dark:text-neutral-400">
+                <p className="text-white/70">
                   No subscription tier assigned
                 </p>
               )}
@@ -329,7 +329,7 @@ const ProfilePage = () => {
                   <CreditCard className="w-5 h-5 text-secondary-600 dark:text-secondary-400" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-neutral-900 dark:text-white">
+                  <h3 className="font-semibold text-white">
                     Credits
                   </h3>
                 </div>
@@ -337,26 +337,26 @@ const ProfilePage = () => {
 
               <div className="space-y-3">
                 <div className="flex justify-between items-center">
-                  <span className="text-neutral-600 dark:text-neutral-400">
+                  <span className="text-white/70">
                     Available
                   </span>
-                  <span className="text-2xl font-bold text-neutral-900 dark:text-white">
+                  <span className="text-2xl font-bold text-white">
                     {userData?.credits?.available || 0}
                   </span>
                 </div>
-                <div className="flex justify-between items-center pt-3 border-t border-neutral-200 dark:border-neutral-700">
-                  <span className="text-neutral-600 dark:text-neutral-400">
+                <div className="flex justify-between items-center pt-3 border-t border-white/10">
+                  <span className="text-white/70">
                     Used this month
                   </span>
-                  <span className="font-semibold text-neutral-900 dark:text-white">
+                  <span className="font-semibold text-white">
                     {userData?.credits?.used || 0}
                   </span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-neutral-600 dark:text-neutral-400">
+                  <span className="text-white/70">
                     Total earned
                   </span>
-                  <span className="font-semibold text-neutral-900 dark:text-white">
+                  <span className="font-semibold text-white">
                     {userData?.credits?.total || 0}
                   </span>
                 </div>
@@ -370,3 +370,4 @@ const ProfilePage = () => {
 };
 
 export default ProfilePage;
+

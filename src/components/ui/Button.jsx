@@ -20,7 +20,7 @@ const buttonVariants = cva(
         outline:
           "border-2 border-primary-500 text-primary-500 hover:bg-primary-50 dark:border-primary-400 dark:text-primary-400 dark:hover:bg-primary-900/20 focus:ring-primary-500",
         ghost:
-          "text-neutral-700 hover:bg-neutral-100 dark:text-neutral-300 dark:hover:bg-neutral-800 focus:ring-neutral-500",
+          "text-white/90 hover:bg-white/10 backdrop-blur-sm focus:ring-primary-500",
         link: "text-primary-500 hover:text-primary-600 dark:text-primary-400 dark:hover:text-primary-300 underline-offset-4 hover:underline",
       },
       size: {
@@ -97,3 +97,4 @@ const Button = React.forwardRef(
 Button.displayName = "Button";
 
 export default Button;
+

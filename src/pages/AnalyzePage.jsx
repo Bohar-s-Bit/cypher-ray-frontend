@@ -60,8 +60,10 @@ const AnalyzePage = () => {
     },
   });
 
-  const handleFileSelect = (file) => {
-    setSelectedFile(file);
+  const handleFileSelect = (files) => {
+    if (files && files.length > 0) {
+      setSelectedFile(files[0]);
+    }
   };
 
   const handleStartAnalysis = () => {
@@ -94,14 +96,14 @@ const AnalyzePage = () => {
   const isAnalyzing = analyzeMutation.isPending || hasActiveAnalysis;
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 min-h-screen">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-display font-bold text-neutral-900 dark:text-white">
+          <h1 className="text-3xl font-display font-bold text-white">
             Binary Analysis
           </h1>
-          <p className="text-neutral-600 dark:text-neutral-400 mt-2">
+          <p className="text-white/70 mt-2">
             Upload a binary file to analyze for security vulnerabilities
           </p>
         </div>
@@ -120,10 +122,10 @@ const AnalyzePage = () => {
             <div className="flex flex-col items-center justify-center py-12 space-y-4">
               <Spinner size="lg" />
               <div className="text-center">
-                <p className="text-lg font-medium text-neutral-900 dark:text-white">
+                <p className="text-lg font-medium text-white">
                   {getAnalysisStatusText()}
                 </p>
-                <p className="text-sm text-neutral-600 dark:text-neutral-400 mt-1">
+                <p className="text-sm text-white/70 mt-1">
                   {hasActiveAnalysis
                     ? "You can navigate freely while analysis is in progress."
                     : "Analysis will start shortly"}
@@ -145,20 +147,11 @@ const AnalyzePage = () => {
           // --- READY TO UPLOAD ---
           // This content is shown when isAnalyzing is false
           <>
-            <CardHeader>
-              <CardTitle>Upload Binary File</CardTitle>
-              <CardDescription>
-                Select a binary file to analyze. We support firmware, executables,
-                and other binary formats.
-              </CardDescription>
-            </CardHeader>
             <CardContent className="space-y-6">
               <FileUpload
-                onFileSelect={handleFileSelect}
+                onChange={handleFileSelect}
                 accept=".bin,.elf,.hex,.out"
                 maxSize={100 * 1024 * 1024}
-                // No 'disabled' prop needed here, as this whole
-                // block is hidden when isAnalyzing is true
               />
 
               {selectedFile && (
@@ -182,3 +175,4 @@ const AnalyzePage = () => {
 };
 
 export default AnalyzePage;
+

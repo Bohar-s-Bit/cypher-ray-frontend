@@ -90,10 +90,10 @@ const SettingsPage = () => {
       <div className="space-y-8">
         {/* Header */}
         <div>
-          <h1 className="text-3xl font-bold text-neutral-900 dark:text-white">
+          <h1 className="text-3xl font-bold text-white">
             Settings
           </h1>
-          <p className="text-neutral-600 dark:text-neutral-400 mt-2">
+          <p className="text-white/70 mt-2">
             Manage your account settings and preferences
           </p>
         </div>
@@ -106,10 +106,10 @@ const SettingsPage = () => {
               <Lock className="w-6 h-6 text-primary-600 dark:text-primary-400" />
             </div>
             <div>
-              <h2 className="text-xl font-semibold text-neutral-900 dark:text-white">
+              <h2 className="text-xl font-semibold text-white">
                 Security
               </h2>
-              <p className="text-sm text-neutral-600 dark:text-neutral-400">
+              <p className="text-sm text-white/70">
                 Manage your password and security settings
               </p>
             </div>
@@ -120,7 +120,7 @@ const SettingsPage = () => {
             <div className="p-4 bg-primary-50 dark:bg-primary-900/20 border border-primary-200 dark:border-primary-800/50 rounded-lg flex gap-3">
               <AlertCircle className="w-5 h-5 text-primary-600 dark:text-primary-400 flex-shrink-0 mt-0.5" />
               <div className="text-sm text-neutral-700 dark:text-neutral-300">
-                <p className="font-semibold mb-1 text-neutral-900 dark:text-white">
+                <p className="font-semibold mb-1 text-white">
                   Password Requirements:
                 </p>
                 <ul className="list-disc list-inside space-y-1">
@@ -180,12 +180,12 @@ const SettingsPage = () => {
     
 
         <div className="space-y-4">
-          <div className="flex items-center justify-between p-4 bg-neutral-50 dark:bg-neutral-800 rounded-lg">
+          <div className="flex items-center justify-between p-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg">
             <div className="flex-1">
-              <p className="font-medium text-neutral-900 dark:text-white">
+              <p className="font-medium text-white">
                 Email Notifications
               </p>
-              <p className="text-sm text-neutral-600 dark:text-neutral-400">
+              <p className="text-sm text-white/70">
                 Receive email updates about your account
               </p>
             </div>
@@ -196,12 +196,12 @@ const SettingsPage = () => {
             />
           </div>
 
-          <div className="flex items-center justify-between p-4 bg-neutral-50 dark:bg-neutral-800 rounded-lg">
+          <div className="flex items-center justify-between p-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg">
             <div className="flex-1">
-              <p className="font-medium text-neutral-900 dark:text-white">
+              <p className="font-medium text-white">
                 Credit Alerts
               </p>
-              <p className="text-sm text-neutral-600 dark:text-neutral-400">
+              <p className="text-sm text-white/70">
                 Get notified when credits are low
               </p>
             </div>
@@ -212,12 +212,12 @@ const SettingsPage = () => {
             />
           </div>
 
-          <div className="flex items-center justify-between p-4 bg-neutral-50 dark:bg-neutral-800 rounded-lg">
+          <div className="flex items-center justify-between p-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg">
             <div classNameAme="flex-1">
-              <p className="font-medium text-neutral-900 dark:text-white">
+              <p className="font-medium text-white">
                 Security Alerts
               </p>
-              <p className="text-sm text-neutral-600 dark:text-neutral-400">
+              <p className="text-sm text-white/70">
                 Important security updates and alerts
               </p>
             </div>
@@ -236,39 +236,39 @@ const SettingsPage = () => {
               <Shield className="w-6 h-6 text-primary-600 dark:text-primary-400" />
             </div>
             <div>
-              <h2 className="text-xl font-semibold text-neutral-900 dark:text-white">
+              <h2 className="text-xl font-semibold text-white">
                 Account Information
               </h2>
-              <p className="text-sm text-neutral-600 dark:text-neutral-400">
+              <p className="text-sm text-white/70">
                 View your account details
               </p>
             </div>
           </div>
 
           <div className="space-y-3">
-            <div className="flex justify-between items-center p-4 bg-neutral-50 dark:bg-neutral-800 rounded-lg">
-              <span className="text-neutral-600 dark:text-neutral-400">
+            <div className="flex justify-between items-center p-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg">
+              <span className="text-white/70">
                 Account ID
               </span>
-              <span className="font-mono text-sm text-neutral-900 dark:text-white">
+              <span className="font-mono text-sm text-white">
                 {Math.random().toString(36).substr(2, 9).toUpperCase()}
               </span>
             </div>
 
-            <div className="flex justify-between items-center p-4 bg-neutral-50 dark:bg-neutral-800 rounded-lg">
-              <span className="text-neutral-600 dark:text-neutral-400">
+            <div className="flex justify-between items-center p-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg">
+              <span className="text-white/70">
                 Data Storage
               </span>
-              <span className="text-neutral-900 dark:text-white">
+              <span className="text-white">
                 Encrypted & Secure
               </span>
             </div>
 
-            <div className="flex justify-between items-center p-4 bg-neutral-50 dark:bg-neutral-800 rounded-lg">
-              <span className="text-neutral-600 dark:text-neutral-400">
+            <div className="flex justify-between items-center p-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg">
+              <span className="text-white/70">
                 Two-Factor Auth
               </span>
-              <span className="text-neutral-900 dark:text-white">
+              <span className="text-white">
                 Coming Soon
               </span>
             </div>
@@ -280,3 +280,4 @@ const SettingsPage = () => {
 };
 
 export default SettingsPage;
+

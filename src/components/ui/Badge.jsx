@@ -17,9 +17,9 @@ const badgeVariants = cva(
         error:
           "bg-error-100 text-error-700 dark:bg-error-800 dark:text-error-200 dark:border dark:border-error-600",
         neutral:
-          "bg-neutral-100 text-neutral-700 dark:bg-neutral-700 dark:text-neutral-200 dark:border dark:border-neutral-600",
+          "bg-white/10 text-white/90 backdrop-blur-sm border border-white/20",
         outline:
-          "border border-neutral-300 text-neutral-700 dark:border-neutral-600 dark:text-neutral-300",
+          "border border-white/20 text-white/90",
       },
       size: {
         sm: "px-2 py-0.5 text-xs",
@@ -46,3 +46,4 @@ const Badge = ({ className, variant, size, children, ...props }) => {
 };
 
 export default Badge;
+

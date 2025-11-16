@@ -90,10 +90,10 @@ const CreditsPage = () => {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold text-neutral-900 dark:text-white">
+            <h1 className="text-3xl font-bold text-white">
               Credits History
             </h1>
-            <p className="text-neutral-600 dark:text-neutral-400 mt-2">
+            <p className="text-white/70 mt-2">
               Track your credit transactions and usage
             </p>
           </div>
@@ -108,13 +108,13 @@ const CreditsPage = () => {
           <Card className="p-6">
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-1">
+                <p className="text-sm text-white/70 mb-1">
                   Available Credits
                 </p>
-                <p className="text-3xl font-bold text-neutral-900 dark:text-white">
+                <p className="text-3xl font-bold text-white">
                   {availableCredits}
                 </p>
-                <p className="text-sm text-neutral-600 dark:text-neutral-400 mt-2">
+                <p className="text-sm text-white/70 mt-2">
                   Ready to use
                 </p>
               </div>
@@ -128,10 +128,10 @@ const CreditsPage = () => {
           <Card className="p-6">
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-1">
+                <p className="text-sm text-white/70 mb-1">
                   Credits Earned
                 </p>
-                <p className="text-3xl font-bold text-neutral-900 dark:text-white">
+                <p className="text-3xl font-bold text-white">
                   {totalEarned}
                 </p>
                 <p className="text-sm text-success-600 dark:text-success-400 mt-2 flex items-center gap-1">
@@ -149,13 +149,13 @@ const CreditsPage = () => {
           <Card className="p-6">
             <div className="flex items-start justify-between">
               <div>
-                <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-1">
+                <p className="text-sm text-white/70 mb-1">
                   Credits Spent
                 </p>
-                <p className="text-3xl font-bold text-neutral-900 dark:text-white">
+                <p className="text-3xl font-bold text-white">
                   {totalSpent}
                 </p>
-                <p className="text-sm text-neutral-600 dark:text-neutral-400 mt-2 flex items-center gap-1">
+                <p className="text-sm text-white/70 mt-2 flex items-center gap-1">
                   <TrendingDown className="w-4 h-4" />
                   This month
                 </p>
@@ -169,8 +169,8 @@ const CreditsPage = () => {
 
         {/* Transactions List */}
         <Card>
-          <div className="p-6 border-b border-neutral-200 dark:border-neutral-700">
-            <h2 className="text-xl font-semibold text-neutral-900 dark:text-white">
+          <div className="p-6 border-b border-white/10">
+            <h2 className="text-xl font-semibold text-white">
               Transaction History
             </h2>
           </div>
@@ -181,13 +181,13 @@ const CreditsPage = () => {
             </div>
           ) : transactions.length === 0 ? (
             <div className="text-center py-12">
-              <div className="w-16 h-16 bg-neutral-100 dark:bg-neutral-800 rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="w-16 h-16 bg-white/5 backdrop-blur-sm border border-white/10 rounded-full flex items-center justify-center mx-auto mb-4">
                 <CreditCard className="w-8 h-8 text-neutral-400" />
               </div>
-              <h3 className="text-lg font-semibold text-neutral-900 dark:text-white mb-2">
+              <h3 className="text-lg font-semibold text-white mb-2">
                 No transactions yet
               </h3>
-              <p className="text-neutral-600 dark:text-neutral-400">
+              <p className="text-white/70">
                 Your credit transaction history will appear here
               </p>
             </div>
@@ -213,12 +213,12 @@ const CreditsPage = () => {
                       <div className="flex-1 min-w-0">
                         <div className="flex items-start justify-between gap-4">
                           <div className="flex-1">
-                            <p className="font-medium text-neutral-900 dark:text-white">
+                            <p className="font-medium text-white">
                               {transaction.description || "Credit Transaction"}
                             </p>
                             <div className="flex items-center gap-2 mt-1">
                               <Calendar className="w-4 h-4 text-neutral-400" />
-                              <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                              <p className="text-sm text-white/70">
                                 {formatDate(transaction.createdAt)}
                               </p>
                             </div>
@@ -248,12 +248,12 @@ const CreditsPage = () => {
                         </div>
 
                         {/* Balance After */}
-                        <div className="mt-3 pt-3 border-t border-neutral-200 dark:border-neutral-700">
+                        <div className="mt-3 pt-3 border-t border-white/10">
                           <div className="flex items-center justify-between text-sm">
-                            <span className="text-neutral-600 dark:text-neutral-400">
+                            <span className="text-white/70">
                               Balance after transaction
                             </span>
-                            <span className="font-semibold text-neutral-900 dark:text-white">
+                            <span className="font-semibold text-white">
                               {transaction.balanceAfter} credits
                             </span>
                           </div>
@@ -266,9 +266,9 @@ const CreditsPage = () => {
 
               {/* Pagination */}
               {pagination.totalPages > 1 && (
-                <div className="p-6 border-t border-neutral-200 dark:border-neutral-700">
+                <div className="p-6 border-t border-white/10">
                   <div className="flex items-center justify-between">
-                    <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                    <p className="text-sm text-white/70">
                       Showing {(pagination.currentPage - 1) * limit + 1} to{" "}
                       {Math.min(
                         pagination.currentPage * limit,
@@ -306,3 +306,4 @@ const CreditsPage = () => {
 };
 
 export default CreditsPage;
+

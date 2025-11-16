@@ -200,10 +200,10 @@ const LandingPage = () => {
             transition={{ duration: 0.6 }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-display font-bold text-neutral-900 dark:text-white mb-4">
+            <h2 className="text-4xl md:text-5xl font-display font-bold text-white mb-4">
               Advanced Security Features
             </h2>
-            <p className="text-xl text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto">
+            <p className="text-xl text-white/70 max-w-2xl mx-auto">
               Comprehensive firmware analysis powered by cutting-edge technology
             </p>
           </motion.div>
@@ -441,3 +441,4 @@ const LandingPage = () => {
 };
 
 export default LandingPage;
+

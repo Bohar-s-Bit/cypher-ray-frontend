@@ -12,7 +12,7 @@ const Spinner = ({ size = "md", className }) => {
   return (
     <svg
       className={cn(
-        "animate-spin text-primary-500 dark:text-primary-400",
+        "animate-spin text-primary-400",
         sizeClasses[size],
         className
       )}
@@ -40,9 +40,9 @@ const Spinner = ({ size = "md", className }) => {
 export const LoadingOverlay = ({ message = "Loading..." }) => {
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
-      <div className="bg-white rounded-xl p-8 shadow-2xl flex flex-col items-center gap-4">
+      <div className="bg-black/40 backdrop-blur-md border border-white/20 rounded-xl p-8 shadow-2xl flex flex-col items-center gap-4">
         <Spinner size="lg" />
-        <p className="text-neutral-700 font-medium">{message}</p>
+        <p className="text-white font-medium">{message}</p>
       </div>
     </div>
   );
@@ -60,3 +60,4 @@ export const PageLoader = () => {
 };
 
 export default Spinner;
+

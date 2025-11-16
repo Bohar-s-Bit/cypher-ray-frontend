@@ -33,7 +33,7 @@ const Modal = ({ isOpen, onClose, children, size = "md", className }) => {
           exit={{ opacity: 0, scale: 0.95, y: 20 }}
           transition={{ duration: 0.2 }}
           className={cn(
-            "relative bg-white dark:bg-neutral-800 rounded-2xl shadow-2xl w-full",
+            "relative bg-black/40 backdrop-blur-md border border-white/20 rounded-2xl shadow-2xl w-full",
             sizeClasses[size],
             className
           )}
@@ -50,7 +50,7 @@ const ModalHeader = ({ children, onClose, className }) => {
   return (
     <div
       className={cn(
-        "flex items-center justify-between p-6 border-b border-neutral-200 dark:border-neutral-700",
+        "flex items-center justify-between p-6 border-b border-white/10",
         className
       )}
     >
@@ -58,7 +58,7 @@ const ModalHeader = ({ children, onClose, className }) => {
       {onClose && (
         <button
           onClick={onClose}
-          className="ml-4 text-neutral-400 hover:text-neutral-600 dark:text-neutral-500 dark:hover:text-neutral-300 transition-colors"
+          className="ml-4 text-white/50 hover:text-white transition-colors"
         >
           <X className="w-5 h-5" />
         </button>
@@ -71,7 +71,7 @@ const ModalTitle = ({ children, className }) => {
   return (
     <h2
       className={cn(
-        "text-2xl font-semibold text-neutral-900 dark:text-white",
+        "text-2xl font-semibold text-white",
         className
       )}
     >
@@ -88,7 +88,7 @@ const ModalFooter = ({ children, className }) => {
   return (
     <div
       className={cn(
-        "flex items-center justify-end gap-3 p-6 border-t border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-900 rounded-b-2xl",
+        "flex items-center justify-end gap-3 p-6 border-t border-white/10 bg-black/20 rounded-b-2xl",
         className
       )}
     >
@@ -98,3 +98,4 @@ const ModalFooter = ({ children, className }) => {
 };
 
 export { Modal, ModalHeader, ModalTitle, ModalBody, ModalFooter };
+

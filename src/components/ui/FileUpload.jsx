@@ -1,173 +1,215 @@
-import React, { useRef, useState } from "react";
-import { Upload, File, X } from "lucide-react";
 import { cn } from "../../lib/utils";
-import Button from "./Button";
+import React, { useRef, useState } from "react";
+import { motion } from "framer-motion";
+import { Upload, X } from "lucide-react";
+import { useDropzone } from "react-dropzone";
+
+const mainVariant = {
+  initial: {
+    x: 0,
+    y: 0,
+  },
+  animate: {
+    x: 20,
+    y: -20,
+    opacity: 0.9,
+  },
+};
+
+const secondaryVariant = {
+  initial: {
+    opacity: 0,
+  },
+  animate: {
+    opacity: 1,
+  },
+};
 
 const FileUpload = ({
-  onFileSelect,
-  accept = "*",
-  maxSize = 100 * 1024 * 1024, // 100MB default
-  className,
-  disabled = false,
+  onChange,
+  accept,
+  maxSize = 100 * 1024 * 1024,
 }) => {
+  const [file, setFile] = useState(null);
   const fileInputRef = useRef(null);
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [dragActive, setDragActive] = useState(false);
-  const [error, setError] = useState(null);
 
-  const validateFile = (file) => {
-    if (file.size > maxSize) {
-      setError(
-        `File size must be less than ${(maxSize / (1024 * 1024)).toFixed(0)}MB`
-      );
-      return false;
-    }
-    setError(null);
-    return true;
-  };
-
-  const handleFileChange = (event) => {
-    const file = event.target.files?.[0];
-    if (file && validateFile(file)) {
-      setSelectedFile(file);
-      onFileSelect(file);
+  const handleFileChange = (newFiles) => {
+    if (newFiles && newFiles.length > 0) {
+      // Only take the first file
+      const selectedFile = newFiles[0];
+      setFile(selectedFile);
+      onChange && onChange([selectedFile]);
     }
   };
 
-  const handleDrag = (e) => {
-    e.preventDefault();
+  const handleRemoveFile = (e) => {
     e.stopPropagation();
-    if (e.type === "dragenter" || e.type === "dragover") {
-      setDragActive(true);
-    } else if (e.type === "dragleave") {
-      setDragActive(false);
-    }
-  };
-
-  const handleDrop = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragActive(false);
-
-    const file = e.dataTransfer.files?.[0];
-    if (file && validateFile(file)) {
-      setSelectedFile(file);
-      onFileSelect(file);
-    }
-  };
-
-  const handleRemove = () => {
-    setSelectedFile(null);
-    setError(null);
+    setFile(null);
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
-    onFileSelect(null);
+    onChange && onChange([]);
   };
 
   const handleClick = () => {
-    fileInputRef.current?.click();
+    if (!file) {
+      fileInputRef.current?.click();
+    }
   };
 
-  const formatFileSize = (bytes) => {
-    if (bytes === 0) return "0 Bytes";
-    const k = 1024;
-    const sizes = ["Bytes", "KB", "MB", "GB"];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return Math.round((bytes / Math.pow(k, i)) * 100) / 100 + " " + sizes[i];
-  };
+  const { getRootProps, isDragActive } = useDropzone({
+    multiple: false,
+    noClick: true,
+    accept: accept,
+    maxSize: maxSize,
+    onDrop: handleFileChange,
+    onDropRejected: (error) => {
+      console.log(error);
+    },
+  });
 
   return (
-    <div className={cn("w-full", className)}>
-      <input
-        ref={fileInputRef}
-        type="file"
-        accept={accept}
-        onChange={handleFileChange}
-        className="hidden"
-        disabled={disabled}
-      />
-
-      {!selectedFile ? (
-        <div
-          onClick={handleClick}
-          onDragEnter={handleDrag}
-          onDragLeave={handleDrag}
-          onDragOver={handleDrag}
-          onDrop={handleDrop}
-          className={cn(
-            "border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all",
-            dragActive
-              ? "border-primary-500 bg-primary-50 dark:bg-primary-900/20"
-              : "border-neutral-300 dark:border-neutral-600 hover:border-primary-400 dark:hover:border-primary-500 bg-neutral-50 dark:bg-neutral-800/50",
-            disabled && "opacity-50 cursor-not-allowed"
-          )}
-        >
-          <div className="flex flex-col items-center gap-4">
-            <div
-              className={cn(
-                "w-16 h-16 rounded-full flex items-center justify-center",
-                dragActive
-                  ? "bg-primary-100 dark:bg-primary-900/30"
-                  : "bg-neutral-100 dark:bg-neutral-700"
-              )}
-            >
-              <Upload
+    <div className="w-full" {...getRootProps()}>
+      <motion.div
+        onClick={handleClick}
+        whileHover="animate"
+        className="p-10 group/file block rounded-lg cursor-pointer w-full relative overflow-hidden bg-white/10 backdrop-blur-sm border border-white/10 border border-white/10"
+      >
+        <input
+          ref={fileInputRef}
+          id="file-upload-handle"
+          type="file"
+          accept={accept}
+          onChange={(e) => handleFileChange(Array.from(e.target.files || []))}
+          className="hidden"
+        />
+        <div className="flex flex-col items-center justify-center">
+          <p className="relative z-20 font-sans font-bold text-white/90 text-base">
+            Upload Binary File
+          </p>
+          <p className="relative z-20 font-sans font-normal text-white/60 text-base mt-2">
+            Drag or drop your binary file here or click to upload
+          </p>
+          <div className="relative w-full mt-10 max-w-xl mx-auto">
+            {file && (
+              <motion.div
+                layoutId="file-upload"
                 className={cn(
-                  "w-8 h-8",
-                  dragActive
-                    ? "text-primary-600 dark:text-primary-400"
-                    : "text-neutral-400 dark:text-neutral-500"
+                  "relative overflow-hidden z-40 bg-black/30 backdrop-blur-sm flex flex-col items-start justify-start md:h-24 p-4 mt-4 w-full mx-auto rounded-md",
+                  "shadow-sm border border-white/10"
                 )}
-              />
-            </div>
-            <div>
-              <p className="text-lg font-medium text-neutral-900 dark:text-white mb-1">
-                Drop your binary file here
-              </p>
-              <p className="text-sm text-neutral-600 dark:text-neutral-400">
-                or click to browse
-              </p>
-              <p className="text-xs text-neutral-500 dark:text-neutral-500 mt-2">
-                Maximum file size: {(maxSize / (1024 * 1024)).toFixed(0)}MB
-              </p>
-            </div>
-          </div>
-        </div>
-      ) : (
-        <div className="border-2 border-neutral-300 dark:border-neutral-600 rounded-xl p-6 bg-white dark:bg-neutral-800">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4 flex-1 min-w-0">
-              <div className="w-12 h-12 rounded-lg bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center flex-shrink-0">
-                <File className="w-6 h-6 text-primary-600 dark:text-primary-400" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="font-medium text-neutral-900 dark:text-white truncate">
-                  {selectedFile.name}
-                </p>
-                <p className="text-sm text-neutral-600 dark:text-neutral-400">
-                  {formatFileSize(selectedFile.size)}
-                </p>
-              </div>
-            </div>
-            <button
-              onClick={handleRemove}
-              disabled={disabled}
-              className="p-2 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700 text-neutral-600 dark:text-neutral-300 transition-colors disabled:opacity-50"
-            >
-              <X className="w-5 h-5" />
-            </button>
-          </div>
-        </div>
-      )}
+              >
+                <button
+                  onClick={handleRemoveFile}
+                  className="absolute top-2 right-2 p-1.5 rounded-full hover:bg-white/10 backdrop-blur-sm transition-colors border border-white/10"
+                  aria-label="Remove file"
+                >
+                  <X className="h-4 w-4 text-white/70" />
+                </button>
+                
+                <div className="flex justify-between w-full items-center gap-4 pr-8">
+                  <motion.p
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    layout
+                    className="text-base text-white/90 truncate max-w-xs"
+                  >
+                    {file.name}
+                  </motion.p>
+                  <motion.p
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    layout
+                    className="rounded-lg px-2 py-1 w-fit shrink-0 text-sm bg-white/10 backdrop-blur-sm text-white/90 shadow-input border border-white/10"
+                  >
+                    {(file.size / (1024 * 1024)).toFixed(2)} MB
+                  </motion.p>
+                </div>
 
-      {error && (
-        <p className="mt-2 text-sm text-error-600 dark:text-error-400">
-          {error}
-        </p>
-      )}
+                <div className="flex text-sm md:flex-row flex-col items-start md:items-center w-full mt-2 justify-between text-white/70">
+                  <motion.p
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    layout
+                    className="px-1 py-0.5 rounded-md bg-gray-100 dark:bg-neutral-800"
+                  >
+                    {file.type || 'Binary file'}
+                  </motion.p>
+
+                  <motion.p
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    layout
+                  >
+                    modified {new Date(file.lastModified).toLocaleDateString()}
+                  </motion.p>
+                </div>
+              </motion.div>
+            )}
+            {!file && (
+              <motion.div
+                layoutId="file-upload"
+                variants={mainVariant}
+                transition={{
+                  type: "spring",
+                  stiffness: 300,
+                  damping: 20,
+                }}
+                className={cn(
+                  "relative group-hover/file:shadow-2xl z-40 bg-black/30 backdrop-blur-sm flex items-center justify-center h-32 mt-4 w-full max-w-[8rem] mx-auto rounded-md border border-white/10",
+                  "shadow-[0px_10px_50px_rgba(0,0,0,0.1)]"
+                )}
+              >
+                {isDragActive ? (
+                  <motion.p
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="text-white/70 flex flex-col items-center"
+                  >
+                    Drop it
+                    <Upload className="h-4 w-4 text-white/70" />
+                  </motion.p>
+                ) : (
+                  <Upload className="h-4 w-4 text-white/70" />
+                )}
+              </motion.div>
+            )}
+
+            {!file && (
+              <motion.div
+                variants={secondaryVariant}
+                className="absolute opacity-0 border border-dashed border-sky-400 inset-0 z-30 bg-transparent flex items-center justify-center h-32 mt-4 w-full max-w-[8rem] mx-auto rounded-md"
+              ></motion.div>
+            )}
+          </div>
+        </div>
+      </motion.div>
     </div>
   );
 };
+
+export function GridPattern() {
+  const columns = 41;
+  const rows = 11;
+  return (
+    <div className="flex bg-gray-100 dark:bg-neutral-900 shrink-0 flex-wrap justify-center items-center gap-x-px gap-y-px scale-105">
+      {Array.from({ length: rows }).map((_, row) =>
+        Array.from({ length: columns }).map((_, col) => {
+          const index = row * columns + col;
+          return (
+            <div
+              key={`${col}-${row}`}
+              className={`w-10 h-10 flex shrink-0 rounded-[2px] ${
+                index % 2 === 0
+                  ? "bg-gray-50 dark:bg-neutral-950"
+                  : "bg-gray-50 dark:bg-neutral-950 shadow-[0px_0px_1px_3px_rgba(255,255,255,1)_inset] dark:shadow-[0px_0px_1px_3px_rgba(0,0,0,1)_inset]"
+              }`}
+            />
+          );
+        })
+      )}
+    </div>
+  );
+}
 
 export default FileUpload;
