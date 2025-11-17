@@ -139,10 +139,10 @@ const CardNav = ({
     >
       <nav
         ref={navRef}
-        className={`card-nav ${isExpanded ? 'open' : ''} block h-[60px] p-0 rounded-xl shadow-lg relative overflow-hidden will-change-[height] backdrop-blur-md border border-white/10`}
+        className={`card-nav ${isExpanded ? 'open' : ''} block h-[60px] p-0 rounded-xl shadow-lg relative overflow-hidden will-change-[height] backdrop-blur-xl border border-white/10`}
         style={{ 
-          backgroundColor: 'rgba(37, 99, 235, 0.1)', // primary-600 with transparency
-          background: 'linear-gradient(135deg, rgba(37, 99, 235, 0.15) 0%, rgba(30, 64, 175, 0.1) 50%, rgba(37, 99, 235, 0.15) 100%)'
+          backgroundColor: 'rgba(6, 0, 16, 0.4)',
+          background: 'linear-gradient(135deg, rgba(124, 58, 237, 0.08) 0%, rgba(192, 132, 252, 0.05) 50%, rgba(124, 58, 237, 0.08) 100%)'
         }}
       >
         <div className="card-nav-top absolute inset-x-0 top-0 h-[60px] flex items-center justify-between p-2 pl-[1.1rem] z-[2]">
