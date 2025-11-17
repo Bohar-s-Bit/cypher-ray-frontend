@@ -3,13 +3,13 @@ import { cn } from "../../lib/utils";
 import { cva } from "class-variance-authority";
 
 const cardVariants = cva(
-  "rounded-xl bg-black/20 backdrop-blur-sm border-white/10 transition-all duration-200",
+  "rounded-2xl bg-gradient-to-br from-neutral-900/90 to-neutral-900/70 backdrop-blur-xl border shadow-xl transition-all duration-200",
   {
     variants: {
       variant: {
-        default: "border border-white/10",
-        elevated: "shadow-lg shadow-black/50",
-        outline: "border-2 border-white/20",
+        default: "border border-purple-500/20 shadow-purple-500/5",
+        elevated: "shadow-2xl shadow-purple-500/10 border-purple-500/30",
+        outline: "border-2 border-purple-500/40",
       },
       padding: {
         none: "",
@@ -18,7 +18,7 @@ const cardVariants = cva(
         lg: "p-8",
       },
       hoverable: {
-        true: "hover:shadow-lg hover:shadow-purple-500/20 hover:border-white/20 cursor-pointer",
+        true: "hover:shadow-2xl hover:shadow-purple-500/20 hover:border-purple-500/50 hover:-translate-y-0.5 cursor-pointer",
       },
     },
     defaultVariants: {
@@ -48,7 +48,7 @@ const Card = ({
 
 const CardHeader = ({ className, children, ...props }) => {
   return (
-    <div className={cn("flex flex-col space-y-1.5", className)} {...props}>
+    <div className={cn("flex flex-col space-y-1.5 pb-4", className)} {...props}>
       {children}
     </div>
   );
@@ -72,7 +72,7 @@ const CardDescription = ({ className, children, ...props }) => {
   return (
     <p
       className={cn(
-        "text-sm text-white/70",
+        "text-sm text-white/80",
         className
       )}
       {...props}
@@ -84,7 +84,7 @@ const CardDescription = ({ className, children, ...props }) => {
 
 const CardContent = ({ className, children, ...props }) => {
   return (
-    <div className={cn("pt-4", className)} {...props}>
+    <div className={cn("", className)} {...props}>
       {children}
     </div>
   );

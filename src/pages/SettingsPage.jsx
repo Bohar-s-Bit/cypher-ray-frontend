@@ -212,12 +212,12 @@ const SettingsPage = () => {
     
 
         <div className="space-y-4">
-          <div className="flex items-center justify-between p-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg">
+          <div className="flex items-center justify-between p-4 bg-gradient-to-r from-neutral-900/60 to-neutral-900/40 backdrop-blur-sm border border-purple-500/20 rounded-xl hover:border-purple-500/40 transition-all">
             <div className="flex-1">
               <p className="font-medium text-white">
                 Email Notifications
               </p>
-              <p className="text-sm text-white/70">
+              <p className="text-sm text-white/80">
                 Receive email updates about your account
               </p>
             </div>
@@ -228,12 +228,12 @@ const SettingsPage = () => {
             />
           </div>
 
-          <div className="flex items-center justify-between p-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg">
+          <div className="flex items-center justify-between p-4 bg-gradient-to-r from-neutral-900/60 to-neutral-900/40 backdrop-blur-sm border border-purple-500/20 rounded-xl hover:border-purple-500/40 transition-all">
             <div className="flex-1">
               <p className="font-medium text-white">
                 Credit Alerts
               </p>
-              <p className="text-sm text-white/70">
+              <p className="text-sm text-white/80">
                 Get notified when credits are low
               </p>
             </div>
@@ -244,12 +244,12 @@ const SettingsPage = () => {
             />
           </div>
 
-          <div className="flex items-center justify-between p-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg">
-            <div classNameAme="flex-1">
+          <div className="flex items-center justify-between p-4 bg-gradient-to-r from-neutral-900/60 to-neutral-900/40 backdrop-blur-sm border border-purple-500/20 rounded-xl hover:border-purple-500/40 transition-all">
+            <div className="flex-1">
               <p className="font-medium text-white">
                 Security Alerts
               </p>
-              <p className="text-sm text-white/70">
+              <p className="text-sm text-white/80">
                 Important security updates and alerts
               </p>
             </div>
@@ -278,8 +278,8 @@ const SettingsPage = () => {
           </div>
 
           <div className="space-y-3">
-            <div className="flex justify-between items-center p-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg">
-              <span className="text-white/70">
+            <div className="flex justify-between items-center p-4 bg-gradient-to-r from-neutral-900/60 to-neutral-900/40 backdrop-blur-sm border border-purple-500/20 rounded-xl hover:border-purple-500/40 transition-all">
+              <span className="text-white/80">
                 Account ID
               </span>
               <span className="font-mono text-sm text-white">
@@ -287,8 +287,8 @@ const SettingsPage = () => {
               </span>
             </div>
 
-            <div className="flex justify-between items-center p-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg">
-              <span className="text-white/70">
+            <div className="flex justify-between items-center p-4 bg-gradient-to-r from-neutral-900/60 to-neutral-900/40 backdrop-blur-sm border border-purple-500/20 rounded-xl hover:border-purple-500/40 transition-all">
+              <span className="text-white/80">
                 Data Storage
               </span>
               <span className="text-white">
@@ -296,8 +296,8 @@ const SettingsPage = () => {
               </span>
             </div>
 
-            <div className="flex justify-between items-center p-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg">
-              <span className="text-white/70">
+            <div className="flex justify-between items-center p-4 bg-gradient-to-r from-neutral-900/60 to-neutral-900/40 backdrop-blur-sm border border-purple-500/20 rounded-xl hover:border-purple-500/40 transition-all">
+              <span className="text-white/80">
                 Two-Factor Auth
               </span>
               <span className="text-white">

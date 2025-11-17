@@ -21,6 +21,15 @@ import Badge from "../components/ui/Badge";
 import { StatCardSkeleton } from "../components/ui/Skeleton";
 import { QUERY_KEYS } from "../config/constants";
 import { formatNumber } from "../lib/utils";
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  Column,
+  Row,
+  Cell,
+  ResizableTableContainer,
+} from "../components/ui/Table";
 
 const UserDashboard = () => {
   const { user } = useAuthStore();
@@ -55,22 +64,22 @@ const UserDashboard = () => {
       title: "Available Credits",
       value: userData?.credits?.available || 0,
       icon: CreditCard,
-      bgColor: "bg-secondary-50 dark:bg-secondary-900/20",
-      color: "text-secondary-600 dark:text-secondary-400",
+      bgColor: "bg-blue-500/20",
+      color: "text-blue-400",
     },
     {
       title: "Total Scans",
       value: userData?.totalScans || 0,
       icon: Activity,
-      bgColor: "bg-green-50 dark:bg-green-900/20",
-      color: "text-green-600 dark:text-green-400",
+      bgColor: "bg-green-500/20",
+      color: "text-green-400",
     },
     {
       title: "Account Status",
       value: userData?.isActive ? "Active" : "Inactive",
       icon: Shield,
-      bgColor: "bg-purple-50 dark:bg-purple-900/20",
-      color: "text-purple-600 dark:text-purple-400",
+      bgColor: "bg-amber-500/20",
+      color: "text-amber-400",
       isString: true,
     },
   ];
@@ -82,13 +91,13 @@ const UserDashboard = () => {
         <h1 className="text-3xl font-display font-bold text-white">
           Welcome back, {userData?.username || "User"}!
         </h1>
-        <p className="text-white/70 mt-2">
+        <p className="text-white/80 mt-2 text-base">
           Here's an overview of your account
         </p>
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {profileLoading ? (
           <>
             {[...Array(4)].map((_, i) => (
@@ -105,10 +114,10 @@ const UserDashboard = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
               >
-                <Card>
-                  <CardContent className="p-6 bg-black/20 backdrop-blur-sm border-white/10">
+                <Card className="hover:border-purple-500/50 transition-all group" padding="none">
+                  <CardContent className="p-6">
                     <div className="flex items-center justify-between mb-4">
-                      <div className={`p-3 rounded-lg ${stat.bgColor}`}>
+                      <div className={`p-3 rounded-xl ${stat.bgColor} ring-1 ring-white/10`}>
                         <Icon className={`w-6 h-6 ${stat.color}`} />
                       </div>
                       {stat.trend && (
@@ -117,7 +126,7 @@ const UserDashboard = () => {
                         </Badge>
                       )}
                     </div>
-                    <div className="text-3xl font-bold text-white mb-1">
+                    <div className="text-3xl font-bold text-white mb-2 group-hover:text-purple-300 transition-colors">
                       {stat.isString ? stat.value : formatNumber(stat.value)}
                     </div>
                     <div className="text-sm text-white/70">
@@ -134,59 +143,91 @@ const UserDashboard = () => {
       {/* Recent Credit History */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-white">Recent Activity</CardTitle>
-          <CardDescription className="text-white/70">Your latest credit transactions</CardDescription>
+          <CardTitle>Recent Activity</CardTitle>
+          <CardDescription>
+            Your latest credit transactions
+          </CardDescription>
         </CardHeader>
-        <CardContent className="bg-black/20 backdrop-blur-sm border-white/10">
+        <CardContent>
           {historyLoading ? (
             <div className="space-y-3">
               {[...Array(5)].map((_, i) => (
                 <div
                   key={i}
-                  className="h-16 bg-white/5 backdrop-blur-sm rounded-lg animate-pulse border border-white/10"
+                  className="h-16 bg-neutral-800/50 rounded-lg animate-pulse"
                 ></div>
               ))}
             </div>
           ) : creditHistory.length > 0 ? (
-            <div className="space-y-3">
-              {creditHistory.slice(0, 5).map((transaction) => (
-                <div
-                  key={transaction._id}
-                  className="flex items-center justify-between p-3 bg-white/5 backdrop-blur-sm rounded-lg hover:bg-white/10 transition-colors border border-white/10"
-                >
-                  <div>
-                    <p className="font-medium text-white">
-                      {transaction.description}
-                    </p>
-                    <p className="text-sm text-white/70">
-                      {format(
-                        new Date(transaction.createdAt),
-                        "MMM dd, yyyy HH:mm"
-                      )}
-                    </p>
-                  </div>
-                  <div className="text-right">
-                    <p
-                      className={`font-semibold ${
-                        transaction.amount >= 0
-                          ? "text-success-400"
-                          : "text-error-400"
-                      }`}
-                    >
-                      {transaction.amount >= 0 ? "+" : ""}
-                      {transaction.amount}
-                    </p>
-                    <p className="text-sm text-white/70">
-                      Balance: {transaction.balanceAfter}
-                    </p>
-                  </div>
-                </div>
-              ))}
+            <div className="overflow-x-auto rounded-xl border border-purple-500/20 bg-gradient-to-br from-neutral-900/50 to-neutral-900/30 backdrop-blur-sm">
+              <ResizableTableContainer>
+                <Table aria-label="Recent activity table" className="w-full">
+                  <TableHeader>
+                    <Column isRowHeader className="text-white/90 text-sm font-semibold">Name</Column>
+                    <Column className="text-white/90 text-sm font-semibold">Type</Column>
+                    <Column className="text-white/90 text-sm font-semibold">Date</Column>
+                    <Column className="text-white/90 text-sm font-semibold">Balance</Column>
+                  </TableHeader>
+                  <TableBody>
+                    {creditHistory.slice(0, 5).map((transaction) => {
+                      // Backend stores scan costs as positive but they are debits
+                      // Check transaction type to determine if it's a debit or credit
+                      const isDebit = transaction.type === "scan" || transaction.type === "debit" || transaction.amount < 0;
+                      const isCredit = !isDebit && transaction.amount > 0;
+                      
+                      // For display: debits should show as negative, credits as positive
+                      const displayAmount = isDebit && transaction.amount > 0 
+                        ? -transaction.amount 
+                        : transaction.amount;
+                      
+                      return (
+                        <Row key={transaction._id} className="border-white/10 hover:bg-neutral-800/50">
+                          <Cell className="font-medium text-white text-sm">
+                            {transaction.type === "scan" 
+                              ? `Scan #${transaction._id.slice(-6)}` 
+                              : transaction.description}
+                          </Cell>
+                          <Cell>
+                            <Badge 
+                              variant="neutral"
+                              size="sm"
+                            >
+                              {transaction.type || "Credit"}
+                            </Badge>
+                          </Cell>
+                          <Cell className="text-white/70 text-sm">
+                            {format(
+                              new Date(transaction.createdAt),
+                              "MMM dd, yyyy HH:mm"
+                            )}
+                          </Cell>
+                          <Cell>
+                            <div className="flex flex-col">
+                              <span
+                                className={`font-semibold text-sm ${
+                                  isCredit
+                                    ? "text-green-400"
+                                    : "text-red-400"
+                                }`}
+                              >
+                                {isCredit ? "+" : ""}{displayAmount}
+                              </span>
+                              <span className="text-xs text-white/50">
+                                Bal: {transaction.balanceAfter}
+                              </span>
+                            </div>
+                          </Cell>
+                        </Row>
+                      );
+                    })}
+                  </TableBody>
+                </Table>
+              </ResizableTableContainer>
             </div>
           ) : (
-            <div className="text-center py-8 text-white/70">
-              <Activity className="w-12 h-12 mx-auto mb-3 opacity-50" />
-              <p>No recent activity</p>
+            <div className="text-center py-16 text-white/70">
+              <Activity className="w-12 h-12 mx-auto mb-4 opacity-50" />
+              <p className="text-base">No recent activity</p>
             </div>
           )}
         </CardContent>

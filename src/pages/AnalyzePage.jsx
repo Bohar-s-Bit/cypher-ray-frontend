@@ -13,9 +13,21 @@ import {
 import Button from "../components/ui/Button";
 import FileUpload from "../components/ui/FileUpload";
 import Spinner from "../components/ui/Spinner";
+import { MultiStepLoader } from "../components/ui/MultiStepLoader";
 import { analysisService } from "../services/analysisService";
 import { useAnalysis } from "../contexts/AnalysisContext";
 import { ROUTES } from "../config/constants";
+
+const loadingStates = [
+  { text: "Uploading binary file..." },
+  { text: "Extracting firmware image..." },
+  { text: "Analyzing file structure..." },
+  { text: "Scanning for vulnerabilities..." },
+  { text: "Detecting security issues..." },
+  { text: "Analyzing dependencies..." },
+  { text: "Generating security report..." },
+  { text: "Finalizing analysis..." },
+];
 
 const AnalyzePage = () => {
   const navigate = useNavigate();
@@ -25,6 +37,27 @@ const AnalyzePage = () => {
   // Check if there's any active analysis
   const currentJob = getActiveJob();
   const hasActiveAnalysis = !!currentJob;
+
+  // Determine loader step based on analysis status
+  const getLoaderStep = () => {
+    if (analyzeMutation.isPending) {
+      return 0; // Uploading binary file
+    }
+    if (!currentJob) {
+      return 0;
+    }
+    
+    switch (currentJob.status) {
+      case 'queued':
+        return 2; // Analyzing file structure
+      case 'processing':
+        return 5; // Analyzing dependencies
+      case 'completed':
+        return 7; // Finalizing analysis
+      default:
+        return 0;
+    }
+  };
 
   // Analyze file mutation
   const analyzeMutation = useMutation({
@@ -96,7 +129,16 @@ const AnalyzePage = () => {
   const isAnalyzing = analyzeMutation.isPending || hasActiveAnalysis;
 
   return (
-    <div className="space-y-8 min-h-screen">
+    <>
+      {/* Multi-Step Loader - Shows during analysis with real-time progress */}
+      <MultiStepLoader
+        loadingStates={loadingStates}
+        loading={isAnalyzing}
+        currentStep={getLoaderStep()}
+        loop={false}
+      />
+
+      <div className="space-y-8 min-h-screen">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
@@ -171,6 +213,7 @@ const AnalyzePage = () => {
         )}
       </Card>
     </div>
+    </>
   );
 };
 

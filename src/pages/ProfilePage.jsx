@@ -176,12 +176,12 @@ const ProfilePage = () => {
                 </form>
               ) : (
                 <div className="space-y-4">
-                  <div className="flex items-start gap-3 p-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg">
-                    <div className="p-2 bg-purple-500/20 rounded-lg">
+                  <div className="flex items-start gap-3 p-4 bg-gradient-to-r from-neutral-900/60 to-neutral-900/40 backdrop-blur-sm border border-purple-500/20 rounded-xl hover:border-purple-500/40 transition-all">
+                    <div className="p-2 bg-purple-500/20 rounded-xl border border-purple-500/30">
                       <User className="w-5 h-5 text-purple-400" />
                     </div>
                     <div className="flex-1">
-                      <p className="text-sm text-white/70">
+                      <p className="text-sm text-white/80">
                         Username
                       </p>
                       <p className="font-medium text-white">
@@ -190,12 +190,12 @@ const ProfilePage = () => {
                     </div>
                   </div>
 
-                  <div className="flex items-start gap-3 p-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg">
-                    <div className="p-2 bg-purple-500/20 rounded-lg">
+                  <div className="flex items-start gap-3 p-4 bg-gradient-to-r from-neutral-900/60 to-neutral-900/40 backdrop-blur-sm border border-purple-500/20 rounded-xl hover:border-purple-500/40 transition-all">
+                    <div className="p-2 bg-purple-500/20 rounded-xl border border-purple-500/30">
                       <Mail className="w-5 h-5 text-purple-400" />
                     </div>
                     <div className="flex-1">
-                      <p className="text-sm text-white/70">
+                      <p className="text-sm text-white/80">
                         Email Address
                       </p>
                       <p className="font-medium text-white">
@@ -204,12 +204,12 @@ const ProfilePage = () => {
                     </div>
                   </div>
 
-                  <div className="flex items-start gap-3 p-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg">
-                    <div className="p-2 bg-purple-500/20 rounded-lg">
+                  <div className="flex items-start gap-3 p-4 bg-gradient-to-r from-neutral-900/60 to-neutral-900/40 backdrop-blur-sm border border-purple-500/20 rounded-xl hover:border-purple-500/40 transition-all">
+                    <div className="p-2 bg-purple-500/20 rounded-xl border border-purple-500/30">
                       <Calendar className="w-5 h-5 text-purple-400" />
                     </div>
                     <div className="flex-1">
-                      <p className="text-sm text-white/70">
+                      <p className="text-sm text-white/80">
                         Member Since
                       </p>
                       <p className="font-medium text-white">
@@ -227,12 +227,12 @@ const ProfilePage = () => {
                     </div>
                   </div>
 
-                  <div className="flex items-start gap-3 p-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg">
-                    <div className="p-2 bg-purple-500/20 rounded-lg">
+                  <div className="flex items-start gap-3 p-4 bg-gradient-to-r from-neutral-900/60 to-neutral-900/40 backdrop-blur-sm border border-purple-500/20 rounded-xl hover:border-purple-500/40 transition-all">
+                    <div className="p-2 bg-purple-500/20 rounded-xl border border-purple-500/30">
                       <Calendar className="w-5 h-5 text-purple-400" />
                     </div>
                     <div className="flex-1">
-                      <p className="text-sm text-white/70">
+                      <p className="text-sm text-white/80">
                         Last Login
                       </p>
                       <p className="font-medium text-white">
