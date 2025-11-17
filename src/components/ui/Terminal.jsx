@@ -67,15 +67,18 @@ export const AnimatedSpan = ({
     if (sequence.activeIndex === itemIndex) {
       setHasStarted(true)
     }
-  }, [sequence?.activeIndex, sequence?.sequenceStarted, hasStarted, itemIndex])
+  }, [sequence?.activeIndex, sequence?.sequenceStarted, hasStarted, itemIndex, sequence])
 
   const shouldAnimate = sequence ? hasStarted : startOnView ? isInView : true
+  
+  // First item (index 0) should start visible immediately when sequence starts
+  const isFirstItem = itemIndex === 0
 
   return (
     <motion.div
       ref={elementRef}
-      initial={{ opacity: 0, y: -5 }}
-      animate={shouldAnimate ? { opacity: 1, y: 0 } : { opacity: 0, y: -5 }}
+      initial={isFirstItem ? { opacity: 1, y: 0 } : { opacity: 0, y: -5 }}
+      animate={shouldAnimate ? { opacity: 1, y: 0 } : (isFirstItem ? { opacity: 1, y: 0 } : { opacity: 0, y: -5 })}
       transition={{ duration: 0.3, delay: sequence ? 0 : delay / 1000 }}
       className={cn("grid text-sm font-normal tracking-tight", className)}
       onAnimationComplete={() => {
@@ -217,22 +220,24 @@ export const Terminal = ({
     <div
       ref={containerRef}
       className={cn(
-        "border border-purple-800/30 bg-gradient-to-br from-neutral-900 to-purple-900/20 z-0 h-full max-h-[600px] w-full max-w-6xl rounded-xl shadow-2xl shadow-purple-900/20 terminal-container gpu-accelerated",
+        "border border-purple-800/30 bg-gradient-to-br from-neutral-900 to-purple-900/20 z-0 max-h-[600px] w-full max-w-6xl rounded-xl shadow-2xl shadow-purple-900/20 terminal-container gpu-accelerated flex flex-col",
         className
       )}
     >
-      <div className="border-b border-purple-800/30 flex flex-col gap-y-2 p-4">
+      <div className="border-b border-purple-800/30 flex flex-col gap-y-2 p-4 flex-shrink-0">
         <div className="flex flex-row gap-x-2">
           <div className="h-2 w-2 rounded-full bg-red-500"></div>
           <div className="h-2 w-2 rounded-full bg-yellow-500"></div>
           <div className="h-2 w-2 rounded-full bg-green-500"></div>
         </div>
       </div>
-      <pre className="p-4">
-        <code className="grid gap-y-1 overflow-auto text-white font-mono">
-          {wrappedChildren}
-        </code>
-      </pre>
+      <div className="overflow-y-auto flex-1 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-neutral-800/50 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-thumb]:bg-purple-700/50 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:border [&::-webkit-scrollbar-thumb]:border-purple-800/30 hover:[&::-webkit-scrollbar-thumb]:bg-purple-600/60">
+        <pre className="p-4">
+          <code className="grid gap-y-1 text-white font-mono">
+            {wrappedChildren}
+          </code>
+        </pre>
+      </div>
     </div>
   )
 

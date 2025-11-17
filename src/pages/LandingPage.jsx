@@ -16,7 +16,8 @@ import Button from "../components/ui/Button";
 import { Card, CardContent } from "../components/ui/Card";
 import BookmarkButton from "../components/ui/BookmarkButton";
 import { HyperText } from "../components/ui/HyperText";
-import SimplePricingCards from "../components/ui/SimplePricingCards";
+import { LayoutTextFlip } from "../components/ui/LayoutTextFlip";
+import PricingCards from "../components/ui/PricingCards";
 import { ROUTES, APP_NAME } from "../config/constants";
 
 // Lazy load heavy components
@@ -162,23 +163,21 @@ const LandingPage = () => {
               <span>Trusted by Government & Enterprise</span>
             </div>
 
-            <h1 className="text-5xl md:text-7xl font-display font-bold text-white mb-6 leading-tight">
-              Secure Your Firmware
-              <br />
-              <HyperText 
-                className="text-5xl md:text-7xl font-display font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent"
-                startOnView={true}
-                delay={500}
-                duration={1000}
-                animateOnHover={true}
-              >
-                Protect Your Future
-              </HyperText>
-            </h1>
+            <div className="flex flex-col items-center gap-4 mb-6">
+              <h1 className="text-5xl md:text-7xl font-display font-bold bg-gradient-to-r from-purple-200 via-white to-purple-200 bg-clip-text text-transparent leading-tight">
+                Analyze the binaries
+              </h1>
+              <div className="flex flex-wrap items-center justify-center gap-4">
+                <LayoutTextFlip
+                  text="Secure your"
+                  words={["firmware", "codebase", "software", "hardware"]}
+                  duration={3000}
+                />
+              </div>
+            </div>
 
-            <p className="text-xl md:text-2xl text-white/80 mb-10 max-w-3xl mx-auto">
-              {APP_NAME} provides enterprise-grade firmware security analysis
-              for government organizations and businesses across India.
+            <p className="text-xl md:text-2xl text-purple-200/70 mb-10 max-w-3xl mx-auto">
+              {APP_NAME} provides enterprise-grade firmware security analysis for government organizations and businesses across India.
             </p>
 
             <div className="flex justify-center items-center">
@@ -279,44 +278,102 @@ const LandingPage = () => {
                 </div>
               </div>
             }>
-              <Terminal className="bg-neutral-900 border-neutral-700 max-w-6xl w-full">
-                <TypingAnimation>&gt; npm install @cypher-ray/security-sdk</TypingAnimation>
+              <Terminal className="bg-neutral-900 border-neutral-700 max-w-5xl w-full h-[500px]">
+                <AnimatedSpan delay={0}>
+                  <span className="text-green-400">mac@macs-MacBook-Pro cypherray-test %<span className="text-white"> npm run scan</span></span> 
+                </AnimatedSpan>
+                <TypingAnimation className="text-purple-400 font-bold">🔍 CypherRay SDK - Firmware Security Scanner</TypingAnimation>
+                <AnimatedSpan className="text-neutral-400">&nbsp;</AnimatedSpan>
+                <AnimatedSpan className="text-neutral-500">
+                  Using actual @cypherray/sdk package
+                </AnimatedSpan>
+                <AnimatedSpan className="text-neutral-400">&nbsp;</AnimatedSpan>
+                <AnimatedSpan className="text-cyan-400">
+                  Phase 1: Scanning for binary files...
+                </AnimatedSpan>
+                <AnimatedSpan className="text-neutral-400">&nbsp;</AnimatedSpan>
                 <AnimatedSpan className="text-green-500">
-                  ✔ Preflight checks.
+                  ✔ Found 2 binary file(s)
+                </AnimatedSpan>
+                <AnimatedSpan className="text-neutral-400 pl-4">
+                  • firmware.bin (33.36 KB)
+                </AnimatedSpan>
+                <AnimatedSpan className="text-neutral-400 pl-4">
+                  • bootloader.bin (32.89 KB)
+                </AnimatedSpan>
+                <AnimatedSpan className="text-neutral-400">&nbsp;</AnimatedSpan>
+                <AnimatedSpan className="text-neutral-400">&nbsp;</AnimatedSpan>
+                <AnimatedSpan className="text-cyan-400">
+                  Phase 2: Analyzing with CypherRay backend...
+                </AnimatedSpan>
+                <AnimatedSpan className="text-neutral-400">&nbsp;</AnimatedSpan>
+                <AnimatedSpan className="text-neutral-500 text-sm">
+                  [SDK Debug] API URL: https://cypher-ray-backend.onrender.com/api/sdk
+                </AnimatedSpan>
+                <AnimatedSpan className="text-neutral-500 text-sm">
+                  [SDK Debug] API Key: SET
                 </AnimatedSpan>
                 <AnimatedSpan className="text-green-500">
-                  ✔ Verifying framework compatibility.
+                  ✔ firmware.bin - Cached (0 credits)
+                </AnimatedSpan>
+                <AnimatedSpan className="text-green-400 pl-6">
+                  ✓ No vulnerabilities found (Risk: 0.0%)
                 </AnimatedSpan>
                 <AnimatedSpan className="text-green-500">
-                  ✔ Validating security configurations.
+                  ✔ bootloader.bin - Cached (0 credits)
+                </AnimatedSpan>
+                <AnimatedSpan className="text-green-400 pl-6">
+                  ✓ No vulnerabilities found (Risk: 0.0%)
+                </AnimatedSpan>
+                <AnimatedSpan className="text-neutral-400">&nbsp;</AnimatedSpan>
+                <AnimatedSpan className="text-neutral-400">&nbsp;</AnimatedSpan>
+                <AnimatedSpan className="text-cyan-400">
+                  Phase 3: Generating report...
+                </AnimatedSpan>
+                <AnimatedSpan className="text-neutral-400">&nbsp;</AnimatedSpan>
+                <AnimatedSpan className="text-neutral-400">&nbsp;</AnimatedSpan>
+                <AnimatedSpan className="text-purple-400 font-bold">
+                  🔍 CypherRay Security Analysis Report
+                </AnimatedSpan>
+                <AnimatedSpan className="text-neutral-400">&nbsp;</AnimatedSpan>
+                <AnimatedSpan className="text-neutral-300">
+                  Summary:
+                </AnimatedSpan>
+                <AnimatedSpan className="text-neutral-400 pl-4">
+                  Total Files Scanned: 2
+                </AnimatedSpan>
+                <AnimatedSpan className="text-neutral-400 pl-4">
+                  Total Size: 0.06 MB
+                </AnimatedSpan>
+                <AnimatedSpan className="text-green-500 pl-4">
+                  Critical Issues: 0
+                </AnimatedSpan>
+                <AnimatedSpan className="text-yellow-500 pl-4">
+                  High Issues: 1
+                </AnimatedSpan>
+                <AnimatedSpan className="text-neutral-400">&nbsp;</AnimatedSpan>
+                <AnimatedSpan className="text-neutral-400">&nbsp;</AnimatedSpan>
+                <AnimatedSpan className="text-neutral-500">
+                  ⠋ Saving JSON report...✓ Report saved to: cypherray-report.json
                 </AnimatedSpan>
                 <AnimatedSpan className="text-green-500">
-                  ✔ Validating API credentials.
+                  ✔ Report saved to cypherray-report.json
                 </AnimatedSpan>
-                <AnimatedSpan className="text-green-500">
-                  ✔ Writing cypher-ray.config.js.
+                <AnimatedSpan className="text-neutral-400">
+                  ✓ Report saved to: cypherray-report.md
                 </AnimatedSpan>
-                <AnimatedSpan className="text-green-500">
-                  ✔ Checking registry.
+                <AnimatedSpan className="text-neutral-400 pl-2">
+                  Markdown report: cypherray-report.md
                 </AnimatedSpan>
-                <AnimatedSpan className="text-green-500">
-                  ✔ Updating security.config.ts
-                </AnimatedSpan>
-                <AnimatedSpan className="text-green-500">
-                  ✔ Updating app/security.css
-                </AnimatedSpan>
-                <AnimatedSpan className="text-green-500">
-                  ✔ Installing dependencies.
-                </AnimatedSpan>
-                <AnimatedSpan className="text-blue-500">
-                  <span>ℹ Updated 3 files:</span>
-                  <span className="pl-2">- lib/security.ts</span>
-                </AnimatedSpan>
-                <TypingAnimation className="text-neutral-400">
-                  Success! Cypher-Ray SDK initialization completed.
+                <AnimatedSpan className="text-neutral-400">&nbsp;</AnimatedSpan>
+
+                <TypingAnimation className="text-green-400 font-bold text-center">
+                  Scan Complete!
                 </TypingAnimation>
-                <TypingAnimation className="text-neutral-400">
-                  You may now start scanning firmware.
+
+                <AnimatedSpan className="text-neutral-400">&nbsp;</AnimatedSpan>
+                <TypingAnimation className="text-green-500">
+                  ✓ Security scan passed!
                 </TypingAnimation>
               </Terminal>
             </Suspense>
@@ -325,25 +382,8 @@ const LandingPage = () => {
       </section>
 
       {/* Pricing Section */}
-      <section className="py-12 relative" style={{ background: 'linear-gradient(135deg, #060010 0%, #0a0015 50%, #060010 100%)' }}>
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="text-center mb-10"
-          >
-            <h2 className="text-3xl md:text-4xl font-display font-bold text-white mb-4">
-              Pricing Plans
-            </h2>
-            <p className="text-lg text-neutral-300 max-w-2xl mx-auto">
-              Choose the tier that fits your organization's security needs
-            </p>
-          </motion.div>
-          
-          <SimplePricingCards plans={pricingPlans} />
-        </div>
+      <section className="relative" style={{ background: 'linear-gradient(135deg, #060010 0%, #0a0015 50%, #060010 100%)' }}>
+        <PricingCards />
       </section>
 
       {/* Separator */}

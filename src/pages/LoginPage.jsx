@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import useAuthStore from "../store/authStore";
 import { authService } from "../services/authService";
 import LoginForm from "../components/ui/LoginForm";
+import BackToHomeButton from "../components/ui/BackToHomeButton";
 import { APP_NAME, ROUTES, USER_TYPES } from "../config/constants";
 
 // Lazy load FloatingLines
@@ -47,6 +48,11 @@ const LoginPage = () => {
       {/* Background Gradient */}
       <div className="absolute inset-0 w-full h-full" style={{ background: 'linear-gradient(135deg, #060010 0%, #0a0015 50%, #060010 100%)' }}></div>
       
+      {/* Back to Home Button - Top Left */}
+      <div className="absolute top-6 left-6 md:top-8 md:left-8 z-20">
+        <BackToHomeButton />
+      </div>
+      
       {/* FloatingLines Background */}
       <div className="absolute inset-0 z-0">
         <Suspense fallback={
@@ -80,19 +86,8 @@ const LoginPage = () => {
       >
         <LoginForm onSubmit={onSubmit} loading={loading} />
         
-        {/* Back to Home */}
-        <div className="mt-6 text-center">
-          <button
-            type="button"
-            onClick={() => navigate(ROUTES.HOME)}
-            className="text-sm text-purple-400 hover:text-purple-300 font-medium transition-colors duration-200"
-          >
-            ← Back to Home
-          </button>
-        </div>
-        
         {/* Footer */}
-        <p className="text-center text-sm text-neutral-400 mt-4">
+        <p className="text-center text-sm text-neutral-400 mt-6">
           © 2025 {APP_NAME}. A Government of India Initiative.
         </p>
       </motion.div>
