@@ -3,7 +3,7 @@ import { cn } from "../../lib/utils";
 import { cva } from "class-variance-authority";
 
 const cardVariants = cva(
-  "rounded-2xl bg-gradient-to-br from-neutral-900/90 to-neutral-900/70 backdrop-blur-xl border shadow-xl transition-all duration-200",
+  "rounded-2xl bg-gradient-to-br from-neutral-900/95 to-neutral-900/80 backdrop-blur-xl border shadow-xl transition-all duration-200",
   {
     variants: {
       variant: {

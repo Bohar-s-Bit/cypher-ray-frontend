@@ -104,13 +104,14 @@ const ProfilePage = () => {
         <title>Profile - {APP_NAME}</title>
       </Helmet>
 
-      <div className="space-y-6">
+      <div className="space-y-8">
         {/* Header */}
-        <div>
-          <h1 className="text-3xl font-bold text-white">
-            Profile
+        <div className="relative">
+          <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-indigo-500/10 blur-3xl -z-10"></div>
+          <h1 className="text-4xl md:text-5xl font-display font-bold bg-gradient-to-r from-white via-purple-200 to-indigo-200 bg-clip-text text-transparent mb-3">
+            Your Profile
           </h1>
-          <p className="text-white/70 mt-2">
+          <p className="text-white/70 text-lg">
             Manage your account information and preferences
           </p>
         </div>
@@ -176,7 +177,7 @@ const ProfilePage = () => {
                 </form>
               ) : (
                 <div className="space-y-4">
-                  <div className="flex items-start gap-3 p-4 bg-gradient-to-r from-neutral-900/60 to-neutral-900/40 backdrop-blur-sm border border-purple-500/20 rounded-xl hover:border-purple-500/40 transition-all">
+                  <div className="flex items-start gap-3 p-4 bg-gradient-to-r from-neutral-900/70 to-neutral-900/50 backdrop-blur-sm border border-purple-500/20 rounded-xl hover:border-purple-500/40 transition-all">
                     <div className="p-2 bg-purple-500/20 rounded-xl border border-purple-500/30">
                       <User className="w-5 h-5 text-purple-400" />
                     </div>
@@ -190,7 +191,7 @@ const ProfilePage = () => {
                     </div>
                   </div>
 
-                  <div className="flex items-start gap-3 p-4 bg-gradient-to-r from-neutral-900/60 to-neutral-900/40 backdrop-blur-sm border border-purple-500/20 rounded-xl hover:border-purple-500/40 transition-all">
+                  <div className="flex items-start gap-3 p-4 bg-gradient-to-r from-neutral-900/70 to-neutral-900/50 backdrop-blur-sm border border-purple-500/20 rounded-xl hover:border-purple-500/40 transition-all">
                     <div className="p-2 bg-purple-500/20 rounded-xl border border-purple-500/30">
                       <Mail className="w-5 h-5 text-purple-400" />
                     </div>
@@ -204,7 +205,7 @@ const ProfilePage = () => {
                     </div>
                   </div>
 
-                  <div className="flex items-start gap-3 p-4 bg-gradient-to-r from-neutral-900/60 to-neutral-900/40 backdrop-blur-sm border border-purple-500/20 rounded-xl hover:border-purple-500/40 transition-all">
+                  <div className="flex items-start gap-3 p-4 bg-gradient-to-r from-neutral-900/70 to-neutral-900/50 backdrop-blur-sm border border-purple-500/20 rounded-xl hover:border-purple-500/40 transition-all">
                     <div className="p-2 bg-purple-500/20 rounded-xl border border-purple-500/30">
                       <Calendar className="w-5 h-5 text-purple-400" />
                     </div>
@@ -227,7 +228,7 @@ const ProfilePage = () => {
                     </div>
                   </div>
 
-                  <div className="flex items-start gap-3 p-4 bg-gradient-to-r from-neutral-900/60 to-neutral-900/40 backdrop-blur-sm border border-purple-500/20 rounded-xl hover:border-purple-500/40 transition-all">
+                  <div className="flex items-start gap-3 p-4 bg-gradient-to-r from-neutral-900/70 to-neutral-900/50 backdrop-blur-sm border border-purple-500/20 rounded-xl hover:border-purple-500/40 transition-all">
                     <div className="p-2 bg-purple-500/20 rounded-xl border border-purple-500/30">
                       <Calendar className="w-5 h-5 text-purple-400" />
                     </div>

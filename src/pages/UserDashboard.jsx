@@ -87,12 +87,13 @@ const UserDashboard = () => {
   return (
     <div className="space-y-8 min-h-screen">
       {/* Header */}
-      <div>
-        <h1 className="text-3xl font-display font-bold text-white">
+      <div className="relative">
+        <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-blue-500/10 blur-3xl -z-10"></div>
+        <h1 className="text-4xl md:text-5xl font-display font-bold bg-gradient-to-r from-white via-purple-200 to-blue-200 bg-clip-text text-transparent mb-3">
           Welcome back, {userData?.username || "User"}!
         </h1>
-        <p className="text-white/80 mt-2 text-base">
-          Here's an overview of your account
+        <p className="text-white/70 text-lg">
+          Here's an overview of your account activity
         </p>
       </div>
 
@@ -159,7 +160,7 @@ const UserDashboard = () => {
               ))}
             </div>
           ) : creditHistory.length > 0 ? (
-            <div className="overflow-x-auto rounded-xl border border-purple-500/20 bg-gradient-to-br from-neutral-900/50 to-neutral-900/30 backdrop-blur-sm">
+            <div className="overflow-x-auto rounded-xl border border-purple-500/20 bg-gradient-to-br from-neutral-900/60 to-neutral-900/40 backdrop-blur-sm">
               <ResizableTableContainer>
                 <Table aria-label="Recent activity table" className="w-full">
                   <TableHeader>

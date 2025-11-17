@@ -140,12 +140,13 @@ const AnalyzePage = () => {
 
       <div className="space-y-8 min-h-screen">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-display font-bold text-white">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div className="relative">
+          <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-cyan-500/10 blur-3xl -z-10"></div>
+          <h1 className="text-4xl md:text-5xl font-display font-bold bg-gradient-to-r from-white via-purple-200 to-cyan-200 bg-clip-text text-transparent mb-3">
             Binary Analysis
           </h1>
-          <p className="text-white/70 mt-2">
+          <p className="text-white/70 text-lg">
             Upload a binary file to analyze for security vulnerabilities
           </p>
         </div>

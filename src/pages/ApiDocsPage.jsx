@@ -11,6 +11,8 @@ import {
   Terminal,
   Eye,
   EyeOff,
+  Calendar,
+  Clock,
 } from "lucide-react";
 import {
   Card,
@@ -25,6 +27,7 @@ import { Modal } from "../components/ui/Modal";
 import Badge from "../components/ui/Badge";
 import CodeBlock from "../components/ui/CodeBlock";
 import CopyButton from "../components/ui/CopyButton";
+import Spinner from "../components/ui/Spinner";
 import { analysisService } from "../services/analysisService";
 import { QUERY_KEYS, API_BASE_URL } from "../config/constants";
 import { format } from "date-fns";
@@ -160,58 +163,108 @@ curl -X GET "${apiUrl}/check-hash?hash=FILE_HASH" \\
 
   return (
     <div className="space-y-8">
-      {/* Header */}
-      <div>
-        <h1 className="text-3xl font-display font-bold text-white">
-          Developer API Documentation
-        </h1>
-        <p className="text-white/70 mt-2">
-          Integrate CypherRay into your applications with our REST API
-        </p>
+      {/* Header Section */}
+      <div className="space-y-6">
+        <div className="relative">
+          <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 via-blue-500/10 to-cyan-500/10 blur-3xl -z-10"></div>
+          <h1 className="text-4xl md:text-5xl font-display font-bold bg-gradient-to-r from-white via-purple-200 to-cyan-200 bg-clip-text text-transparent mb-3">
+            Developer API Documentation
+          </h1>
+          <p className="text-lg text-white/70 max-w-3xl leading-relaxed">
+            Integrate CypherRay's powerful binary analysis capabilities into your applications with our comprehensive REST API
+          </p>
+        </div>
+        
+        {/* Quick Stats */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4">
+          <div className="p-4 bg-gradient-to-br from-purple-500/10 to-purple-600/5 border border-purple-500/20 rounded-xl">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-purple-500/20 rounded-lg">
+                <Key className="w-5 h-5 text-purple-400" />
+              </div>
+              <div>
+                <p className="text-sm text-white/70">Active API Keys</p>
+                <p className="text-xl font-bold text-white">{apiKeys.filter(k => k.isActive).length}</p>
+              </div>
+            </div>
+          </div>
+          <div className="p-4 bg-gradient-to-br from-blue-500/10 to-blue-600/5 border border-blue-500/20 rounded-xl">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-blue-500/20 rounded-lg">
+                <Terminal className="w-5 h-5 text-blue-400" />
+              </div>
+              <div>
+                <p className="text-sm text-white/70">API Endpoints</p>
+                <p className="text-xl font-bold text-white">4</p>
+              </div>
+            </div>
+          </div>
+          <div className="p-4 bg-gradient-to-br from-green-500/10 to-green-600/5 border border-green-500/20 rounded-xl">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-green-500/20 rounded-lg">
+                <Code className="w-5 h-5 text-green-400" />
+              </div>
+              <div>
+                <p className="text-sm text-white/70">Languages Supported</p>
+                <p className="text-xl font-bold text-white">3+</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
-      {/* --- GRID LAYOUT REMOVED --- */}
-      {/* API Keys Card */}
-      <Card>
+      {/* API Keys Section */}
+      <Card variant="elevated">
         <CardHeader>
           <div className="flex items-center justify-between">
             <div>
-              <CardTitle>API Keys</CardTitle>
-              <CardDescription>
-                Manage and revoke API keys for programmatic access
+              <CardTitle className="text-2xl flex items-center gap-3">
+                <div className="p-2 bg-purple-500/20 rounded-xl">
+                  <Key className="w-6 h-6 text-purple-400" />
+                </div>
+                API Keys
+              </CardTitle>
+              <CardDescription className="mt-2">
+                Securely manage your API keys for programmatic access to CypherRay services
               </CardDescription>
             </div>
-            <Button onClick={() => setShowCreateModal(true)}>
+            <Button onClick={() => setShowCreateModal(true)} variant="primary">
               <Plus className="w-4 h-4 mr-2" />
-              Create API Key
+              Create New Key
             </Button>
           </div>
         </CardHeader>
         <CardContent>
           {isLoading ? (
-            <div className="text-center py-8">
-              <p className="text-white/70">
-                Loading...
-              </p>
+            <div className="text-center py-12">
+              <Spinner size="md" />
+              <p className="text-white/70 mt-4">Loading API keys...</p>
             </div>
           ) : apiKeys.length === 0 ? (
-            <div className="text-center py-8">
-              <Key className="w-12 h-12 text-neutral-400 mx-auto mb-4" />
-              <p className="text-white/70 mb-4">
-                No API keys yet. Create one to get started.
+            <div className="text-center py-12 px-6">
+              <div className="w-16 h-16 bg-purple-500/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <Key className="w-8 h-8 text-purple-400" />
+              </div>
+              <h3 className="text-lg font-semibold text-white mb-2">No API Keys Yet</h3>
+              <p className="text-white/70 mb-6 max-w-md mx-auto">
+                Create your first API key to start integrating CypherRay into your applications
               </p>
+              <Button onClick={() => setShowCreateModal(true)} variant="primary">
+                <Plus className="w-4 h-4 mr-2" />
+                Create Your First Key
+              </Button>
             </div>
           ) : (
-            <div className="space-y-4">
+            <div className="grid gap-4">
               {apiKeys.map((key) => (
                 <div
                   key={key._id}
-                  className="p-4 border border-white/10 rounded-lg"
+                  className="p-5 border border-purple-500/20 bg-gradient-to-r from-neutral-900/70 to-neutral-900/50 rounded-xl hover:border-purple-500/40 transition-all"
                 >
                   <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-3 mb-2">
-                        <h4 className="font-medium text-white">
+                    <div className="flex-1 space-y-3">
+                      <div className="flex items-center gap-3">
+                        <h4 className="font-semibold text-white text-lg">
                           {key.name}
                         </h4>
                         <Badge
@@ -221,20 +274,24 @@ curl -X GET "${apiUrl}/check-hash?hash=FILE_HASH" \\
                           {key.isActive ? "Active" : "Revoked"}
                         </Badge>
                       </div>
-                      <div className="flex items-center gap-2 mb-2">
-                        <code className="text-sm bg-white/5 backdrop-blur-sm border border-white/10 px-2 py-1 rounded">
+                      <div className="flex items-center gap-3">
+                        <code className="text-sm bg-black/40 backdrop-blur-sm border border-white/10 px-3 py-1.5 rounded-lg font-mono text-purple-300">
                           {key.keyPreview}
                         </code>
+                        <CopyButton text={key.keyPreview} label="Key Preview" />
                       </div>
-                      <p className="text-sm text-white/70">
-                        Created:{" "}
-                        {format(new Date(key.createdAt), "MMM dd, yyyy")}
-                        {key.expiresAt &&
-                          ` • Expires: ${format(
-                            new Date(key.expiresAt),
-                            "MMM dd, yyyy"
-                          )}`}
-                      </p>
+                      <div className="flex items-center gap-4 text-sm text-white/70">
+                        <span className="flex items-center gap-1.5">
+                          <Calendar className="w-4 h-4" />
+                          Created {format(new Date(key.createdAt), "MMM dd, yyyy")}
+                        </span>
+                        {key.expiresAt && (
+                          <span className="flex items-center gap-1.5">
+                            <Clock className="w-4 h-4" />
+                            Expires {format(new Date(key.expiresAt), "MMM dd, yyyy")}
+                          </span>
+                        )}
+                      </div>
                     </div>
                     {key.isActive && (
                       <Button
@@ -242,8 +299,9 @@ curl -X GET "${apiUrl}/check-hash?hash=FILE_HASH" \\
                         size="sm"
                         onClick={() => handleRevokeKey(key._id)}
                         disabled={revokeKeyMutation.isPending}
+                        className="ml-4"
                       >
-                        <Trash2 className="w-4 h-4 text-error-600" />
+                        <Trash2 className="w-4 h-4 text-red-400" />
                       </Button>
                     )}
                   </div>
@@ -254,70 +312,110 @@ curl -X GET "${apiUrl}/check-hash?hash=FILE_HASH" \\
         </CardContent>
       </Card>
 
-      {/* Getting Started Card */}
-      <Card> {/* <-- Removed h-full */}
+      {/* Getting Started Section */}
+      <Card variant="elevated">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Book className="w-5 h-5" />
+          <CardTitle className="text-2xl flex items-center gap-3">
+            <div className="p-2 bg-blue-500/20 rounded-xl">
+              <Book className="w-6 h-6 text-blue-400" />
+            </div>
             Getting Started
           </CardTitle>
+          <CardDescription className="mt-2">
+            Everything you need to begin using the CypherRay API
+          </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <div>
-            <h3 className="font-semibold text-white mb-2">
+        <CardContent className="space-y-6">
+          {/* API Base URL */}
+          <div className="p-5 bg-gradient-to-r from-neutral-900/70 to-neutral-900/50 border border-purple-500/20 rounded-xl">
+            <h3 className="font-semibold text-white mb-3 flex items-center gap-2">
+              <Terminal className="w-5 h-5 text-purple-400" />
               API Base URL
             </h3>
             <div className="flex items-center gap-2">
-              <code className="flex-1 bg-white/5 backdrop-blur-sm border border-white/10 px-4 py-2 rounded-lg text-sm truncate">
+              <code className="flex-1 bg-black/40 border border-white/10 px-4 py-3 rounded-lg text-sm font-mono text-green-400">
                 {apiUrl}
               </code>
               <CopyButton text={apiUrl} label="API URL" />
             </div>
           </div>
 
-          <div>
-            <h3 className="font-semibold text-white mb-2">
+          {/* Authentication */}
+          <div className="p-5 bg-gradient-to-r from-neutral-900/70 to-neutral-900/50 border border-purple-500/20 rounded-xl">
+            <h3 className="font-semibold text-white mb-3 flex items-center gap-2">
+              <Key className="w-5 h-5 text-purple-400" />
               Authentication
             </h3>
-            <p className="text-neutral-700 dark:text-neutral-300 text-sm mb-2">
-              Include your API key in the request header:
+            <p className="text-white/80 text-sm mb-3">
+              Include your API key in the request header for all API calls:
             </p>
             <CodeBlock
               code="X-API-Key: YOUR_API_KEY"
               language="http"
-              title="Header"
+              title="Request Header"
             />
           </div>
 
-          <div>
-            <h3 className="font-semibold text-white mb-2">
-              Rate Limits
+          {/* Rate Limits */}
+          <div className="p-5 bg-gradient-to-r from-neutral-900/70 to-neutral-900/50 border border-purple-500/20 rounded-xl">
+            <h3 className="font-semibold text-white mb-3 flex items-center gap-2">
+              <Clock className="w-5 h-5 text-purple-400" />
+              Rate Limits & Credits
             </h3>
-            <ul className="text-sm space-y-1 text-neutral-700 dark:text-neutral-300">
-              <li>• Standard: 100 requests per minute</li>
-              <li>• Burst: 20 requests per 10 seconds</li>
-              <li>• Each analysis consumes 1 credit</li>
-            </ul>
+            <div className="grid md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <p className="text-sm font-medium text-white/90">Request Limits</p>
+                <ul className="text-sm space-y-1.5 text-white/70">
+                  <li className="flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 bg-purple-400 rounded-full"></span>
+                    100 requests per minute
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 bg-purple-400 rounded-full"></span>
+                    20 requests per 10 seconds (burst)
+                  </li>
+                </ul>
+              </div>
+              <div className="space-y-2">
+                <p className="text-sm font-medium text-white/90">Credit Usage</p>
+                <ul className="text-sm space-y-1.5 text-white/70">
+                  <li className="flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 bg-purple-400 rounded-full"></span>
+                    1 credit per analysis
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 bg-purple-400 rounded-full"></span>
+                    Cached results are free
+                  </li>
+                </ul>
+              </div>
+            </div>
           </div>
         </CardContent>
       </Card>
-      {/* --- END OF CHANGED SECTION --- */}
 
-      {/* Code Examples with language selector */}
-      <Card>
+      {/* Code Examples Section */}
+      <Card variant="elevated">
         <CardHeader>
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Code className="w-5 h-5" />
-              <CardTitle>Code Examples</CardTitle>
+            <div>
+              <CardTitle className="text-2xl flex items-center gap-3">
+                <div className="p-2 bg-green-500/20 rounded-xl">
+                  <Code className="w-6 h-6 text-green-400" />
+                </div>
+                Code Examples
+              </CardTitle>
+              <CardDescription className="mt-2">
+                Quick start examples in multiple programming languages
+              </CardDescription>
             </div>
             <div className="flex items-center gap-3">
-              <label className="text-sm text-white/70">Language</label>
+              <label className="text-sm font-medium text-white/70">Language:</label>
               <select
                 aria-label="Select code language"
                 value={selectedLang}
                 onChange={(e) => setSelectedLang(e.target.value)}
-                className="px-3 py-2 bg-white dark:bg-neutral-800 border border-white/10 rounded-lg text-sm"
+                className="px-4 py-2 bg-neutral-900/90 border border-purple-500/30 rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-purple-500/50"
               >
                 {codeLanguages.map((lang) => (
                   <option key={lang.key} value={lang.key}>
@@ -329,80 +427,110 @@ curl -X GET "${apiUrl}/check-hash?hash=FILE_HASH" \\
           </div>
         </CardHeader>
         <CardContent>
-          <div className="mb-3 flex items-center justify-between">
-            <div className="text-sm text-neutral-700 dark:text-neutral-300">
-              Example: {codeLanguages.find(l => l.key === selectedLang)?.label}
-            </div>
-            <div>
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <p className="text-sm font-medium text-white/90">
+                {codeLanguages.find(l => l.key === selectedLang)?.label}
+              </p>
               <CopyButton text={examples[selectedLang]} label="Copy code" />
             </div>
+            <CodeBlock
+              code={examples[selectedLang]}
+              language={selectedLang === 'curl' ? 'bash' : selectedLang}
+            />
           </div>
-          <CodeBlock
-            code={examples[selectedLang]}
-            language={selectedLang === 'curl' ? 'bash' : selectedLang}
-          />
         </CardContent>
       </Card>
 
-      {/* API Endpoints */}
-      <Card>
+      {/* API Endpoints Section */}
+      <Card variant="elevated">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Terminal className="w-5 h-5" />
+          <CardTitle className="text-2xl flex items-center gap-3">
+            <div className="p-2 bg-orange-500/20 rounded-xl">
+              <Terminal className="w-6 h-6 text-orange-400" />
+            </div>
             API Endpoints
           </CardTitle>
+          <CardDescription className="mt-2">
+            Complete reference for all available API endpoints
+          </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="space-y-6">
-            <div className="border-b border-white/10 pb-4">
-              <div className="flex items-center gap-2 mb-2">
-                <Badge variant="primary" size="sm">
-                  POST
-                </Badge>
-                <code className="text-sm">/analyze</code>
+          <div className="grid gap-5">
+            {/* POST /analyze */}
+            <div className="p-5 bg-gradient-to-r from-neutral-900/70 to-neutral-900/50 border border-purple-500/20 rounded-xl hover:border-purple-500/40 transition-all">
+              <div className="flex items-start gap-4 mb-3">
+                <Badge variant="primary" className="mt-1">POST</Badge>
+                <div className="flex-1">
+                  <code className="text-base font-semibold text-purple-300">/analyze</code>
+                  <p className="text-sm text-white/80 mt-2">
+                    Upload and analyze a binary file. Returns a job ID that can be used to poll for results.
+                  </p>
+                </div>
               </div>
-              <p className="text-sm text-neutral-700 dark:text-neutral-300">
-                Analyze a single binary file. Returns a job ID for polling
-                results.
-              </p>
+              <div className="mt-4 pt-4 border-t border-white/10">
+                <p className="text-xs font-semibold text-white/70 mb-2">REQUEST PARAMETERS</p>
+                <div className="text-sm text-white/70 space-y-1">
+                  <p><code className="text-purple-300">file</code> - Binary file (multipart/form-data)</p>
+                </div>
+              </div>
             </div>
 
-            <div className="border-b border-white/10 pb-4">
-              <div className="flex items-center gap-2 mb-2">
-                <Badge variant="success" size="sm">
-                  GET
-                </Badge>
-                <code className="text-sm">/results/:jobId</code>
+            {/* GET /results/:jobId */}
+            <div className="p-5 bg-gradient-to-r from-neutral-900/70 to-neutral-900/50 border border-purple-500/20 rounded-xl hover:border-purple-500/40 transition-all">
+              <div className="flex items-start gap-4 mb-3">
+                <Badge variant="success" className="mt-1">GET</Badge>
+                <div className="flex-1">
+                  <code className="text-base font-semibold text-green-300">/results/:jobId</code>
+                  <p className="text-sm text-white/80 mt-2">
+                    Retrieve analysis results for a specific job. Poll this endpoint until the status is 'completed'.
+                  </p>
+                </div>
               </div>
-              <p className="text-sm text-neutral-700 dark:text-neutral-300">
-                Get analysis results for a specific job. Poll this endpoint
-                until status is 'completed'.
-              </p>
+              <div className="mt-4 pt-4 border-t border-white/10">
+                <p className="text-xs font-semibold text-white/70 mb-2">PATH PARAMETERS</p>
+                <div className="text-sm text-white/70 space-y-1">
+                  <p><code className="text-green-300">jobId</code> - Unique job identifier</p>
+                </div>
+              </div>
             </div>
 
-            <div className="border-b border-white/10 pb-4">
-              <div className="flex items-center gap-2 mb-2">
-                <Badge variant="success" size="sm">
-                  GET
-                </Badge>
-                <code className="text-sm">/check-hash?hash=FILE_HASH</code>
+            {/* GET /check-hash */}
+            <div className="p-5 bg-gradient-to-r from-neutral-900/70 to-neutral-900/50 border border-purple-500/20 rounded-xl hover:border-purple-500/40 transition-all">
+              <div className="flex items-start gap-4 mb-3">
+                <Badge variant="success" className="mt-1">GET</Badge>
+                <div className="flex-1">
+                  <code className="text-base font-semibold text-green-300">/check-hash</code>
+                  <p className="text-sm text-white/80 mt-2">
+                    Check if a file hash has already been analyzed (deduplication/caching). Returns cached results if available.
+                  </p>
+                </div>
               </div>
-              <p className="text-sm text-neutral-700 dark:text-neutral-300">
-                Check if a file hash has been analyzed before
-                (deduplication/caching).
-              </p>
+              <div className="mt-4 pt-4 border-t border-white/10">
+                <p className="text-xs font-semibold text-white/70 mb-2">QUERY PARAMETERS</p>
+                <div className="text-sm text-white/70 space-y-1">
+                  <p><code className="text-green-300">hash</code> - SHA-256 hash of the file</p>
+                </div>
+              </div>
             </div>
 
-            <div>
-              <div className="flex items-center gap-2 mb-2">
-                <Badge variant="success" size="sm">
-                  GET
-                </Badge>
-                <code className="text-sm">/credits</code>
+            {/* GET /credits */}
+            <div className="p-5 bg-gradient-to-r from-neutral-900/70 to-neutral-900/50 border border-purple-500/20 rounded-xl hover:border-purple-500/40 transition-all">
+              <div className="flex items-start gap-4 mb-3">
+                <Badge variant="success" className="mt-1">GET</Badge>
+                <div className="flex-1">
+                  <code className="text-base font-semibold text-green-300">/credits</code>
+                  <p className="text-sm text-white/80 mt-2">
+                    Get your current credit balance and detailed usage information.
+                  </p>
+                </div>
               </div>
-              <p className="text-sm text-neutral-700 dark:text-neutral-300">
-                Get current credit balance and usage information.
-              </p>
+              <div className="mt-4 pt-4 border-t border-white/10">
+                <p className="text-xs font-semibold text-white/70 mb-2">RESPONSE</p>
+                <div className="text-sm text-white/70 space-y-1">
+                  <p>Returns remaining credits, total credits, and usage statistics</p>
+                </div>
+              </div>
             </div>
           </div>
         </CardContent>

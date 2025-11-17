@@ -10,6 +10,7 @@ import {
   ArrowUpRight,
   ArrowDownRight,
 } from "lucide-react";
+import { format } from "date-fns";
 import { authService } from "../services/authService";
 import { QUERY_KEYS, APP_NAME, PAGINATION } from "../config/constants";
 import {
@@ -23,6 +24,15 @@ import Badge from "../components/ui/Badge";
 import Button from "../components/ui/Button";
 import Spinner from "../components/ui/Spinner";
 import PlanSelectionModal from "../components/payment/PlanSelectionModal";
+import {
+  ResizableTableContainer,
+  Table,
+  TableHeader,
+  Column,
+  TableBody,
+  Row,
+  Cell,
+} from "../components/ui/Table";
 
 const CreditsPage = () => {
   const [page, setPage] = useState(PAGINATION.DEFAULT_PAGE);
@@ -118,11 +128,12 @@ const CreditsPage = () => {
       <div className="space-y-8">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <div>
-            <h1 className="text-3xl font-bold text-white">
+          <div className="relative">
+            <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-green-500/10 blur-3xl -z-10"></div>
+            <h1 className="text-4xl md:text-5xl font-display font-bold bg-gradient-to-r from-white via-purple-200 to-green-200 bg-clip-text text-transparent mb-3">
               Credits History
             </h1>
-            <p className="text-white/80 mt-2">
+            <p className="text-white/70 text-lg">
               Track your credit transactions and usage
             </p>
           </div>
@@ -220,79 +231,52 @@ const CreditsPage = () => {
             </div>
           ) : (
             <>
-              <div className="divide-y divide-white/10">
-                {transactions.map((transaction) => {
-                  const displayData = getDisplayAmount(transaction);
-                  
-                  return (
-                  <div
-                    key={transaction._id}
-                    className="p-6 hover:bg-neutral-800/50 transition-colors"
-                  >
-                    <div className="flex items-start gap-4">
-                      {/* Icon */}
-                      <div
-                        className={`p-2 rounded-lg ${getTransactionColor(transaction)}`}
-                      >
-                        {getTransactionIcon(transaction)}
-                      </div>
-
-                      {/* Details */}
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-start justify-between gap-4">
-                          <div className="flex-1">
-                            <p className="font-medium text-white">
+              <div className="overflow-x-auto rounded-xl border border-purple-500/20 bg-gradient-to-br from-neutral-900/60 to-neutral-900/40 backdrop-blur-sm">
+                <ResizableTableContainer>
+                  <Table aria-label="Transaction history table" className="w-full">
+                    <TableHeader>
+                      <Column isRowHeader className="text-white/90 text-sm font-semibold">Description</Column>
+                      <Column className="text-white/90 text-sm font-semibold">Type</Column>
+                      <Column className="text-white/90 text-sm font-semibold">Date</Column>
+                      <Column className="text-white/90 text-sm font-semibold">Amount</Column>
+                    </TableHeader>
+                    <TableBody>
+                      {transactions.map((transaction) => {
+                        const displayData = getDisplayAmount(transaction);
+                        
+                        return (
+                          <Row key={transaction._id} className="border-white/10 hover:bg-neutral-800/50">
+                            <Cell className="font-medium text-white text-sm">
                               {transaction.description || "Credit Transaction"}
-                            </p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <Calendar className="w-4 h-4 text-neutral-400" />
-                              <p className="text-sm text-white/70">
-                                {formatDate(transaction.createdAt)}
-                              </p>
-                            </div>
-                          </div>
-
-                          {/* Amount */}
-                          <div className="text-right">
-                            <p
-                              className={`text-xl font-bold ${
-                                displayData.isCredit
-                                  ? "text-green-400"
-                                  : "text-red-400"
-                              }`}
-                            >
+                            </Cell>
+                            <Cell>
+                              <Badge 
+                                variant={displayData.isCredit ? "success" : "error"}
+                                size="sm"
+                              >
+                                {displayData.isCredit ? "Credit" : "Debit"}
+                              </Badge>
+                            </Cell>
+                            <Cell className="text-white/70 text-sm">
+                              {format(
+                                new Date(transaction.createdAt),
+                                "MMM dd, yyyy HH:mm"
+                              )}
+                            </Cell>
+                            <Cell className={`font-semibold text-sm ${displayData.isCredit ? "text-green-400" : "text-red-400"}`}>
                               {displayData.prefix}{displayData.amount}
-                            </p>
-                            <Badge
-                              variant={displayData.isCredit ? "success" : "error"}
-                              className="mt-1"
-                            >
-                              {displayData.isCredit ? "Added" : "Used"}
-                            </Badge>
-                          </div>
-                        </div>
-
-                        {/* Balance After */}
-                        <div className="mt-3 pt-3 border-t border-white/10">
-                          <div className="flex items-center justify-between text-sm">
-                            <span className="text-white/70">
-                              Balance after transaction
-                            </span>
-                            <span className="font-semibold text-white">
-                              {transaction.balanceAfter} credits
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                );
-                })}
+                            </Cell>
+                          </Row>
+                        );
+                      })}
+                    </TableBody>
+                  </Table>
+                </ResizableTableContainer>
               </div>
 
               {/* Pagination */}
               {pagination.totalPages > 1 && (
-                <div className="p-6 border-t border-white/10">
+                <div className="mt-6">
                   <div className="flex items-center justify-between">
                     <p className="text-sm text-white/70">
                       Showing {(pagination.currentPage - 1) * limit + 1} to{" "}
