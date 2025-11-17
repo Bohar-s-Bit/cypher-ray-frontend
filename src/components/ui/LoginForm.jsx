@@ -212,7 +212,7 @@ const LoginForm = ({ onSubmit, loading = false }) => {
               isActive ? 'translate-x-[200%]' : 'translate-x-0'
             }`}
           >
-            <h1 className="text-white text-3xl font-bold mb-6">Hello, Friend!</h1>
+            <h1 className="text-white text-3xl font-bold mb-6">Hello, Explorer!</h1>
             <p className="text-base leading-6 tracking-wide my-6 text-purple-50">
               Don't have access? Request access to use all platform features
             </p>
