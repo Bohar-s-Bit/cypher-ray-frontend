@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Helmet } from "react-helmet-async";
-import toast from "react-hot-toast";
 import {
   CreditCard,
   TrendingUp,
@@ -23,10 +22,12 @@ import {
 import Badge from "../components/ui/Badge";
 import Button from "../components/ui/Button";
 import Spinner from "../components/ui/Spinner";
+import PlanSelectionModal from "../components/payment/PlanSelectionModal";
 
 const CreditsPage = () => {
   const [page, setPage] = useState(PAGINATION.DEFAULT_PAGE);
   const [limit] = useState(20);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
 
   // Fetch user profile to get current credits
   const { data: profileData } = useQuery({
@@ -44,16 +45,16 @@ const CreditsPage = () => {
   const transactions = historyData?.data?.transactions || [];
   const pagination = historyData?.data?.pagination || {};
 
-  // Get credit statistics from user data (not calculated from transactions)
-  const availableCredits = userData?.credits?.remaining || 0;
-  const totalEarned = userData?.credits?.total || 0;
+  // Get credit statistics from user data
+  // Backend uses: credits.remaining, credits.total, credits.used
+  const currentBalance = userData?.credits?.remaining || 0;
+  const totalCredits = userData?.credits?.total || 0;
   const totalSpent = userData?.credits?.used || 0;
 
   const handleAddCredits = () => {
-    toast.success("Razorpay Integration Coming Soon!", {
-      duration: 3000,
-      icon: "🚀",
-    });
+    console.log("🔘 Add Credits button clicked");
+    setShowPaymentModal(true);
+    console.log("✅ Modal state set to true");
   };
 
   const getTransactionIcon = (amount) => {
@@ -86,6 +87,12 @@ const CreditsPage = () => {
         <title>Credits History - {APP_NAME}</title>
       </Helmet>
 
+      {/* Payment Modal */}
+      <PlanSelectionModal
+        isOpen={showPaymentModal}
+        onClose={() => setShowPaymentModal(false)}
+      />
+
       <div className="space-y-6">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -103,46 +110,40 @@ const CreditsPage = () => {
         </div>
 
         {/* Statistics Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Available Credits */}
-          <Card className="p-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Current Balance */}
+          <Card className="p-6 bg-gradient-to-br from-primary-50 to-white dark:from-primary-900/20 dark:to-neutral-800 border-2 border-primary-200 dark:border-primary-700">
             <div className="flex items-start justify-between">
-              <div>
-                <p className="text-sm text-white/70 mb-1">
-                  Available Credits
+              <div className="flex-1">
+                <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-1">
+                  Current Balance
                 </p>
-                <p className="text-3xl font-bold text-white">
-                  {availableCredits}
+                <p className="text-4xl font-bold text-primary-600 dark:text-primary-400 mb-2">
+                  {currentBalance}
                 </p>
-                <p className="text-sm text-white/70 mt-2">
-                  Ready to use
+                <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                  credits available
                 </p>
+                {currentBalance < 50 && (
+                  <div className="mt-3 flex items-center gap-2 text-warning-600 dark:text-warning-400 text-sm">
+                    <TrendingDown className="w-4 h-4" />
+                    <span>Credits running low</span>
+                  </div>
+                )}
               </div>
               <div className="p-3 bg-purple-500/20 rounded-lg">
                 <CreditCard className="w-6 h-6 text-purple-400" />
               </div>
             </div>
-          </Card>
-
-          {/* Credits Earned */}
-          <Card className="p-6">
-            <div className="flex items-start justify-between">
-              <div>
-                <p className="text-sm text-white/70 mb-1">
-                  Credits Earned
-                </p>
-                <p className="text-3xl font-bold text-white">
-                  {totalEarned}
-                </p>
-                <p className="text-sm text-success-600 dark:text-success-400 mt-2 flex items-center gap-1">
-                  <TrendingUp className="w-4 h-4" />
-                  All time
-                </p>
-              </div>
-              <div className="p-3 bg-success-100 dark:bg-success-900/30 rounded-lg">
-                <TrendingUp className="w-6 h-6 text-success-600 dark:text-success-400" />
-              </div>
-            </div>
+            <Button
+              variant="primary"
+              icon={Plus}
+              onClick={handleAddCredits}
+              fullWidth
+              className="mt-4 shadow-lg shadow-primary-500/30"
+            >
+              Add Credits
+            </Button>
           </Card>
 
           {/* Credits Spent */}
@@ -157,7 +158,7 @@ const CreditsPage = () => {
                 </p>
                 <p className="text-sm text-white/70 mt-2 flex items-center gap-1">
                   <TrendingDown className="w-4 h-4" />
-                  This month
+                  Total used
                 </p>
               </div>
               <div className="p-3 bg-error-100 dark:bg-error-900/30 rounded-lg">
@@ -242,7 +243,7 @@ const CreditsPage = () => {
                               }
                               className="mt-1"
                             >
-                              {transaction.amount > 0 ? "credit" : "debit"}
+                              {transaction.amount > 0 ? "Added" : "Used"}
                             </Badge>
                           </div>
                         </div>
