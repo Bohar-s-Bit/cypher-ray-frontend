@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -30,7 +30,12 @@ const createUserSchema = z.object({
 
 const CreateUserPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [selectedTier, setSelectedTier] = React.useState("");
+
+  // Get pre-filled data from location state (from access requests)
+  const prefillData = location.state?.prefillData;
+  const requestId = location.state?.requestId;
 
   const {
     register,
@@ -40,6 +45,8 @@ const CreateUserPage = () => {
   } = useForm({
     resolver: zodResolver(createUserSchema),
     defaultValues: {
+      email: prefillData?.email || "",
+      organizationName: prefillData?.organizationName || "",
       userType: "user",
       tier: "",
     },
@@ -49,8 +56,18 @@ const CreateUserPage = () => {
 
   const createUserMutation = useMutation({
     mutationFn: adminService.createUser,
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       toast.success("User created successfully! Welcome email sent.");
+
+      // If this was from an access request, delete the request
+      if (requestId) {
+        try {
+          await adminService.deleteUser(requestId);
+        } catch (error) {
+          console.error("Failed to delete access request:", error);
+        }
+      }
+
       navigate(ROUTES.ADMIN.USERS);
     },
   });
@@ -305,4 +322,3 @@ const CreateUserPage = () => {
 };
 
 export default CreateUserPage;
-

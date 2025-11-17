@@ -47,4 +47,12 @@ export const adminService = {
     const response = await axiosInstance.get(ENDPOINTS.PLATFORM_STATS);
     return response.data;
   },
+
+  // Get pending access requests
+  getAccessRequests: async (params) => {
+    const response = await axiosInstance.get(ENDPOINTS.GET_ACCESS_REQUESTS, {
+      params,
+    });
+    return response.data;
+  },
 };

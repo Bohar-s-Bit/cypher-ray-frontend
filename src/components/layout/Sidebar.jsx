@@ -13,6 +13,7 @@ import {
   CreditCard,
   Search,
   Code2,
+  UserCog,
 } from "lucide-react";
 import useUIStore from "../../store/uiStore";
 import useAuthStore from "../../store/authStore";
@@ -81,6 +82,12 @@ const Sidebar = () => {
       icon: Users,
       path: ROUTES.ADMIN.USERS,
       end: true, // Exact match only
+    },
+    {
+      label: "Access Requests",
+      icon: UserCog,
+      path: ROUTES.ADMIN.ACCESS_REQUESTS,
+      end: true,
     },
     {
       label: "Create User",

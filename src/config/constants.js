@@ -82,6 +82,7 @@ export const ROUTES = {
   ADMIN: {
     DASHBOARD: "/admin/dashboard",
     USERS: "/admin/users",
+    ACCESS_REQUESTS: "/admin/access-requests",
     CREATE_USER: "/admin/users/create",
     USER_DETAILS: "/admin/users/:userId",
     STATS: "/admin/stats",
@@ -93,6 +94,7 @@ export const QUERY_KEYS = {
   USER_PROFILE: "user_profile",
   CREDIT_HISTORY: "credit_history",
   USERS_LIST: "users_list",
+  ACCESS_REQUESTS: "access_requests",
   USER_DETAILS: "user_details",
   PLATFORM_STATS: "platform_stats",
   PAYMENT_PLANS: "payment_plans",
@@ -114,6 +116,7 @@ export const ENDPOINTS = {
   CHANGE_PASSWORD: "/user/password/change",
   REQUEST_PASSWORD_OTP: "/user/password/request-otp",
   VERIFY_PASSWORD_OTP: "/user/password/verify-otp",
+  REQUEST_ACCESS: "/user/request-access",
   CREDIT_HISTORY: "/user/credits/history",
   USER_ANALYZE: "/user/analyze",
   USER_JOB_RESULT: "/user/analyze/:jobId",
@@ -125,6 +128,7 @@ export const ENDPOINTS = {
   // Admin
   CREATE_USER: "/admin/users/create",
   GET_USERS: "/admin/users",
+  GET_ACCESS_REQUESTS: "/admin/access-requests",
   GET_USER_DETAILS: "/admin/users/:userId",
   UPDATE_USER_CREDITS: "/admin/users/:userId/credits",
   UPDATE_USER_STATUS: "/admin/users/:userId/status",
