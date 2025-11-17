@@ -118,8 +118,8 @@ const CreditsPage = () => {
                   Ready to use
                 </p>
               </div>
-              <div className="p-3 bg-primary-100 dark:bg-primary-900/30 rounded-lg">
-                <CreditCard className="w-6 h-6 text-primary-600 dark:text-primary-400" />
+              <div className="p-3 bg-purple-500/20 rounded-lg">
+                <CreditCard className="w-6 h-6 text-purple-400" />
               </div>
             </div>
           </Card>
@@ -306,4 +306,5 @@ const CreditsPage = () => {
 };
 
 export default CreditsPage;
+
 

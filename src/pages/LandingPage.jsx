@@ -69,7 +69,7 @@ const LandingPage = () => {
       title: "Advanced Security Analysis",
       description:
         "Comprehensive firmware security scanning with cutting-edge threat detection",
-      color: "text-primary-500 dark:text-primary-400",
+      color: "text-purple-400",
       bgColor: "bg-primary-50 dark:bg-primary-900/30",
     },
     {
@@ -98,8 +98,8 @@ const LandingPage = () => {
       icon: Users,
       title: "Multi-tenant Platform",
       description: "Secure, isolated environments for multiple organizations",
-      color: "text-primary-600 dark:text-primary-400",
-      bgColor: "bg-primary-100 dark:bg-primary-900/30",
+      color: "text-purple-400",
+      bgColor: "bg-purple-500/20",
     },
     {
       icon: Zap,
@@ -441,4 +441,5 @@ const LandingPage = () => {
 };
 
 export default LandingPage;
+
 

@@ -102,8 +102,8 @@ const SettingsPage = () => {
         {/* Security Settings */}
         <Card className="p-6">
           <div className="flex items-center gap-3 mb-6">
-            <div className="p-2 bg-primary-100 dark:bg-primary-900/30 rounded-lg">
-              <Lock className="w-6 h-6 text-primary-600 dark:text-primary-400" />
+            <div className="p-2 bg-purple-500/20 rounded-lg">
+              <Lock className="w-6 h-6 text-purple-400" />
             </div>
             <div>
               <h2 className="text-xl font-semibold text-white">
@@ -117,8 +117,8 @@ const SettingsPage = () => {
 
           {/* Change Password Form */}
           <form onSubmit={handlePasswordSubmit} className="space-y-4">
-            <div className="p-4 bg-primary-50 dark:bg-primary-900/20 border border-primary-200 dark:border-primary-800/50 rounded-lg flex gap-3">
-              <AlertCircle className="w-5 h-5 text-primary-600 dark:text-primary-400 flex-shrink-0 mt-0.5" />
+            <div className="p-4 bg-purple-500/20 border border-purple-500/30 rounded-lg flex gap-3">
+              <AlertCircle className="w-5 h-5 text-purple-400 flex-shrink-0 mt-0.5" />
               <div className="text-sm text-neutral-700 dark:text-neutral-300">
                 <p className="font-semibold mb-1 text-white">
                   Password Requirements:
@@ -192,7 +192,7 @@ const SettingsPage = () => {
             <input
               type="checkbox"
               defaultChecked
-              className="w-5 h-5 text-primary-600 bg-neutral-100 border-neutral-300 rounded focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-neutral-800 focus:ring-2 dark:bg-neutral-700 dark:border-neutral-600"
+              className="w-5 h-5 text-purple-600 bg-neutral-100 border-neutral-300 rounded focus:ring-purple-500 dark:ring-offset-neutral-800 focus:ring-2 dark:bg-neutral-700 dark:border-neutral-600"
             />
           </div>
 
@@ -208,7 +208,7 @@ const SettingsPage = () => {
             <input
               type="checkbox"
               defaultChecked
-              className="w-5 h-5 text-primary-600 bg-neutral-100 border-neutral-300 rounded focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-neutral-800 focus:ring-2 dark:bg-neutral-700 dark:border-neutral-600"
+              className="w-5 h-5 text-purple-600 bg-neutral-100 border-neutral-300 rounded focus:ring-purple-500 dark:ring-offset-neutral-800 focus:ring-2 dark:bg-neutral-700 dark:border-neutral-600"
             />
           </div>
 
@@ -224,7 +224,7 @@ const SettingsPage = () => {
             <input
               type="checkbox"
               defaultChecked
-              className="w-5 h-5 text-primary-600 bg-neutral-100 border-neutral-300 rounded focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-neutral-800 focus:ring-2 dark:bg-neutral-700 dark:border-neutral-600"
+              className="w-5 h-5 text-purple-600 bg-neutral-100 border-neutral-300 rounded focus:ring-purple-500 dark:ring-offset-neutral-800 focus:ring-2 dark:bg-neutral-700 dark:border-neutral-600"
             />
           </div>
         </div>
@@ -232,8 +232,8 @@ const SettingsPage = () => {
         {/* Account Information */}
         <Card className="p-6">
           <div className="flex items-center gap-3 mb-6">
-            <div className="p-2 bg-primary-100 dark:bg-primary-900/30 rounded-lg">
-              <Shield className="w-6 h-6 text-primary-600 dark:text-primary-400" />
+            <div className="p-2 bg-purple-500/20 rounded-lg">
+              <Shield className="w-6 h-6 text-purple-400" />
             </div>
             <div>
               <h2 className="text-xl font-semibold text-white">
@@ -280,4 +280,5 @@ const SettingsPage = () => {
 };
 
 export default SettingsPage;
+
 

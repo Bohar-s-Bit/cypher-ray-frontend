@@ -137,7 +137,7 @@ const ResultsPage = () => {
               Analysis Results
             </h1>
             {(hasActiveJobs && isFetching) && (
-              <div className="flex items-center gap-1 text-sm text-primary-600 dark:text-primary-400">
+              <div className="flex items-center gap-1 text-sm text-purple-400">
                 <Spinner size="sm" />
                 <span>Updating...</span>
               </div>
@@ -292,4 +292,5 @@ const ResultsPage = () => {
 };
 
 export default ResultsPage;
+
 

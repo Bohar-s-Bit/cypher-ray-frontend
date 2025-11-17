@@ -288,7 +288,7 @@ const ResultDetailPage = () => {
                         key={index}
                         className="flex items-start gap-3 text-neutral-700 dark:text-neutral-300"
                       >
-                        <TrendingUp className="w-5 h-5 text-primary-600 dark:text-primary-400 flex-shrink-0 mt-0.5" />
+                        <TrendingUp className="w-5 h-5 text-purple-400 flex-shrink-0 mt-0.5" />
                         <span>{rec}</span>
                       </li>
                     )
@@ -414,4 +414,5 @@ const ResultDetailPage = () => {
 };
 
 export default ResultDetailPage;
+
 

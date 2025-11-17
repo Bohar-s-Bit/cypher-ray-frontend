@@ -67,7 +67,7 @@ const AdminDashboard = () => {
           </p>
           <p className="text-sm text-white/70">
             Users:{" "}
-            <span className="font-bold text-primary-400">
+            <span className="font-bold text-purple-400">
               {payload[0].value}
             </span>
           </p>
@@ -89,8 +89,8 @@ const AdminDashboard = () => {
       title: "Total Users",
       value: stats?.totalUsers || 0,
       icon: Users,
-      color: "text-primary-600 dark:text-primary-400",
-      bgColor: "bg-primary-50 dark:bg-primary-900/20",
+      color: "text-purple-400",
+      bgColor: "bg-purple-500/20",
       changeType: "increase",
     },
     {
@@ -128,8 +128,8 @@ const AdminDashboard = () => {
       title: "Credits Remaining",
       value: stats?.credits?.totalCreditsRemaining || 0,
       icon: Activity,
-      color: "text-primary-500 dark:text-primary-400",
-      bgColor: "bg-primary-100 dark:bg-primary-900/30",
+      color: "text-purple-400",
+      bgColor: "bg-purple-500/20",
     },
   ];
 
@@ -195,7 +195,7 @@ const AdminDashboard = () => {
         <CardContent className="bg-black/20 backdrop-blur-sm border-white/10">
           {isLoading ? (
             <div className="h-64 flex items-center justify-center">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600 dark:border-primary-400"></div>
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-400"></div>
             </div>
           ) : (
             <div className="space-y-6">
@@ -270,4 +270,5 @@ const AdminDashboard = () => {
 };
 
 export default AdminDashboard;
+
 

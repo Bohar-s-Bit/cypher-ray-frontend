@@ -12,7 +12,7 @@ const Spinner = ({ size = "md", className }) => {
   return (
     <svg
       className={cn(
-        "animate-spin text-primary-400",
+        "animate-spin text-purple-400",
         sizeClasses[size],
         className
       )}

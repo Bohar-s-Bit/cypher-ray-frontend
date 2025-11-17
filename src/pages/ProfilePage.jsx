@@ -177,8 +177,8 @@ const ProfilePage = () => {
               ) : (
                 <div className="space-y-4">
                   <div className="flex items-start gap-3 p-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg">
-                    <div className="p-2 bg-primary-100 dark:bg-primary-900/30 rounded-lg">
-                      <User className="w-5 h-5 text-primary-600 dark:text-primary-400" />
+                    <div className="p-2 bg-purple-500/20 rounded-lg">
+                      <User className="w-5 h-5 text-purple-400" />
                     </div>
                     <div className="flex-1">
                       <p className="text-sm text-white/70">
@@ -191,8 +191,8 @@ const ProfilePage = () => {
                   </div>
 
                   <div className="flex items-start gap-3 p-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg">
-                    <div className="p-2 bg-primary-100 dark:bg-primary-900/30 rounded-lg">
-                      <Mail className="w-5 h-5 text-primary-600 dark:text-primary-400" />
+                    <div className="p-2 bg-purple-500/20 rounded-lg">
+                      <Mail className="w-5 h-5 text-purple-400" />
                     </div>
                     <div className="flex-1">
                       <p className="text-sm text-white/70">
@@ -205,8 +205,8 @@ const ProfilePage = () => {
                   </div>
 
                   <div className="flex items-start gap-3 p-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg">
-                    <div className="p-2 bg-primary-100 dark:bg-primary-900/30 rounded-lg">
-                      <Calendar className="w-5 h-5 text-primary-600 dark:text-primary-400" />
+                    <div className="p-2 bg-purple-500/20 rounded-lg">
+                      <Calendar className="w-5 h-5 text-purple-400" />
                     </div>
                     <div className="flex-1">
                       <p className="text-sm text-white/70">
@@ -228,8 +228,8 @@ const ProfilePage = () => {
                   </div>
 
                   <div className="flex items-start gap-3 p-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg">
-                    <div className="p-2 bg-primary-100 dark:bg-primary-900/30 rounded-lg">
-                      <Calendar className="w-5 h-5 text-primary-600 dark:text-primary-400" />
+                    <div className="p-2 bg-purple-500/20 rounded-lg">
+                      <Calendar className="w-5 h-5 text-purple-400" />
                     </div>
                     <div className="flex-1">
                       <p className="text-sm text-white/70">
@@ -281,8 +281,8 @@ const ProfilePage = () => {
             {/* Subscription Tier */}
             <Card className="p-6">
               <div className="flex items-center gap-3 mb-4">
-                <div className="p-2 bg-primary-100 dark:bg-primary-900/30 rounded-lg">
-                  <CreditCard className="w-5 h-5 text-primary-600 dark:text-primary-400" />
+                <div className="p-2 bg-purple-500/20 rounded-lg">
+                  <CreditCard className="w-5 h-5 text-purple-400" />
                 </div>
                 <div>
                   <h3 className="font-semibold text-white">
@@ -294,7 +294,7 @@ const ProfilePage = () => {
               {tierInfo ? (
                 <div className="space-y-3">
                   <div className="p-4 bg-gradient-to-br from-primary-50 to-primary-100 dark:from-primary-900/20 dark:to-primary-800/20 rounded-lg border border-primary-200 dark:border-primary-800">
-                    <p className="text-2xl font-bold text-primary-600 dark:text-primary-400">
+                    <p className="text-2xl font-bold text-purple-400">
                       {tierInfo.name}
                     </p>
                     <p className="text-sm text-white/70 mt-1">
@@ -306,7 +306,7 @@ const ProfilePage = () => {
                     <ul className="space-y-1">
                       {tierInfo.features.map((feature, index) => (
                         <li key={index} className="flex items-start gap-2">
-                          <span className="text-primary-600 dark:text-primary-400 mt-0.5">
+                          <span className="text-purple-400 mt-0.5">
                             •
                           </span>
                           {feature}
@@ -370,4 +370,5 @@ const ProfilePage = () => {
 };
 
 export default ProfilePage;
+
 

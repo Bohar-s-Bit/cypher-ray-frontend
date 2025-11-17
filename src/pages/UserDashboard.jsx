@@ -47,8 +47,8 @@ const UserDashboard = () => {
       title: "Current Tier",
       value: userData?.tier || "Loading...",
       icon: Trophy,
-      bgColor: "bg-primary-50 dark:bg-primary-900/20",
-      color: "text-primary-600 dark:text-primary-400",
+      bgColor: "bg-purple-500/20",
+      color: "text-purple-400",
       isString: true,
     },
     {
@@ -196,4 +196,5 @@ const UserDashboard = () => {
 };
 
 export default UserDashboard;
+
 
