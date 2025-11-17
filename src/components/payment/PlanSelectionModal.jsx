@@ -132,6 +132,43 @@ const PlanSelectionModal = ({ isOpen, onClose }) => {
         theme: {
           color: "#3B82F6", // Primary blue
         },
+        config: {
+          display: {
+            blocks: {
+              banks: {
+                name: "Pay using bank account",
+                instruments: [
+                  {
+                    method: "netbanking",
+                  },
+                  {
+                    method: "upi",
+                  },
+                ],
+              },
+              card: {
+                name: "Pay using card",
+                instruments: [
+                  {
+                    method: "card",
+                  },
+                ],
+              },
+              wallet: {
+                name: "Pay using wallet",
+                instruments: [
+                  {
+                    method: "wallet",
+                  },
+                ],
+              },
+            },
+            sequence: ["block.card", "block.banks", "block.wallet"],
+            preferences: {
+              show_default_blocks: false, // Disable Pay Later
+            },
+          },
+        },
         notes: {
           userId: user?._id,
           planId: selectedPlan.id,
