@@ -164,7 +164,7 @@ const LandingPage = () => {
             </div>
 
             <div className="flex flex-col items-center gap-4 mb-6">
-              <h1 className="text-5xl md:text-7xl font-display font-bold text-white leading-tight">
+              <h1 className="text-5xl md:text-7xl font-display font-bold bg-gradient-to-r from-purple-200 via-white to-purple-200 bg-clip-text text-transparent leading-tight">
                 Analyze the binaries
               </h1>
               <div className="flex flex-wrap items-center justify-center gap-4">
@@ -176,7 +176,7 @@ const LandingPage = () => {
               </div>
             </div>
 
-            <p className="text-xl md:text-2xl text-white/60 mb-10 max-w-3xl mx-auto">
+            <p className="text-xl md:text-2xl text-purple-200/70 mb-10 max-w-3xl mx-auto">
               {APP_NAME} provides enterprise-grade firmware security analysis for government organizations and businesses across India.
             </p>
 
