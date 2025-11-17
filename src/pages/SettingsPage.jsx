@@ -11,6 +11,7 @@ import {
   AlertCircle,
 } from "lucide-react"; // COMMENTED OUT - Theme icons disabled
 import { authService } from "../services/authService";
+import OTPModal from "../components/auth/OTPModal";
 // import useUIStore from "../store/uiStore"; // COMMENTED OUT - Theme toggle disabled
 import { APP_NAME } from "../config/constants";
 import {
@@ -30,12 +31,28 @@ const SettingsPage = () => {
     newPassword: "",
     confirmPassword: "",
   });
+  const [showOTPModal, setShowOTPModal] = useState(false);
+  const [userEmail, setUserEmail] = useState("");
 
-  // Change password mutation
-  const changePasswordMutation = useMutation({
-    mutationFn: authService.changePassword,
+  // Request OTP mutation
+  const requestOTPMutation = useMutation({
+    mutationFn: authService.requestPasswordOTP,
+    onSuccess: (data) => {
+      toast.success("OTP sent to your email!");
+      setUserEmail(data.email || "your email");
+      setShowOTPModal(true);
+    },
+    onError: (error) => {
+      toast.error(error.response?.data?.message || "Failed to send OTP");
+    },
+  });
+
+  // Verify OTP and change password mutation
+  const verifyOTPMutation = useMutation({
+    mutationFn: authService.verifyOTPAndChangePassword,
     onSuccess: () => {
       toast.success("Password changed successfully!");
+      setShowOTPModal(false);
       setPasswordData({
         currentPassword: "",
         newPassword: "",
@@ -43,7 +60,7 @@ const SettingsPage = () => {
       });
     },
     onError: (error) => {
-      toast.error(error.response?.data?.message || "Failed to change password");
+      toast.error(error.response?.data?.message || "Failed to verify OTP");
     },
   });
 
@@ -68,10 +85,25 @@ const SettingsPage = () => {
       return;
     }
 
-    changePasswordMutation.mutate({
+    // Request OTP
+    requestOTPMutation.mutate({
       currentPassword: passwordData.currentPassword,
       newPassword: passwordData.newPassword,
     });
+  };
+
+  const handleVerifyOTP = (otp) => {
+    verifyOTPMutation.mutate({
+      currentPassword: passwordData.currentPassword,
+      newPassword: passwordData.newPassword,
+      otp,
+    });
+  };
+
+  const handleCloseModal = () => {
+    if (!verifyOTPMutation.isLoading) {
+      setShowOTPModal(false);
+    }
   };
 
   // COMMENTED OUT - Theme toggle functionality disabled
@@ -168,7 +200,7 @@ const SettingsPage = () => {
             <div className="pt-4">
               <Button
                 type="submit"
-                loading={changePasswordMutation.isLoading}
+                loading={requestOTPMutation.isLoading}
                 icon={Shield}
               >
                 Change Password
@@ -274,6 +306,15 @@ const SettingsPage = () => {
             </div>
           </div>
         </Card>
+
+        {/* OTP Modal */}
+        <OTPModal
+          isOpen={showOTPModal}
+          onClose={handleCloseModal}
+          onVerify={handleVerifyOTP}
+          email={userEmail}
+          isLoading={verifyOTPMutation.isLoading}
+        />
       </div>
     </>
   );

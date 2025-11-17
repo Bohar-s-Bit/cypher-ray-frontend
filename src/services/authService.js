@@ -38,6 +38,24 @@ export const authService = {
     return response.data;
   },
 
+  // Request password change OTP
+  requestPasswordOTP: async (data) => {
+    const response = await axiosInstance.post(
+      ENDPOINTS.REQUEST_PASSWORD_OTP,
+      data
+    );
+    return response.data;
+  },
+
+  // Verify OTP and change password
+  verifyOTPAndChangePassword: async (data) => {
+    const response = await axiosInstance.put(
+      ENDPOINTS.VERIFY_PASSWORD_OTP,
+      data
+    );
+    return response.data;
+  },
+
   // Get credit history
   getCreditHistory: async (params) => {
     const response = await axiosInstance.get(ENDPOINTS.CREDIT_HISTORY, {

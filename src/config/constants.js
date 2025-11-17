@@ -112,6 +112,8 @@ export const ENDPOINTS = {
   USER_PROFILE: "/user/profile",
   UPDATE_PROFILE: "/user/profile",
   CHANGE_PASSWORD: "/user/password/change",
+  REQUEST_PASSWORD_OTP: "/user/password/request-otp",
+  VERIFY_PASSWORD_OTP: "/user/password/verify-otp",
   CREDIT_HISTORY: "/user/credits/history",
   USER_ANALYZE: "/user/analyze",
   USER_JOB_RESULT: "/user/analyze/:jobId",
