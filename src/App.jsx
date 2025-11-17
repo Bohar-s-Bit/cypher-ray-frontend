@@ -14,6 +14,8 @@ import { ErrorBoundary } from "react-error-boundary";
 import useAuthStore from "./store/authStore";
 import useUIStore from "./store/uiStore";
 
+// Contexts
+import { AnalysisProvider } from "./contexts/AnalysisContext";
 // Performance Monitoring
 import PerformanceMonitor from "./components/ui/PerformanceMonitor";
 
@@ -35,6 +37,10 @@ import UserDashboard from "./pages/UserDashboard";
 import ProfilePage from "./pages/ProfilePage";
 import SettingsPage from "./pages/SettingsPage";
 import CreditsPage from "./pages/CreditsPage";
+import AnalyzePage from "./pages/AnalyzePage";
+import ResultsPage from "./pages/ResultsPage";
+import ResultDetailPage from "./pages/ResultDetailPage";
+import ApiDocsPage from "./pages/ApiDocsPage";
 import AdminDashboard from "./pages/AdminDashboard";
 import UsersListPage from "./pages/admin/UsersListPage";
 import CreateUserPage from "./pages/admin/CreateUserPage";
@@ -104,7 +110,8 @@ function App() {
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       <HelmetProvider>
         <QueryClientProvider client={queryClient}>
-          <Router>
+          <AnalysisProvider>
+            <Router>
             <Routes>
               {/* Public Routes */}
               <Route element={<PublicLayout />}>
@@ -139,6 +146,10 @@ function App() {
                 <Route path="profile" element={<ProfilePage />} />
                 <Route path="settings" element={<SettingsPage />} />
                 <Route path="credits" element={<CreditsPage />} />
+                <Route path="analyze" element={<AnalyzePage />} />
+                <Route path="results" element={<ResultsPage />} />
+                <Route path="results/:jobId" element={<ResultDetailPage />} />
+                <Route path="api-docs" element={<ApiDocsPage />} />
               </Route>
 
               {/* Protected Admin Routes */}
@@ -164,6 +175,7 @@ function App() {
               <Route path="*" element={<Navigate to={ROUTES.HOME} replace />} />
             </Routes>
           </Router>
+          </AnalysisProvider>
 
           {/* Toast Notifications - Dark Mode Only */}
           <Toaster

@@ -3,9 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import {
   CreditCard,
-  TrendingUp,
   Activity,
-  Clock,
   Trophy,
   Shield,
 } from "lucide-react";
@@ -21,7 +19,7 @@ import {
 } from "../components/ui/Card";
 import Badge from "../components/ui/Badge";
 import { StatCardSkeleton } from "../components/ui/Skeleton";
-import { QUERY_KEYS, TIERS } from "../config/constants";
+import { QUERY_KEYS } from "../config/constants";
 import { formatNumber } from "../lib/utils";
 
 const UserDashboard = () => {
@@ -49,8 +47,8 @@ const UserDashboard = () => {
       title: "Current Tier",
       value: userData?.tier || "Loading...",
       icon: Trophy,
-      bgColor: "bg-primary-50 dark:bg-primary-900/20",
-      color: "text-primary-600 dark:text-primary-400",
+      bgColor: "bg-purple-500/20",
+      color: "text-purple-400",
       isString: true,
     },
     {
@@ -78,13 +76,13 @@ const UserDashboard = () => {
   ];
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 min-h-screen">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-display font-bold text-neutral-900 dark:text-white">
+        <h1 className="text-3xl font-display font-bold text-white">
           Welcome back, {userData?.username || "User"}!
         </h1>
-        <p className="text-neutral-600 dark:text-neutral-400 mt-2">
+        <p className="text-white/70 mt-2">
           Here's an overview of your account
         </p>
       </div>
@@ -108,7 +106,7 @@ const UserDashboard = () => {
                 transition={{ delay: index * 0.1 }}
               >
                 <Card>
-                  <CardContent className="p-6">
+                  <CardContent className="p-6 bg-black/20 backdrop-blur-sm border-white/10">
                     <div className="flex items-center justify-between mb-4">
                       <div className={`p-3 rounded-lg ${stat.bgColor}`}>
                         <Icon className={`w-6 h-6 ${stat.color}`} />
@@ -119,10 +117,10 @@ const UserDashboard = () => {
                         </Badge>
                       )}
                     </div>
-                    <div className="text-3xl font-bold text-neutral-900 dark:text-white mb-1">
+                    <div className="text-3xl font-bold text-white mb-1">
                       {stat.isString ? stat.value : formatNumber(stat.value)}
                     </div>
-                    <div className="text-sm text-neutral-600 dark:text-neutral-400">
+                    <div className="text-sm text-white/70">
                       {stat.title}
                     </div>
                   </CardContent>
@@ -136,16 +134,16 @@ const UserDashboard = () => {
       {/* Recent Credit History */}
       <Card>
         <CardHeader>
-          <CardTitle>Recent Activity</CardTitle>
-          <CardDescription>Your latest credit transactions</CardDescription>
+          <CardTitle className="text-white">Recent Activity</CardTitle>
+          <CardDescription className="text-white/70">Your latest credit transactions</CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="bg-black/20 backdrop-blur-sm border-white/10">
           {historyLoading ? (
             <div className="space-y-3">
               {[...Array(5)].map((_, i) => (
                 <div
                   key={i}
-                  className="h-16 bg-neutral-100 dark:bg-neutral-800 rounded-lg animate-pulse"
+                  className="h-16 bg-white/5 backdrop-blur-sm rounded-lg animate-pulse border border-white/10"
                 ></div>
               ))}
             </div>
@@ -154,13 +152,13 @@ const UserDashboard = () => {
               {creditHistory.slice(0, 5).map((transaction) => (
                 <div
                   key={transaction._id}
-                  className="flex items-center justify-between p-3 bg-neutral-50 dark:bg-neutral-800 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-700 transition-colors"
+                  className="flex items-center justify-between p-3 bg-white/5 backdrop-blur-sm rounded-lg hover:bg-white/10 transition-colors border border-white/10"
                 >
                   <div>
-                    <p className="font-medium text-neutral-900 dark:text-white">
+                    <p className="font-medium text-white">
                       {transaction.description}
                     </p>
-                    <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                    <p className="text-sm text-white/70">
                       {format(
                         new Date(transaction.createdAt),
                         "MMM dd, yyyy HH:mm"
@@ -171,14 +169,14 @@ const UserDashboard = () => {
                     <p
                       className={`font-semibold ${
                         transaction.amount >= 0
-                          ? "text-success-600 dark:text-success-400"
-                          : "text-error-600 dark:text-error-400"
+                          ? "text-success-400"
+                          : "text-error-400"
                       }`}
                     >
                       {transaction.amount >= 0 ? "+" : ""}
                       {transaction.amount}
                     </p>
-                    <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                    <p className="text-sm text-white/70">
                       Balance: {transaction.balanceAfter}
                     </p>
                   </div>
@@ -186,7 +184,7 @@ const UserDashboard = () => {
               ))}
             </div>
           ) : (
-            <div className="text-center py-8 text-neutral-500 dark:text-neutral-400">
+            <div className="text-center py-8 text-white/70">
               <Activity className="w-12 h-12 mx-auto mb-3 opacity-50" />
               <p>No recent activity</p>
             </div>
@@ -198,3 +196,5 @@ const UserDashboard = () => {
 };
 
 export default UserDashboard;
+
+

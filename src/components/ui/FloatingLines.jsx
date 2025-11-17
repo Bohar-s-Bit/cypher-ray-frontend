@@ -208,6 +208,10 @@ void main() {
 const MAX_GRADIENT_STOPS = 8;
 
 function hexToVec3(hex) {
+  if (!hex || typeof hex !== 'string') {
+    return new Vector3(1.0, 1.0, 1.0); // Default to white
+  }
+  
   let value = hex.trim();
 
   if (value.startsWith('#')) {
@@ -296,7 +300,11 @@ export default function FloatingLines({
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     renderer.domElement.style.width = '100%';
     renderer.domElement.style.height = '100%';
-    containerRef.current.appendChild(renderer.domElement);
+    
+    // Ensure container is still available before appending
+    if (containerRef.current) {
+      containerRef.current.appendChild(renderer.domElement);
+    }
 
     const uniforms = {
       iTime: { value: 0 },
@@ -353,8 +361,9 @@ export default function FloatingLines({
       const stops = linesGradient.slice(0, MAX_GRADIENT_STOPS);
       uniforms.lineGradientCount.value = stops.length;
 
-      stops.forEach((hex, i) => {
-        const color = hexToVec3(hex);
+      stops.forEach((stop, i) => {
+        const colorHex = typeof stop === 'string' ? stop : stop.color;
+        const color = hexToVec3(colorHex);
         uniforms.lineGradient.value[i].set(color.x, color.y, color.z);
       });
     }
@@ -373,6 +382,8 @@ export default function FloatingLines({
 
     const setSize = () => {
       const el = containerRef.current;
+      if (!el) return;
+      
       const width = el.clientWidth || 1;
       const height = el.clientHeight || 1;
 
@@ -385,7 +396,11 @@ export default function FloatingLines({
 
     setSize();
 
-    const ro = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(setSize) : null;
+    const ro = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(() => {
+      if (containerRef.current) {
+        setSize();
+      }
+    }) : null;
 
     if (ro && containerRef.current) {
       ro.observe(containerRef.current);
@@ -442,21 +457,23 @@ export default function FloatingLines({
 
     return () => {
       cancelAnimationFrame(raf);
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      if (ro && containerRef.current) {
+      
+      if (ro) {
         ro.disconnect();
       }
 
-      if (interactive) {
+      if (interactive && renderer.domElement) {
         renderer.domElement.removeEventListener('pointermove', handlePointerMove);
         renderer.domElement.removeEventListener('pointerleave', handlePointerLeave);
       }
 
-      geometry.dispose();
-      material.dispose();
-      renderer.dispose();
-      if (renderer.domElement.parentElement) {
-        renderer.domElement.parentElement.removeChild(renderer.domElement);
+      if (geometry) geometry.dispose();
+      if (material) material.dispose();
+      if (renderer) {
+        renderer.dispose();
+        if (renderer.domElement && renderer.domElement.parentElement) {
+          renderer.domElement.parentElement.removeChild(renderer.domElement);
+        }
       }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps

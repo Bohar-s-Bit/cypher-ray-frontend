@@ -22,7 +22,6 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-import useAuthStore from "../store/authStore";
 import { adminService } from "../services/adminService";
 import {
   Card,
@@ -31,7 +30,6 @@ import {
   CardDescription,
   CardContent,
 } from "../components/ui/Card";
-import Badge from "../components/ui/Badge";
 import { StatCardSkeleton } from "../components/ui/Skeleton";
 import { QUERY_KEYS } from "../config/constants";
 import { formatNumber } from "../lib/utils";
@@ -60,21 +58,20 @@ const AdminDashboard = () => {
     },
   ];
 
-  // Custom tooltip for charts
   const CustomTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
       return (
-        <div className="bg-white dark:bg-neutral-800 p-3 border border-neutral-200 dark:border-neutral-700 rounded-lg shadow-lg">
-          <p className="font-semibold text-neutral-900 dark:text-white">
+        <div className="bg-black/80 backdrop-blur-sm p-3 border border-white/20 rounded-lg shadow-lg">
+          <p className="font-semibold text-white">
             {payload[0].name}
           </p>
-          <p className="text-sm text-neutral-600 dark:text-neutral-400">
+          <p className="text-sm text-white/70">
             Users:{" "}
-            <span className="font-bold text-primary-600 dark:text-primary-400">
+            <span className="font-bold text-purple-400">
               {payload[0].value}
             </span>
           </p>
-          <p className="text-xs text-neutral-500 dark:text-neutral-500 mt-1">
+          <p className="text-xs text-white/50 mt-1">
             {stats?.totalUsers > 0
               ? `${((payload[0].value / stats.totalUsers) * 100).toFixed(
                   1
@@ -92,8 +89,8 @@ const AdminDashboard = () => {
       title: "Total Users",
       value: stats?.totalUsers || 0,
       icon: Users,
-      color: "text-primary-600 dark:text-primary-400",
-      bgColor: "bg-primary-50 dark:bg-primary-900/20",
+      color: "text-purple-400",
+      bgColor: "bg-purple-500/20",
       changeType: "increase",
     },
     {
@@ -131,19 +128,19 @@ const AdminDashboard = () => {
       title: "Credits Remaining",
       value: stats?.credits?.totalCreditsRemaining || 0,
       icon: Activity,
-      color: "text-primary-500 dark:text-primary-400",
-      bgColor: "bg-primary-100 dark:bg-primary-900/30",
+      color: "text-purple-400",
+      bgColor: "bg-purple-500/20",
     },
   ];
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 min-h-screen">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-display font-bold text-neutral-900 dark:text-white">
+        <h1 className="text-3xl font-display font-bold text-white">
           Admin Dashboard
         </h1>
-        <p className="text-neutral-600 dark:text-neutral-400 mt-2">
+        <p className="text-white/70 mt-2">
           Platform overview and statistics
         </p>
       </div>
@@ -167,16 +164,16 @@ const AdminDashboard = () => {
                 transition={{ delay: index * 0.1 }}
               >
                 <Card>
-                  <CardContent className="p-6">
+                  <CardContent className="p-6 bg-black/20 backdrop-blur-sm border-white/10">
                     <div className="flex items-center justify-between mb-4">
                       <div className={`p-3 rounded-lg ${stat.bgColor}`}>
                         <Icon className={`w-6 h-6 ${stat.color}`} />
                       </div>
                     </div>
-                    <div className="text-3xl font-bold text-neutral-900 dark:text-white mb-1">
+                    <div className="text-3xl font-bold text-white mb-1">
                       {formatNumber(stat.value)}
                     </div>
-                    <div className="text-sm text-neutral-600 dark:text-neutral-400">
+                    <div className="text-sm text-white/70">
                       {stat.title}
                     </div>
                   </CardContent>
@@ -190,15 +187,15 @@ const AdminDashboard = () => {
       {/* Tier Distribution Chart */}
       <Card>
         <CardHeader>
-          <CardTitle>User Distribution by Tier</CardTitle>
-          <CardDescription>
+          <CardTitle className="text-white">User Distribution by Tier</CardTitle>
+          <CardDescription className="text-white/70">
             Visual breakdown of users across different tiers
           </CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="bg-black/20 backdrop-blur-sm border-white/10">
           {isLoading ? (
             <div className="h-64 flex items-center justify-center">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600 dark:border-primary-400"></div>
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-400"></div>
             </div>
           ) : (
             <div className="space-y-6">
@@ -238,23 +235,23 @@ const AdminDashboard = () => {
               </div>
 
               {/* Summary Stats */}
-              <div className="grid grid-cols-2 gap-4 pt-4 border-t border-neutral-200 dark:border-neutral-700">
+              <div className="grid grid-cols-2 gap-4 pt-4 border-t border-white/10">
                 {tierChartData.map((tier, index) => (
                   <div
                     key={index}
-                    className="text-center p-3 bg-neutral-50 dark:bg-neutral-800 rounded-lg"
+                    className="text-center p-3 bg-white/5 backdrop-blur-sm rounded-lg border border-white/10"
                   >
                     <div
                       className="w-3 h-3 rounded-full mx-auto mb-2"
                       style={{ backgroundColor: tier.fill }}
                     ></div>
-                    <div className="text-2xl font-bold text-neutral-900 dark:text-white">
+                    <div className="text-2xl font-bold text-white">
                       {formatNumber(tier.users)}
                     </div>
-                    <div className="text-xs text-neutral-600 dark:text-neutral-400 mt-1">
+                    <div className="text-xs text-white/70 mt-1">
                       {tier.name} Users
                     </div>
-                    <div className="text-xs text-neutral-500 dark:text-neutral-500 mt-1">
+                    <div className="text-xs text-white/50 mt-1">
                       {stats?.totalUsers > 0
                         ? `${((tier.users / stats.totalUsers) * 100).toFixed(
                             1
@@ -273,3 +270,5 @@ const AdminDashboard = () => {
 };
 
 export default AdminDashboard;
+
+
