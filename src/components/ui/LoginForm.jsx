@@ -249,19 +249,6 @@ const LoginForm = ({ onSubmit, loading = false }) => {
           Request Access
         </button>
       </div>
-
-      <style jsx>{`
-        @keyframes move {
-          0%, 49.99% {
-            opacity: 0;
-            z-index: 1;
-          }
-          50%, 100% {
-            opacity: 1;
-            z-index: 5;
-          }
-        }
-      `}</style>
     </div>
   );
 };

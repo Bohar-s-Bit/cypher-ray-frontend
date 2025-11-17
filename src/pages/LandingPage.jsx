@@ -170,7 +170,7 @@ const LandingPage = () => {
               <div className="flex flex-wrap items-center justify-center gap-4">
                 <LayoutTextFlip
                   text="Secure your"
-                  words={["firmware", "IoT devices", "embedded systems", "hardware"]}
+                  words={["firmware", "codebase", "software", "hardware"]}
                   duration={3000}
                 />
               </div>
@@ -278,44 +278,102 @@ const LandingPage = () => {
                 </div>
               </div>
             }>
-              <Terminal className="bg-neutral-900 border-neutral-700 max-w-6xl w-full">
-                <TypingAnimation>&gt; npm install @cypher-ray/security-sdk</TypingAnimation>
+              <Terminal className="bg-neutral-900 border-neutral-700 max-w-5xl w-full h-[500px]">
+                <AnimatedSpan delay={0}>
+                  <span className="text-green-400">mac@macs-MacBook-Pro cypherray-test %<span className="text-white"> npm run scan</span></span> 
+                </AnimatedSpan>
+                <TypingAnimation className="text-purple-400 font-bold">🔍 CypherRay SDK - Firmware Security Scanner</TypingAnimation>
+                <AnimatedSpan className="text-neutral-400">&nbsp;</AnimatedSpan>
+                <AnimatedSpan className="text-neutral-500">
+                  Using actual @cypherray/sdk package
+                </AnimatedSpan>
+                <AnimatedSpan className="text-neutral-400">&nbsp;</AnimatedSpan>
+                <AnimatedSpan className="text-cyan-400">
+                  Phase 1: Scanning for binary files...
+                </AnimatedSpan>
+                <AnimatedSpan className="text-neutral-400">&nbsp;</AnimatedSpan>
                 <AnimatedSpan className="text-green-500">
-                  ✔ Preflight checks.
+                  ✔ Found 2 binary file(s)
+                </AnimatedSpan>
+                <AnimatedSpan className="text-neutral-400 pl-4">
+                  • firmware.bin (33.36 KB)
+                </AnimatedSpan>
+                <AnimatedSpan className="text-neutral-400 pl-4">
+                  • bootloader.bin (32.89 KB)
+                </AnimatedSpan>
+                <AnimatedSpan className="text-neutral-400">&nbsp;</AnimatedSpan>
+                <AnimatedSpan className="text-neutral-400">&nbsp;</AnimatedSpan>
+                <AnimatedSpan className="text-cyan-400">
+                  Phase 2: Analyzing with CypherRay backend...
+                </AnimatedSpan>
+                <AnimatedSpan className="text-neutral-400">&nbsp;</AnimatedSpan>
+                <AnimatedSpan className="text-neutral-500 text-sm">
+                  [SDK Debug] API URL: https://cypher-ray-backend.onrender.com/api/sdk
+                </AnimatedSpan>
+                <AnimatedSpan className="text-neutral-500 text-sm">
+                  [SDK Debug] API Key: SET
                 </AnimatedSpan>
                 <AnimatedSpan className="text-green-500">
-                  ✔ Verifying framework compatibility.
+                  ✔ firmware.bin - Cached (0 credits)
+                </AnimatedSpan>
+                <AnimatedSpan className="text-green-400 pl-6">
+                  ✓ No vulnerabilities found (Risk: 0.0%)
                 </AnimatedSpan>
                 <AnimatedSpan className="text-green-500">
-                  ✔ Validating security configurations.
+                  ✔ bootloader.bin - Cached (0 credits)
+                </AnimatedSpan>
+                <AnimatedSpan className="text-green-400 pl-6">
+                  ✓ No vulnerabilities found (Risk: 0.0%)
+                </AnimatedSpan>
+                <AnimatedSpan className="text-neutral-400">&nbsp;</AnimatedSpan>
+                <AnimatedSpan className="text-neutral-400">&nbsp;</AnimatedSpan>
+                <AnimatedSpan className="text-cyan-400">
+                  Phase 3: Generating report...
+                </AnimatedSpan>
+                <AnimatedSpan className="text-neutral-400">&nbsp;</AnimatedSpan>
+                <AnimatedSpan className="text-neutral-400">&nbsp;</AnimatedSpan>
+                <AnimatedSpan className="text-purple-400 font-bold">
+                  🔍 CypherRay Security Analysis Report
+                </AnimatedSpan>
+                <AnimatedSpan className="text-neutral-400">&nbsp;</AnimatedSpan>
+                <AnimatedSpan className="text-neutral-300">
+                  Summary:
+                </AnimatedSpan>
+                <AnimatedSpan className="text-neutral-400 pl-4">
+                  Total Files Scanned: 2
+                </AnimatedSpan>
+                <AnimatedSpan className="text-neutral-400 pl-4">
+                  Total Size: 0.06 MB
+                </AnimatedSpan>
+                <AnimatedSpan className="text-green-500 pl-4">
+                  Critical Issues: 0
+                </AnimatedSpan>
+                <AnimatedSpan className="text-yellow-500 pl-4">
+                  High Issues: 1
+                </AnimatedSpan>
+                <AnimatedSpan className="text-neutral-400">&nbsp;</AnimatedSpan>
+                <AnimatedSpan className="text-neutral-400">&nbsp;</AnimatedSpan>
+                <AnimatedSpan className="text-neutral-500">
+                  ⠋ Saving JSON report...✓ Report saved to: cypherray-report.json
                 </AnimatedSpan>
                 <AnimatedSpan className="text-green-500">
-                  ✔ Validating API credentials.
+                  ✔ Report saved to cypherray-report.json
                 </AnimatedSpan>
-                <AnimatedSpan className="text-green-500">
-                  ✔ Writing cypher-ray.config.js.
+                <AnimatedSpan className="text-neutral-400">
+                  ✓ Report saved to: cypherray-report.md
                 </AnimatedSpan>
-                <AnimatedSpan className="text-green-500">
-                  ✔ Checking registry.
+                <AnimatedSpan className="text-neutral-400 pl-2">
+                  Markdown report: cypherray-report.md
                 </AnimatedSpan>
-                <AnimatedSpan className="text-green-500">
-                  ✔ Updating security.config.ts
-                </AnimatedSpan>
-                <AnimatedSpan className="text-green-500">
-                  ✔ Updating app/security.css
-                </AnimatedSpan>
-                <AnimatedSpan className="text-green-500">
-                  ✔ Installing dependencies.
-                </AnimatedSpan>
-                <AnimatedSpan className="text-blue-500">
-                  <span>ℹ Updated 3 files:</span>
-                  <span className="pl-2">- lib/security.ts</span>
-                </AnimatedSpan>
-                <TypingAnimation className="text-neutral-400">
-                  Success! Cypher-Ray SDK initialization completed.
+                <AnimatedSpan className="text-neutral-400">&nbsp;</AnimatedSpan>
+
+                <TypingAnimation className="text-green-400 font-bold text-center">
+                  Scan Complete!
                 </TypingAnimation>
-                <TypingAnimation className="text-neutral-400">
-                  You may now start scanning firmware.
+
+                <AnimatedSpan className="text-neutral-400">&nbsp;</AnimatedSpan>
+                <TypingAnimation className="text-green-500">
+                  ✓ Security scan passed!
                 </TypingAnimation>
               </Terminal>
             </Suspense>
