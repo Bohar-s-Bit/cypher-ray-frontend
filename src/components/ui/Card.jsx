@@ -3,13 +3,13 @@ import { cn } from "../../lib/utils";
 import { cva } from "class-variance-authority";
 
 const cardVariants = cva(
-  "rounded-xl bg-white dark:bg-neutral-800 transition-all duration-200",
+  "rounded-xl bg-black/20 backdrop-blur-sm border-white/10 transition-all duration-200",
   {
     variants: {
       variant: {
-        default: "border border-neutral-200 dark:border-neutral-700",
-        elevated: "shadow-lg dark:shadow-neutral-900/50",
-        outline: "border-2 border-neutral-200 dark:border-neutral-700",
+        default: "border border-white/10",
+        elevated: "shadow-lg shadow-black/50",
+        outline: "border-2 border-white/20",
       },
       padding: {
         none: "",
@@ -18,7 +18,7 @@ const cardVariants = cva(
         lg: "p-8",
       },
       hoverable: {
-        true: "hover:shadow-lg dark:hover:shadow-neutral-900/50 cursor-pointer",
+        true: "hover:shadow-lg hover:shadow-purple-500/20 hover:border-white/20 cursor-pointer",
       },
     },
     defaultVariants: {
@@ -58,7 +58,7 @@ const CardTitle = ({ className, children, ...props }) => {
   return (
     <h3
       className={cn(
-        "text-2xl font-semibold leading-none tracking-tight text-neutral-900 dark:text-white",
+        "text-2xl font-semibold leading-none tracking-tight text-white",
         className
       )}
       {...props}
@@ -72,7 +72,7 @@ const CardDescription = ({ className, children, ...props }) => {
   return (
     <p
       className={cn(
-        "text-sm text-neutral-600 dark:text-neutral-400",
+        "text-sm text-white/70",
         className
       )}
       {...props}
@@ -106,3 +106,4 @@ export {
   CardContent,
   CardFooter,
 };
+

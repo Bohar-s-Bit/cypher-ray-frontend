@@ -36,7 +36,7 @@ const CopyButton = ({ text, label, className, size = "md" }) => {
     <button
       onClick={copyToClipboard}
       className={cn(
-        "rounded-lg bg-neutral-100 dark:bg-neutral-700 hover:bg-neutral-200 dark:hover:bg-neutral-600 transition-colors",
+        "rounded-lg bg-white/10 backdrop-blur-sm hover:bg-white/20 transition-colors border border-white/10",
         sizeClasses[size],
         className
       )}
@@ -44,12 +44,12 @@ const CopyButton = ({ text, label, className, size = "md" }) => {
     >
       {copied ? (
         <Check
-          className={cn("text-green-600 dark:text-green-400", iconSizes[size])}
+          className={cn("text-green-400", iconSizes[size])}
         />
       ) : (
         <Copy
           className={cn(
-            "text-neutral-600 dark:text-neutral-300",
+            "text-white/70",
             iconSizes[size]
           )}
         />
@@ -59,3 +59,4 @@ const CopyButton = ({ text, label, className, size = "md" }) => {
 };
 
 export default CopyButton;
+

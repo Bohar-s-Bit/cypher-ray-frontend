@@ -133,11 +133,11 @@ const ResultsPage = () => {
       <div className="flex items-center justify-between">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-3xl font-display font-bold text-neutral-900 dark:text-white">
+            <h1 className="text-3xl font-display font-bold text-white">
               Analysis Results
             </h1>
             {(hasActiveJobs && isFetching) && (
-              <div className="flex items-center gap-1 text-sm text-primary-600 dark:text-primary-400">
+              <div className="flex items-center gap-1 text-sm text-purple-400">
                 <Spinner size="sm" />
                 <span>Updating...</span>
               </div>
@@ -149,7 +149,7 @@ const ResultsPage = () => {
               </div>
             )}
           </div>
-          <p className="text-neutral-600 dark:text-neutral-400 mt-2">
+          <p className="text-white/70 mt-2">
             View your analysis history and detailed results
           </p>
         </div>
@@ -188,10 +188,10 @@ const ResultsPage = () => {
         <Card>
           <CardContent className="p-12 text-center">
             <FileText className="w-16 h-16 text-neutral-400 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-neutral-900 dark:text-white mb-2">
+            <h3 className="text-xl font-semibold text-white mb-2">
               No Results Found
             </h3>
-            <p className="text-neutral-600 dark:text-neutral-400 mb-6">
+            <p className="text-white/70 mb-6">
               {filter === "all"
                 ? "You haven't analyzed any files yet."
                 : `No ${filter} analyses found.`}
@@ -213,13 +213,13 @@ const ResultsPage = () => {
                 <CardContent className="p-6">
                   <div className="flex items-start justify-between">
                     <div className="flex items-start gap-4 flex-1">
-                      <div className="p-3 bg-neutral-100 dark:bg-neutral-800 rounded-lg">
+                      <div className="p-3 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg">
                         {getStatusIcon(job.status)}
                       </div>
 
                       <div className="flex-1">
                         <div className="flex items-center gap-3 mb-2">
-                          <h3 className="text-lg font-semibold text-neutral-900 dark:text-white">
+                          <h3 className="text-lg font-semibold text-white">
                             {job.filename}
                           </h3>
                           {getStatusBadge(job.status)}
@@ -228,7 +228,7 @@ const ResultsPage = () => {
                             getSeverityBadge(job.severity)}
                         </div>
 
-                        <div className="flex items-center gap-4 text-sm text-neutral-600 dark:text-neutral-400">
+                        <div className="flex items-center gap-4 text-sm text-white/70">
                           <div className="flex items-center gap-1">
                             <Calendar className="w-4 h-4" />
                             <span>
@@ -292,3 +292,5 @@ const ResultsPage = () => {
 };
 
 export default ResultsPage;
+
+

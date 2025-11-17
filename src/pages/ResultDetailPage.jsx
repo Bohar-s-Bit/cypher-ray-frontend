@@ -47,10 +47,10 @@ const ResultDetailPage = () => {
   if (error || !data?.data?.job) {
     return (
       <div className="text-center py-12">
-        <h2 className="text-2xl font-bold text-neutral-900 dark:text-white mb-4">
+        <h2 className="text-2xl font-bold text-white mb-4">
           Result Not Found
         </h2>
-        <p className="text-neutral-600 dark:text-neutral-400 mb-6">
+        <p className="text-white/70 mb-6">
           The analysis result you're looking for doesn't exist or has been
           deleted.
         </p>
@@ -79,10 +79,10 @@ const ResultDetailPage = () => {
       </div>
 
       <div>
-        <h1 className="text-3xl font-display font-bold text-neutral-900 dark:text-white">
+        <h1 className="text-3xl font-display font-bold text-white">
           {job.filename}
         </h1>
-        <p className="text-neutral-600 dark:text-neutral-400 mt-2">
+        <p className="text-white/70 mt-2">
           Analyzed on{" "}
           {format(new Date(job.createdAt), "MMMM dd, yyyy 'at' HH:mm")}
         </p>
@@ -107,10 +107,10 @@ const ResultDetailPage = () => {
                 )}
               </div>
               <div>
-                <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                <p className="text-sm text-white/70">
                   Status
                 </p>
-                <p className="text-lg font-bold text-neutral-900 dark:text-white">
+                <p className="text-lg font-bold text-white">
                   {results?.vulnerability_assessment?.has_vulnerabilities
                     ? "Vulnerabilities Found"
                     : "Secure"}
@@ -143,10 +143,10 @@ const ResultDetailPage = () => {
                 />
               </div>
               <div>
-                <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                <p className="text-sm text-white/70">
                   Severity
                 </p>
-                <p className="text-lg font-bold text-neutral-900 dark:text-white">
+                <p className="text-lg font-bold text-white">
                   {results?.vulnerability_assessment?.severity || "Low"}
                 </p>
               </div>
@@ -161,10 +161,10 @@ const ResultDetailPage = () => {
                 <Clock className="w-6 h-6 text-secondary-600 dark:text-secondary-400" />
               </div>
               <div>
-                <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                <p className="text-sm text-white/70">
                   Processing Time
                 </p>
-                <p className="text-lg font-bold text-neutral-900 dark:text-white">
+                <p className="text-lg font-bold text-white">
                   {job.completedAt && job.startedAt
                     ? `${Math.round(
                         (new Date(job.completedAt) - new Date(job.startedAt)) /
@@ -187,34 +187,34 @@ const ResultDetailPage = () => {
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                <p className="text-sm text-white/70">
                   File Type
                 </p>
-                <p className="font-medium text-neutral-900 dark:text-white">
+                <p className="font-medium text-white">
                   {results.file_metadata.file_type || "Unknown"}
                 </p>
               </div>
               <div>
-                <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                <p className="text-sm text-white/70">
                   Size
                 </p>
-                <p className="font-medium text-neutral-900 dark:text-white">
+                <p className="font-medium text-white">
                   {(results.file_metadata.size_bytes / 1024).toFixed(2)} KB
                 </p>
               </div>
               <div>
-                <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                <p className="text-sm text-white/70">
                   MD5
                 </p>
-                <p className="font-mono text-xs text-neutral-900 dark:text-white break-all">
+                <p className="font-mono text-xs text-white break-all">
                   {results.file_metadata.md5}
                 </p>
               </div>
               <div>
-                <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                <p className="text-sm text-white/70">
                   SHA-256
                 </p>
-                <p className="font-mono text-xs text-neutral-900 dark:text-white break-all">
+                <p className="font-mono text-xs text-white break-all">
                   {results.file_metadata.sha256}
                 </p>
               </div>
@@ -236,7 +236,7 @@ const ResultDetailPage = () => {
           {results?.vulnerability_assessment?.vulnerabilities &&
             results.vulnerability_assessment.vulnerabilities.length > 0 && (
               <div>
-                <h3 className="text-lg font-semibold text-neutral-900 dark:text-white mb-4">
+                <h3 className="text-lg font-semibold text-white mb-4">
                   Vulnerabilities Detected (
                   {results.vulnerability_assessment.vulnerabilities.length})
                 </h3>
@@ -263,10 +263,10 @@ const ResultDetailPage = () => {
           {/* Overall Assessment */}
           {results?.overall_assessment && (
             <div>
-              <h3 className="text-lg font-semibold text-neutral-900 dark:text-white mb-3">
+              <h3 className="text-lg font-semibold text-white mb-3">
                 Overall Assessment
               </h3>
-              <div className="p-4 bg-neutral-50 dark:bg-neutral-800 rounded-lg">
+              <div className="p-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg">
                 <p className="text-neutral-700 dark:text-neutral-300 whitespace-pre-wrap">
                   {results.overall_assessment}
                 </p>
@@ -278,7 +278,7 @@ const ResultDetailPage = () => {
           {results?.vulnerability_assessment?.recommendations &&
             results.vulnerability_assessment.recommendations.length > 0 && (
               <div>
-                <h3 className="text-lg font-semibold text-neutral-900 dark:text-white mb-3">
+                <h3 className="text-lg font-semibold text-white mb-3">
                   Security Recommendations
                 </h3>
                 <ul className="space-y-2">
@@ -288,7 +288,7 @@ const ResultDetailPage = () => {
                         key={index}
                         className="flex items-start gap-3 text-neutral-700 dark:text-neutral-300"
                       >
-                        <TrendingUp className="w-5 h-5 text-primary-600 dark:text-primary-400 flex-shrink-0 mt-0.5" />
+                        <TrendingUp className="w-5 h-5 text-purple-400 flex-shrink-0 mt-0.5" />
                         <span>{rec}</span>
                       </li>
                     )
@@ -301,17 +301,17 @@ const ResultDetailPage = () => {
           {results?.detected_algorithms &&
             results.detected_algorithms.length > 0 && (
               <div>
-                <h3 className="text-lg font-semibold text-neutral-900 dark:text-white mb-3">
+                <h3 className="text-lg font-semibold text-white mb-3">
                   Detected Cryptographic Algorithms
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   {results.detected_algorithms.map((algo, index) => (
                     <div
                       key={index}
-                      className="p-4 border border-neutral-200 dark:border-neutral-700 rounded-lg"
+                      className="p-4 border border-white/10 rounded-lg"
                     >
                       <div className="flex items-center justify-between mb-2">
-                        <h4 className="font-medium text-neutral-900 dark:text-white flex items-center gap-2">
+                        <h4 className="font-medium text-white flex items-center gap-2">
                           <Code className="w-4 h-4" />
                           {algo.algorithm_name}
                         </h4>
@@ -319,11 +319,11 @@ const ResultDetailPage = () => {
                           {Math.round(algo.confidence_score * 100)}% confidence
                         </Badge>
                       </div>
-                      <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                      <p className="text-sm text-white/70">
                         {algo.algorithm_class}
                       </p>
                       {algo.structural_signature && (
-                        <p className="text-xs text-neutral-500 dark:text-neutral-500 mt-1">
+                        <p className="text-xs text-white/50 mt-1">
                           Pattern: {algo.structural_signature}
                         </p>
                       )}
@@ -337,17 +337,17 @@ const ResultDetailPage = () => {
           {results?.function_analyses &&
             results.function_analyses.length > 0 && (
               <div>
-                <h3 className="text-lg font-semibold text-neutral-900 dark:text-white mb-3">
+                <h3 className="text-lg font-semibold text-white mb-3">
                   Function Analysis
                 </h3>
                 <div className="space-y-3">
                   {results.function_analyses.map((func, index) => (
                     <div
                       key={index}
-                      className="p-4 border border-neutral-200 dark:border-neutral-700 rounded-lg"
+                      className="p-4 border border-white/10 rounded-lg"
                     >
                       <div className="flex items-center justify-between mb-2">
-                        <h4 className="font-mono text-sm font-medium text-neutral-900 dark:text-white">
+                        <h4 className="font-mono text-sm font-medium text-white">
                           {func.function_name}
                         </h4>
                         <div className="flex items-center gap-2">
@@ -369,7 +369,7 @@ const ResultDetailPage = () => {
                           {func.semantic_tags.map((tag, i) => (
                             <span
                               key={i}
-                              className="px-2 py-0.5 text-xs bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400 rounded"
+                              className="px-2 py-0.5 text-xs bg-white/5 backdrop-blur-sm border border-white/10 text-white/70 rounded"
                             >
                               {tag}
                             </span>
@@ -385,10 +385,10 @@ const ResultDetailPage = () => {
           {/* XAI Explanation */}
           {results?.xai_explanation && (
             <div>
-              <h3 className="text-lg font-semibold text-neutral-900 dark:text-white mb-3">
+              <h3 className="text-lg font-semibold text-white mb-3">
                 AI Analysis Explanation
               </h3>
-              <div className="p-4 bg-neutral-50 dark:bg-neutral-800 rounded-lg">
+              <div className="p-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg">
                 <p className="text-sm text-neutral-700 dark:text-neutral-300 whitespace-pre-wrap">
                   {results.xai_explanation}
                 </p>
@@ -414,3 +414,5 @@ const ResultDetailPage = () => {
 };
 
 export default ResultDetailPage;
+
+

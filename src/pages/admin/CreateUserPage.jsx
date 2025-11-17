@@ -129,7 +129,7 @@ const CreateUserPage = () => {
                   <label
                     className={`relative flex flex-col items-center justify-center p-6 border-2 rounded-xl cursor-pointer transition-all ${
                       userType === "user"
-                        ? "border-primary-500 bg-primary-50 dark:bg-primary-900/20"
+                        ? "border-primary-500 bg-purple-500/20"
                         : "border-neutral-200 dark:border-neutral-700 hover:border-neutral-300 dark:hover:border-neutral-600"
                     }`}
                   >
@@ -142,7 +142,7 @@ const CreateUserPage = () => {
                     <UserPlus
                       className={`w-8 h-8 mb-2 ${
                         userType === "user"
-                          ? "text-primary-600 dark:text-primary-400"
+                          ? "text-purple-400"
                           : "text-neutral-400 dark:text-neutral-500"
                       }`}
                     />
@@ -213,7 +213,7 @@ const CreateUserPage = () => {
                         key={tier.value}
                         className={`relative flex flex-col p-6 border-2 rounded-xl cursor-pointer transition-all ${
                           watch("tier") === tier.value
-                            ? "border-primary-500 bg-primary-50 dark:bg-primary-900/20"
+                            ? "border-primary-500 bg-purple-500/20"
                             : "border-neutral-200 dark:border-neutral-700 hover:border-neutral-300 dark:hover:border-neutral-600"
                         }`}
                       >
@@ -263,7 +263,7 @@ const CreateUserPage = () => {
               )}
 
               {/* Info Box */}
-              <div className="p-4 bg-primary-50 dark:bg-primary-900/20 border border-primary-200 dark:border-primary-800/50 rounded-lg">
+              <div className="p-4 bg-purple-500/20 border border-purple-500/30 rounded-lg">
                 <p className="text-sm text-neutral-700 dark:text-neutral-300">
                   <strong className="text-neutral-900 dark:text-white">
                     Note:
@@ -305,3 +305,4 @@ const CreateUserPage = () => {
 };
 
 export default CreateUserPage;
+

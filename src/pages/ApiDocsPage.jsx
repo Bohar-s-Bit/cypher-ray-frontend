@@ -162,10 +162,10 @@ curl -X GET "${apiUrl}/check-hash?hash=FILE_HASH" \\
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-display font-bold text-neutral-900 dark:text-white">
+        <h1 className="text-3xl font-display font-bold text-white">
           Developer API Documentation
         </h1>
-        <p className="text-neutral-600 dark:text-neutral-400 mt-2">
+        <p className="text-white/70 mt-2">
           Integrate CypherRay into your applications with our REST API
         </p>
       </div>
@@ -190,14 +190,14 @@ curl -X GET "${apiUrl}/check-hash?hash=FILE_HASH" \\
         <CardContent>
           {isLoading ? (
             <div className="text-center py-8">
-              <p className="text-neutral-600 dark:text-neutral-400">
+              <p className="text-white/70">
                 Loading...
               </p>
             </div>
           ) : apiKeys.length === 0 ? (
             <div className="text-center py-8">
               <Key className="w-12 h-12 text-neutral-400 mx-auto mb-4" />
-              <p className="text-neutral-600 dark:text-neutral-400 mb-4">
+              <p className="text-white/70 mb-4">
                 No API keys yet. Create one to get started.
               </p>
             </div>
@@ -206,12 +206,12 @@ curl -X GET "${apiUrl}/check-hash?hash=FILE_HASH" \\
               {apiKeys.map((key) => (
                 <div
                   key={key._id}
-                  className="p-4 border border-neutral-200 dark:border-neutral-700 rounded-lg"
+                  className="p-4 border border-white/10 rounded-lg"
                 >
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-2">
-                        <h4 className="font-medium text-neutral-900 dark:text-white">
+                        <h4 className="font-medium text-white">
                           {key.name}
                         </h4>
                         <Badge
@@ -222,11 +222,11 @@ curl -X GET "${apiUrl}/check-hash?hash=FILE_HASH" \\
                         </Badge>
                       </div>
                       <div className="flex items-center gap-2 mb-2">
-                        <code className="text-sm bg-neutral-100 dark:bg-neutral-800 px-2 py-1 rounded">
+                        <code className="text-sm bg-white/5 backdrop-blur-sm border border-white/10 px-2 py-1 rounded">
                           {key.keyPreview}
                         </code>
                       </div>
-                      <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                      <p className="text-sm text-white/70">
                         Created:{" "}
                         {format(new Date(key.createdAt), "MMM dd, yyyy")}
                         {key.expiresAt &&
@@ -264,11 +264,11 @@ curl -X GET "${apiUrl}/check-hash?hash=FILE_HASH" \\
         </CardHeader>
         <CardContent className="space-y-4">
           <div>
-            <h3 className="font-semibold text-neutral-900 dark:text-white mb-2">
+            <h3 className="font-semibold text-white mb-2">
               API Base URL
             </h3>
             <div className="flex items-center gap-2">
-              <code className="flex-1 bg-neutral-100 dark:bg-neutral-800 px-4 py-2 rounded-lg text-sm truncate">
+              <code className="flex-1 bg-white/5 backdrop-blur-sm border border-white/10 px-4 py-2 rounded-lg text-sm truncate">
                 {apiUrl}
               </code>
               <CopyButton text={apiUrl} label="API URL" />
@@ -276,7 +276,7 @@ curl -X GET "${apiUrl}/check-hash?hash=FILE_HASH" \\
           </div>
 
           <div>
-            <h3 className="font-semibold text-neutral-900 dark:text-white mb-2">
+            <h3 className="font-semibold text-white mb-2">
               Authentication
             </h3>
             <p className="text-neutral-700 dark:text-neutral-300 text-sm mb-2">
@@ -290,7 +290,7 @@ curl -X GET "${apiUrl}/check-hash?hash=FILE_HASH" \\
           </div>
 
           <div>
-            <h3 className="font-semibold text-neutral-900 dark:text-white mb-2">
+            <h3 className="font-semibold text-white mb-2">
               Rate Limits
             </h3>
             <ul className="text-sm space-y-1 text-neutral-700 dark:text-neutral-300">
@@ -312,12 +312,12 @@ curl -X GET "${apiUrl}/check-hash?hash=FILE_HASH" \\
               <CardTitle>Code Examples</CardTitle>
             </div>
             <div className="flex items-center gap-3">
-              <label className="text-sm text-neutral-600 dark:text-neutral-400">Language</label>
+              <label className="text-sm text-white/70">Language</label>
               <select
                 aria-label="Select code language"
                 value={selectedLang}
                 onChange={(e) => setSelectedLang(e.target.value)}
-                className="px-3 py-2 bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-lg text-sm"
+                className="px-3 py-2 bg-white dark:bg-neutral-800 border border-white/10 rounded-lg text-sm"
               >
                 {codeLanguages.map((lang) => (
                   <option key={lang.key} value={lang.key}>
@@ -354,7 +354,7 @@ curl -X GET "${apiUrl}/check-hash?hash=FILE_HASH" \\
         </CardHeader>
         <CardContent>
           <div className="space-y-6">
-            <div className="border-b border-neutral-200 dark:border-neutral-700 pb-4">
+            <div className="border-b border-white/10 pb-4">
               <div className="flex items-center gap-2 mb-2">
                 <Badge variant="primary" size="sm">
                   POST
@@ -367,7 +367,7 @@ curl -X GET "${apiUrl}/check-hash?hash=FILE_HASH" \\
               </p>
             </div>
 
-            <div className="border-b border-neutral-200 dark:border-neutral-700 pb-4">
+            <div className="border-b border-white/10 pb-4">
               <div className="flex items-center gap-2 mb-2">
                 <Badge variant="success" size="sm">
                   GET
@@ -380,7 +380,7 @@ curl -X GET "${apiUrl}/check-hash?hash=FILE_HASH" \\
               </p>
             </div>
 
-            <div className="border-b border-neutral-200 dark:border-neutral-700 pb-4">
+            <div className="border-b border-white/10 pb-4">
               <div className="flex items-center gap-2 mb-2">
                 <Badge variant="success" size="sm">
                   GET
@@ -480,7 +480,7 @@ curl -X GET "${apiUrl}/check-hash?hash=FILE_HASH" \\
                 onChange={(e) => setNewKeyExpiry(parseInt(e.target.value))}
                 helperText="Set to 0 for no expiration"
               />
-              <div className="flex justify-end gap-2 pt-4 border-t border-neutral-200 dark:border-neutral-700">
+              <div className="flex justify-end gap-2 pt-4 border-t border-white/10">
                 <Button
                   variant="outline"
                   onClick={() => setShowCreateModal(false)}
@@ -503,3 +503,4 @@ curl -X GET "${apiUrl}/check-hash?hash=FILE_HASH" \\
 };
 
 export default ApiDocsPage;
+
