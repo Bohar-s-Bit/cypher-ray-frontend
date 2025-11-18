@@ -16,6 +16,7 @@ import useUIStore from "./store/uiStore";
 
 // Contexts
 import { AnalysisProvider } from "./contexts/AnalysisContext";
+import { LoadingProvider } from "./contexts/LoadingContext";
 // Performance Monitoring
 import PerformanceMonitor from "./components/ui/PerformanceMonitor";
 
@@ -35,7 +36,6 @@ import LandingPage from "./pages/LandingPage";
 import LoginPage from "./pages/LoginPage";
 import UserDashboard from "./pages/UserDashboard";
 import ProfilePage from "./pages/ProfilePage";
-import SettingsPage from "./pages/SettingsPage";
 import CreditsPage from "./pages/CreditsPage";
 import AnalyzePage from "./pages/AnalyzePage";
 import ResultsPage from "./pages/ResultsPage";
@@ -110,9 +110,10 @@ function App() {
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       <HelmetProvider>
         <QueryClientProvider client={queryClient}>
-          <AnalysisProvider>
-            <Router>
-            <Routes>
+          <LoadingProvider>
+            <AnalysisProvider>
+              <Router>
+              <Routes>
               {/* Public Routes */}
               <Route element={<PublicLayout />}>
                 <Route
@@ -144,7 +145,7 @@ function App() {
               >
                 <Route path="dashboard" element={<UserDashboard />} />
                 <Route path="profile" element={<ProfilePage />} />
-                <Route path="settings" element={<SettingsPage />} />
+                <Route path="settings" element={<Navigate to="/profile" replace />} />
                 <Route path="credits" element={<CreditsPage />} />
                 <Route path="analyze" element={<AnalyzePage />} />
                 <Route path="results" element={<ResultsPage />} />
@@ -176,6 +177,7 @@ function App() {
             </Routes>
           </Router>
           </AnalysisProvider>
+          </LoadingProvider>
 
           {/* Toast Notifications - Dark Mode Only */}
           <Toaster

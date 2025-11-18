@@ -7,7 +7,6 @@ import {
   Code2,
   User,
   CreditCard,
-  Settings,
   LogOut,
   Users,
   UserPlus,
@@ -50,11 +49,6 @@ export const UserDockNavigation = () => {
       title: "Credits",
       icon: <CreditCard className="w-full h-full text-white/70" />,
       onClick: () => navigate(ROUTES.CREDITS),
-    },
-    {
-      title: "Settings",
-      icon: <Settings className="w-full h-full text-white/70" />,
-      onClick: () => navigate(ROUTES.SETTINGS),
     },
     {
       title: "Logout",
