@@ -23,7 +23,6 @@ export const UserDockNavigation = () => {
   const dockItems = [
     {
       title: "Dashboard",
-      icon: <LayoutDashboard className="w-full h-full text-white/70" />,
       icon: (
         <LayoutDashboard className="w-full h-full text-neutral-600 dark:text-neutral-300" />
       ),
@@ -31,7 +30,6 @@ export const UserDockNavigation = () => {
     },
     {
       title: "Analysis",
-      icon: <Search className="w-full h-full text-white/70" />,
       icon: (
         <Search className="w-full h-full text-neutral-600 dark:text-neutral-300" />
       ),
@@ -39,7 +37,6 @@ export const UserDockNavigation = () => {
     },
     {
       title: "Results",
-      icon: <BarChart3 className="w-full h-full text-white/70" />,
       icon: (
         <BarChart3 className="w-full h-full text-neutral-600 dark:text-neutral-300" />
       ),
@@ -47,7 +44,6 @@ export const UserDockNavigation = () => {
     },
     {
       title: "API Docs",
-      icon: <Code2 className="w-full h-full text-white/70" />,
       icon: (
         <Code2 className="w-full h-full text-neutral-600 dark:text-neutral-300" />
       ),
@@ -55,7 +51,6 @@ export const UserDockNavigation = () => {
     },
     {
       title: "Profile",
-      icon: <User className="w-full h-full text-white/70" />,
       icon: (
         <User className="w-full h-full text-neutral-600 dark:text-neutral-300" />
       ),
@@ -63,23 +58,10 @@ export const UserDockNavigation = () => {
     },
     {
       title: "Credits",
-      icon: <CreditCard className="w-full h-full text-white/70" />,
-      onClick: () => navigate(ROUTES.CREDITS),
-    },
-    {
-      title: "Logout",
-      icon: <LogOut className="w-full h-full text-red-400" />,
       icon: (
         <CreditCard className="w-full h-full text-neutral-600 dark:text-neutral-300" />
       ),
       onClick: () => navigate(ROUTES.CREDITS),
-    },
-    {
-      title: "Settings",
-      icon: (
-        <Settings className="w-full h-full text-neutral-600 dark:text-neutral-300" />
-      ),
-      onClick: () => navigate(ROUTES.SETTINGS),
     },
     {
       title: "Logout",
@@ -108,7 +90,6 @@ export const AdminDockNavigation = () => {
   const dockItems = [
     {
       title: "Dashboard",
-      icon: <LayoutDashboard className="w-full h-full text-white/70" />,
       icon: (
         <LayoutDashboard className="w-full h-full text-neutral-600 dark:text-neutral-300" />
       ),
@@ -116,7 +97,6 @@ export const AdminDockNavigation = () => {
     },
     {
       title: "Users",
-      icon: <Users className="w-full h-full text-white/70" />,
       icon: (
         <Users className="w-full h-full text-neutral-600 dark:text-neutral-300" />
       ),
@@ -131,7 +111,6 @@ export const AdminDockNavigation = () => {
     },
     {
       title: "Create User",
-      icon: <UserPlus className="w-full h-full text-white/70" />,
       icon: (
         <UserPlus className="w-full h-full text-neutral-600 dark:text-neutral-300" />
       ),
@@ -139,7 +118,6 @@ export const AdminDockNavigation = () => {
     },
     {
       title: "Logout",
-      icon: <LogOut className="w-full h-full text-red-400" />,
       icon: (
         <LogOut className="w-full h-full text-error-600 dark:text-error-400" />
       ),

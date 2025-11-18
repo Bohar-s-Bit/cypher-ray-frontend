@@ -114,115 +114,86 @@ function App() {
           <LoadingProvider>
             <AnalysisProvider>
               <Router>
-              <Routes>
-              {/* Public Routes */}
-              <Route element={<PublicLayout />}>
-          <AnalysisProvider>
-            <Router>
-              <Routes>
-                {/* Public Routes */}
-                <Route element={<PublicLayout />}>
+                <Routes>
+                  {/* Public Routes */}
+                  <Route element={<PublicLayout />}>
+                    <Route
+                      path={ROUTES.HOME}
+                      element={
+                        <PublicRoute>
+                          <LandingPage />
+                        </PublicRoute>
+                      }
+                    />
+                    <Route
+                      path={ROUTES.LOGIN}
+                      element={
+                        <PublicRoute>
+                          <LoginPage />
+                        </PublicRoute>
+                      }
+                    />
+                  </Route>
+
+                  {/* Protected User Routes */}
                   <Route
-                    path={ROUTES.HOME}
+                    path="/"
                     element={
-                      <PublicRoute>
-                        <LandingPage />
-                      </PublicRoute>
+                      <ProtectedRoute>
+                        <DashboardLayout />
+                      </ProtectedRoute>
                     }
-                  />
+                  >
+                    <Route path="dashboard" element={<UserDashboard />} />
+                    <Route path="profile" element={<ProfilePage />} />
+                    <Route
+                      path="settings"
+                      element={<Navigate to="/profile" replace />}
+                    />
+                    <Route path="credits" element={<CreditsPage />} />
+                    <Route path="analyze" element={<AnalyzePage />} />
+                    <Route path="results" element={<ResultsPage />} />
+                    <Route
+                      path="results/:jobId"
+                      element={<ResultDetailPage />}
+                    />
+                    <Route path="api-docs" element={<ApiDocsPage />} />
+                  </Route>
+
+                  {/* Protected Admin Routes */}
                   <Route
-                    path={ROUTES.LOGIN}
                     element={
-                      <PublicRoute>
-                        <LoginPage />
-                      </PublicRoute>
+                      <AdminRoute>
+                        <DashboardLayout />
+                      </AdminRoute>
                     }
-                  />
-                </Route>
+                  >
+                    <Route
+                      path={ROUTES.ADMIN.DASHBOARD}
+                      element={<AdminDashboard />}
+                    />
+                    <Route
+                      path={ROUTES.ADMIN.USERS}
+                      element={<UsersListPage />}
+                    />
+                    <Route
+                      path={ROUTES.ADMIN.ACCESS_REQUESTS}
+                      element={<AccessRequestsPage />}
+                    />
+                    <Route
+                      path={ROUTES.ADMIN.CREATE_USER}
+                      element={<CreateUserPage />}
+                    />
+                  </Route>
 
-                {/* Protected User Routes */}
-                <Route
-                  path="/"
-                  element={
-                    <ProtectedRoute>
-                      <DashboardLayout />
-                    </ProtectedRoute>
-                  }
-                >
-                  <Route path="dashboard" element={<UserDashboard />} />
-                  <Route path="profile" element={<ProfilePage />} />
-                  <Route path="settings" element={<SettingsPage />} />
-                  <Route path="credits" element={<CreditsPage />} />
-                  <Route path="analyze" element={<AnalyzePage />} />
-                  <Route path="results" element={<ResultsPage />} />
-                  <Route path="results/:jobId" element={<ResultDetailPage />} />
-                  <Route path="api-docs" element={<ApiDocsPage />} />
-                </Route>
-
-                {/* Protected Admin Routes */}
-                <Route
-                  element={
-                    <AdminRoute>
-                      <DashboardLayout />
-                    </AdminRoute>
-                  }
-                />
-              </Route>
-
-              {/* Protected User Routes */}
-              <Route
-                path="/"
-                element={
-                  <ProtectedRoute>
-                    <DashboardLayout />
-                  </ProtectedRoute>
-                }
-              >
-                <Route path="dashboard" element={<UserDashboard />} />
-                <Route path="profile" element={<ProfilePage />} />
-                <Route path="settings" element={<Navigate to="/profile" replace />} />
-                <Route path="credits" element={<CreditsPage />} />
-                <Route path="analyze" element={<AnalyzePage />} />
-                <Route path="results" element={<ResultsPage />} />
-                <Route path="results/:jobId" element={<ResultDetailPage />} />
-                <Route path="api-docs" element={<ApiDocsPage />} />
-              </Route>
-
-              {/* Protected Admin Routes */}
-              <Route
-                element={
-                  <AdminRoute>
-                    <DashboardLayout />
-                  </AdminRoute>
-                }
-              >
-                >
+                  {/* 404 Redirect */}
                   <Route
-                    path={ROUTES.ADMIN.DASHBOARD}
-                    element={<AdminDashboard />}
+                    path="*"
+                    element={<Navigate to={ROUTES.HOME} replace />}
                   />
-                  <Route
-                    path={ROUTES.ADMIN.USERS}
-                    element={<UsersListPage />}
-                  />
-                  <Route
-                    path={ROUTES.ADMIN.ACCESS_REQUESTS}
-                    element={<AccessRequestsPage />}
-                  />
-                  <Route
-                    path={ROUTES.ADMIN.CREATE_USER}
-                    element={<CreateUserPage />}
-                  />
-                </Route>
-
-                {/* 404 Redirect */}
-                <Route
-                  path="*"
-                  element={<Navigate to={ROUTES.HOME} replace />}
-                />
-              </Routes>
-            </Router>
-          </AnalysisProvider>
+                </Routes>
+              </Router>
+            </AnalysisProvider>
           </LoadingProvider>
 
           {/* Toast Notifications - Dark Mode Only */}
