@@ -63,4 +63,10 @@ export const authService = {
     });
     return response.data;
   },
+
+  // Request access to platform (public - no auth required)
+  requestAccess: async (data) => {
+    const response = await axiosInstance.post(ENDPOINTS.REQUEST_ACCESS, data);
+    return response.data;
+  },
 };
