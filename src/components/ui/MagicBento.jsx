@@ -1,5 +1,6 @@
 import { useRef, useEffect, useState, useCallback } from 'react';
 import { gsap } from 'gsap';
+import OptimizedImage from './OptimizedImage';
 
 const DEFAULT_PARTICLE_COUNT = 12;
 const DEFAULT_SPOTLIGHT_RADIUS = 300;
@@ -11,37 +12,67 @@ const cardData = [
     color: '#060010',
     title: 'Advanced Security Analysis',
     description: 'Comprehensive firmware security scanning with cutting-edge threat detection',
-    label: 'Security'
+    label: 'Security',
+    media: {
+      type: 'image',
+      src: '/images/Security_Code.webp',
+      alt: 'Security Code Analysis'
+    }
   },
   {
     color: '#060010',
     title: 'Vulnerability Detection',
     description: 'Identify security vulnerabilities before they become threats',
-    label: 'Protection'
+    label: 'Protection',
+    media: {
+      type: 'image',
+      src: '/images/Protection.webp',
+      alt: 'Cybersecurity Protection'
+    }
   },
   {
     color: '#060010',
     title: 'Real-time Monitoring',
     description: 'Continuous monitoring and instant threat notifications',
-    label: 'Monitoring'
+    label: 'Monitoring',
+    media: {
+      type: 'image',
+      src: '/images/Monitoring.webp',
+      alt: 'Real-time Monitoring Dashboard'
+    }
   },
   {
     color: '#060010',
     title: 'Compliance Ready',
     description: 'Meet government and industry security compliance standards',
-    label: 'Compliance'
+    label: 'Compliance',
+    media: {
+      type: 'image',
+      src: '/images/Compliance.webp',
+      alt: 'Compliance Logging'
+    }
   },
   {
     color: '#060010',
     title: 'Multi-tenant Platform',
     description: 'Secure, isolated environments for multiple organizations',
-    label: 'Enterprise'
+    label: 'Enterprise',
+    media: {
+      type: 'image',
+      src: '/images/enterprise.webp',
+      alt: 'Enterprise Platform'
+    }
   },
   {
     color: '#060010',
     title: 'Fast & Efficient',
     description: 'Lightning-fast analysis powered by advanced algorithms',
-    label: 'Performance'
+    label: 'Performance',
+    media: {
+      type: 'image',
+      src: '/images/performance.webp',
+      alt: 'High Performance Analysis'
+    }
   }
 ];
 
@@ -662,10 +693,24 @@ const MagicBento = ({
                   clickEffect={clickEffect}
                   enableMagnetism={enableMagnetism}
                 >
-                  <div className="card__header flex justify-between gap-3 relative text-white">
+                  {/* Media Background */}
+                  {card.media && (
+                    <div className="absolute inset-0 overflow-hidden rounded-[20px]">
+                      <OptimizedImage
+                        src={card.media.src}
+                        alt={card.media.alt}
+                        className="w-full h-full object-cover"
+                        priority={false}
+                      />
+                      {/* Gradient overlay to maintain theme visibility and text readability */}
+                      <div className="absolute inset-0 bg-gradient-to-br from-[#060010]/15 via-[#060010]/10 to-[#060010]/20"></div>
+                    </div>
+                  )}
+                  
+                  <div className="card__header flex justify-between gap-3 relative text-white z-10">
                     <span className="card__label text-base">{card.label}</span>
                   </div>
-                  <div className="card__content flex flex-col relative text-white">
+                  <div className="card__content flex flex-col relative text-white z-10">
                     <h3 className={`card__title font-normal text-base m-0 mb-1 ${textAutoHide ? 'text-clamp-1' : ''}`}>
                       {card.title}
                     </h3>
@@ -794,10 +839,24 @@ const MagicBento = ({
                   el.addEventListener('click', handleClick);
                 }}
               >
-                <div className="card__header flex justify-between gap-3 relative text-white">
+                {/* Media Background */}
+                {card.media && (
+                  <div className="absolute inset-0 overflow-hidden rounded-[20px]">
+                    <OptimizedImage
+                      src={card.media.src}
+                      alt={card.media.alt}
+                      className="w-full h-full object-cover"
+                      priority={false}
+                    />
+                    {/* Gradient overlay to maintain theme visibility and text readability */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-[#060010]/15 via-[#060010]/10 to-[#060010]/20"></div>
+                  </div>
+                )}
+                
+                <div className="card__header flex justify-between gap-3 relative text-white z-10">
                   <span className="card__label text-base">{card.label}</span>
                 </div>
-                <div className="card__content flex flex-col relative text-white">
+                <div className="card__content flex flex-col relative text-white z-10">
                   <h3 className={`card__title font-normal text-base m-0 mb-1 ${textAutoHide ? 'text-clamp-1' : ''}`}>
                     {card.title}
                   </h3>

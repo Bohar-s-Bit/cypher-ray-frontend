@@ -12,6 +12,8 @@ import {
   Edit2,
   X,
   Check,
+  Lock,
+  Key,
 } from "lucide-react";
 import { authService } from "../services/authService";
 import useAuthStore from "../store/authStore";
@@ -27,6 +29,7 @@ import Button from "../components/ui/Button";
 import Input from "../components/ui/Input";
 import Badge from "../components/ui/Badge";
 import Spinner from "../components/ui/Spinner";
+import OTPModal from "../components/auth/OTPModal";
 
 const ProfilePage = () => {
   const queryClient = useQueryClient();
@@ -36,6 +39,15 @@ const ProfilePage = () => {
     username: "",
     email: "",
   });
+  
+  // Password change state
+  const [passwordData, setPasswordData] = useState({
+    currentPassword: "",
+    newPassword: "",
+    confirmPassword: "",
+  });
+  const [showOTPModal, setShowOTPModal] = useState(false);
+  const [userEmail, setUserEmail] = useState("");
 
   // Fetch user profile
   const { data: profileData, isLoading } = useQuery({
@@ -70,11 +82,80 @@ const ProfilePage = () => {
     },
   });
 
+  // Password change mutations
+  const requestOTPMutation = useMutation({
+    mutationFn: authService.requestPasswordOTP,
+    onSuccess: (data) => {
+      toast.success("OTP sent to your email!");
+      setUserEmail(data.email || "your email");
+      setShowOTPModal(true);
+    },
+    onError: (error) => {
+      toast.error(error.response?.data?.message || "Failed to send OTP");
+    },
+  });
+
+  const verifyOTPMutation = useMutation({
+    mutationFn: authService.verifyOTPAndChangePassword,
+    onSuccess: () => {
+      toast.success("Password changed successfully!");
+      setShowOTPModal(false);
+      setPasswordData({
+        currentPassword: "",
+        newPassword: "",
+        confirmPassword: "",
+      });
+    },
+    onError: (error) => {
+      toast.error(error.response?.data?.message || "Failed to verify OTP");
+    },
+  });
+
   const handleInputChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
+  };
+
+  const handlePasswordChange = (e) => {
+    setPasswordData({
+      ...passwordData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handlePasswordSubmit = (e) => {
+    e.preventDefault();
+
+    if (passwordData.newPassword !== passwordData.confirmPassword) {
+      toast.error("New passwords do not match");
+      return;
+    }
+
+    if (passwordData.newPassword.length < 8) {
+      toast.error("Password must be at least 8 characters long");
+      return;
+    }
+
+    requestOTPMutation.mutate({
+      currentPassword: passwordData.currentPassword,
+      newPassword: passwordData.newPassword,
+    });
+  };
+
+  const handleVerifyOTP = (otp) => {
+    verifyOTPMutation.mutate({
+      currentPassword: passwordData.currentPassword,
+      newPassword: passwordData.newPassword,
+      otp,
+    });
+  };
+
+  const handleCloseModal = () => {
+    if (!verifyOTPMutation.isLoading) {
+      setShowOTPModal(false);
+    }
   };
 
   const handleSubmit = (e) => {
@@ -104,13 +185,14 @@ const ProfilePage = () => {
         <title>Profile - {APP_NAME}</title>
       </Helmet>
 
-      <div className="space-y-6">
+      <div className="space-y-8">
         {/* Header */}
-        <div>
-          <h1 className="text-3xl font-bold text-white">
-            Profile
+        <div className="relative">
+          <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-indigo-500/10 blur-3xl -z-10"></div>
+          <h1 className="text-4xl md:text-5xl font-display font-bold bg-gradient-to-r from-white via-purple-200 to-indigo-200 bg-clip-text text-transparent mb-3">
+            Your Profile
           </h1>
-          <p className="text-white/70 mt-2">
+          <p className="text-white/70 text-lg">
             Manage your account information and preferences
           </p>
         </div>
@@ -176,12 +258,12 @@ const ProfilePage = () => {
                 </form>
               ) : (
                 <div className="space-y-4">
-                  <div className="flex items-start gap-3 p-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg">
-                    <div className="p-2 bg-purple-500/20 rounded-lg">
+                  <div className="flex items-start gap-3 p-4 bg-gradient-to-r from-neutral-900/70 to-neutral-900/50 backdrop-blur-sm border border-purple-500/20 rounded-xl hover:border-purple-500/40 transition-all">
+                    <div className="p-2 bg-purple-500/20 rounded-xl border border-purple-500/30">
                       <User className="w-5 h-5 text-purple-400" />
                     </div>
                     <div className="flex-1">
-                      <p className="text-sm text-white/70">
+                      <p className="text-sm text-white/80">
                         Username
                       </p>
                       <p className="font-medium text-white">
@@ -190,12 +272,12 @@ const ProfilePage = () => {
                     </div>
                   </div>
 
-                  <div className="flex items-start gap-3 p-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg">
-                    <div className="p-2 bg-purple-500/20 rounded-lg">
+                  <div className="flex items-start gap-3 p-4 bg-gradient-to-r from-neutral-900/70 to-neutral-900/50 backdrop-blur-sm border border-purple-500/20 rounded-xl hover:border-purple-500/40 transition-all">
+                    <div className="p-2 bg-purple-500/20 rounded-xl border border-purple-500/30">
                       <Mail className="w-5 h-5 text-purple-400" />
                     </div>
                     <div className="flex-1">
-                      <p className="text-sm text-white/70">
+                      <p className="text-sm text-white/80">
                         Email Address
                       </p>
                       <p className="font-medium text-white">
@@ -204,12 +286,12 @@ const ProfilePage = () => {
                     </div>
                   </div>
 
-                  <div className="flex items-start gap-3 p-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg">
-                    <div className="p-2 bg-purple-500/20 rounded-lg">
+                  <div className="flex items-start gap-3 p-4 bg-gradient-to-r from-neutral-900/70 to-neutral-900/50 backdrop-blur-sm border border-purple-500/20 rounded-xl hover:border-purple-500/40 transition-all">
+                    <div className="p-2 bg-purple-500/20 rounded-xl border border-purple-500/30">
                       <Calendar className="w-5 h-5 text-purple-400" />
                     </div>
                     <div className="flex-1">
-                      <p className="text-sm text-white/70">
+                      <p className="text-sm text-white/80">
                         Member Since
                       </p>
                       <p className="font-medium text-white">
@@ -227,12 +309,12 @@ const ProfilePage = () => {
                     </div>
                   </div>
 
-                  <div className="flex items-start gap-3 p-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg">
-                    <div className="p-2 bg-purple-500/20 rounded-lg">
+                  <div className="flex items-start gap-3 p-4 bg-gradient-to-r from-neutral-900/70 to-neutral-900/50 backdrop-blur-sm border border-purple-500/20 rounded-xl hover:border-purple-500/40 transition-all">
+                    <div className="p-2 bg-purple-500/20 rounded-xl border border-purple-500/30">
                       <Calendar className="w-5 h-5 text-purple-400" />
                     </div>
                     <div className="flex-1">
-                      <p className="text-sm text-white/70">
+                      <p className="text-sm text-white/80">
                         Last Login
                       </p>
                       <p className="font-medium text-white">
@@ -253,6 +335,68 @@ const ProfilePage = () => {
                   </div>
                 </div>
               )}
+            </Card>
+
+            {/* Change Password Section */}
+            <Card className="p-6">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="p-2 bg-purple-500/20 rounded-lg">
+                  <Lock className="w-6 h-6 text-purple-400" />
+                </div>
+                <div>
+                  <h2 className="text-xl font-semibold text-white">
+                    Change Password
+                  </h2>
+                  <p className="text-sm text-white/70">
+                    Update your account password
+                  </p>
+                </div>
+              </div>
+
+              <form onSubmit={handlePasswordSubmit} className="space-y-4">
+                <Input
+                  label="Current Password"
+                  name="currentPassword"
+                  type="password"
+                  value={passwordData.currentPassword}
+                  onChange={handlePasswordChange}
+                  placeholder="Enter your current password"
+                  required
+                  icon={Key}
+                />
+
+                <Input
+                  label="New Password"
+                  name="newPassword"
+                  type="password"
+                  value={passwordData.newPassword}
+                  onChange={handlePasswordChange}
+                  placeholder="Enter your new password"
+                  required
+                  icon={Lock}
+                />
+
+                <Input
+                  label="Confirm New Password"
+                  name="confirmPassword"
+                  type="password"
+                  value={passwordData.confirmPassword}
+                  onChange={handlePasswordChange}
+                  placeholder="Confirm your new password"
+                  required
+                  icon={Lock}
+                />
+
+                <div className="pt-4">
+                  <Button
+                    type="submit"
+                    loading={requestOTPMutation.isLoading}
+                    icon={Shield}
+                  >
+                    Change Password
+                  </Button>
+                </div>
+              </form>
             </Card>
           </div>
 
@@ -364,6 +508,15 @@ const ProfilePage = () => {
             </Card>
           </div>
         </div>
+
+        {/* OTP Modal */}
+        <OTPModal
+          isOpen={showOTPModal}
+          onClose={handleCloseModal}
+          onVerify={handleVerifyOTP}
+          email={userEmail}
+          isLoading={verifyOTPMutation.isLoading}
+        />
       </div>
     </>
   );

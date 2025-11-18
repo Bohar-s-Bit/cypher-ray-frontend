@@ -16,6 +16,7 @@ import useUIStore from "./store/uiStore";
 
 // Contexts
 import { AnalysisProvider } from "./contexts/AnalysisContext";
+import { LoadingProvider } from "./contexts/LoadingContext";
 // Performance Monitoring
 import PerformanceMonitor from "./components/ui/PerformanceMonitor";
 
@@ -35,7 +36,6 @@ import LandingPage from "./pages/LandingPage";
 import LoginPage from "./pages/LoginPage";
 import UserDashboard from "./pages/UserDashboard";
 import ProfilePage from "./pages/ProfilePage";
-import SettingsPage from "./pages/SettingsPage";
 import CreditsPage from "./pages/CreditsPage";
 import AnalyzePage from "./pages/AnalyzePage";
 import ResultsPage from "./pages/ResultsPage";
@@ -111,6 +111,12 @@ function App() {
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       <HelmetProvider>
         <QueryClientProvider client={queryClient}>
+          <LoadingProvider>
+            <AnalysisProvider>
+              <Router>
+              <Routes>
+              {/* Public Routes */}
+              <Route element={<PublicLayout />}>
           <AnalysisProvider>
             <Router>
               <Routes>
@@ -160,6 +166,36 @@ function App() {
                       <DashboardLayout />
                     </AdminRoute>
                   }
+                />
+              </Route>
+
+              {/* Protected User Routes */}
+              <Route
+                path="/"
+                element={
+                  <ProtectedRoute>
+                    <DashboardLayout />
+                  </ProtectedRoute>
+                }
+              >
+                <Route path="dashboard" element={<UserDashboard />} />
+                <Route path="profile" element={<ProfilePage />} />
+                <Route path="settings" element={<Navigate to="/profile" replace />} />
+                <Route path="credits" element={<CreditsPage />} />
+                <Route path="analyze" element={<AnalyzePage />} />
+                <Route path="results" element={<ResultsPage />} />
+                <Route path="results/:jobId" element={<ResultDetailPage />} />
+                <Route path="api-docs" element={<ApiDocsPage />} />
+              </Route>
+
+              {/* Protected Admin Routes */}
+              <Route
+                element={
+                  <AdminRoute>
+                    <DashboardLayout />
+                  </AdminRoute>
+                }
+              >
                 >
                   <Route
                     path={ROUTES.ADMIN.DASHBOARD}
@@ -187,6 +223,7 @@ function App() {
               </Routes>
             </Router>
           </AnalysisProvider>
+          </LoadingProvider>
 
           {/* Toast Notifications - Dark Mode Only */}
           <Toaster

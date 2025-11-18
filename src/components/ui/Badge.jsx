@@ -9,13 +9,13 @@ const badgeVariants = cva(
         primary:
           "bg-purple-500/20 text-purple-300 backdrop-blur-sm border border-purple-500/30",
         secondary:
-          "bg-secondary-100 text-secondary-700 dark:bg-secondary-800 dark:text-secondary-200 dark:border dark:border-secondary-600",
+          "bg-neutral-800/50 text-neutral-200 backdrop-blur-sm border border-neutral-600/30",
         success:
-          "bg-success-100 text-success-700 dark:bg-success-800 dark:text-success-200 dark:border dark:border-success-600",
+          "bg-green-500/20 text-green-300 backdrop-blur-sm border border-green-500/30",
         warning:
-          "bg-warning-100 text-warning-700 dark:bg-warning-800 dark:text-warning-200 dark:border dark:border-warning-600",
+          "bg-yellow-500/20 text-yellow-300 backdrop-blur-sm border border-yellow-500/30",
         error:
-          "bg-error-100 text-error-700 dark:bg-error-800 dark:text-error-200 dark:border dark:border-error-600",
+          "bg-red-500/20 text-red-300 backdrop-blur-sm border border-red-500/30",
         neutral:
           "bg-white/10 text-white/90 backdrop-blur-sm border border-white/20",
         outline:

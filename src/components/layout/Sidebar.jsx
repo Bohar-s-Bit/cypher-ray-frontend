@@ -6,7 +6,6 @@ import {
   Users,
   UserPlus,
   BarChart3,
-  Settings,
   ChevronLeft,
   ChevronRight,
   User,
@@ -60,12 +59,6 @@ const Sidebar = () => {
       label: "Credits",
       icon: CreditCard,
       path: ROUTES.CREDITS,
-      end: true,
-    },
-    {
-      label: "Settings",
-      icon: Settings,
-      path: ROUTES.SETTINGS,
       end: true,
     },
   ];

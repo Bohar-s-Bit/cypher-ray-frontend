@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const MatrixLoader = () => {
+const MatrixLoader = ({ fullscreen = false }) => {
   return (
-    <StyledWrapper>
+    <StyledWrapper $fullscreen={fullscreen}>
       <div className="ai-matrix-loader">
         <div className="digit">0</div>
         <div className="digit">1</div>
@@ -20,10 +20,20 @@ const MatrixLoader = () => {
 }
 
 const StyledWrapper = styled.div`
+  ${props => props.$fullscreen && `
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #060010 0%, #0a0015 50%, #060010 100%);
+    z-index: 9999;
+  `}
+
   .ai-matrix-loader {
     width: 120px;
     height: 160px;
-    margin: 30px auto;
+    margin: ${props => props.$fullscreen ? '0' : '30px auto'};
     position: relative;
     perspective: 800px;
     display: grid;
@@ -32,11 +42,11 @@ const StyledWrapper = styled.div`
   }
 
   .digit {
-    color: #7808d0;
+    color: #a855f7;
     font-family: 'Roboto', monospace;
     font-size: 18px;
     text-align: center;
-    text-shadow: 0 0 5px #7808d0;
+    text-shadow: 0 0 5px #a855f7, 0 0 10px rgba(168, 85, 247, 0.5);
     animation:
       matrix-fall 2s infinite,
       matrix-flicker 0.5s infinite;
@@ -76,7 +86,8 @@ const StyledWrapper = styled.div`
     bottom: 0;
     background: radial-gradient(
       circle,
-      rgba(120, 8, 208, 0.1) 0%,
+      rgba(168, 85, 247, 0.15) 0%,
+      rgba(132, 0, 255, 0.1) 30%,
       transparent 70%
     );
     animation: matrix-pulse 2s infinite;
@@ -90,7 +101,7 @@ const StyledWrapper = styled.div`
     20%,
     80% {
       transform: translateY(0) rotateX(0deg);
-      opacity: 0.8;
+      opacity: 0.9;
     }
     100% {
       transform: translateY(50px) rotateX(-90deg);
@@ -103,10 +114,10 @@ const StyledWrapper = styled.div`
     19%,
     21%,
     100% {
-      opacity: 0.8;
+      opacity: 0.9;
     }
     20% {
-      opacity: 0.2;
+      opacity: 0.3;
     }
   }
 
@@ -116,7 +127,7 @@ const StyledWrapper = styled.div`
       opacity: 0.3;
     }
     50% {
-      opacity: 0.7;
+      opacity: 0.8;
     }
   }
 `;

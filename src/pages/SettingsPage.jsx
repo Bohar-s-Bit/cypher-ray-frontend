@@ -106,32 +106,25 @@ const SettingsPage = () => {
     }
   };
 
-  // COMMENTED OUT - Theme toggle functionality disabled
-  // const handleThemeToggle = () => {
-  //   toggleTheme();
-  //   toast.success(`Switched to ${theme === "light" ? "dark" : "light"} mode`);
-  // };
-
   return (
     <>
       <Helmet>
         <title>Settings - {APP_NAME}</title>
       </Helmet>
 
-      {/* FIX: Changed space-y-6 to space-y-8 */}
       <div className="space-y-8">
         {/* Header */}
-        <div>
-          <h1 className="text-3xl font-bold text-white">
+        <div className="relative">
+          <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-red-500/10 blur-3xl -z-10"></div>
+          <h1 className="text-4xl md:text-5xl font-display font-bold bg-gradient-to-r from-white via-purple-200 to-red-200 bg-clip-text text-transparent mb-3">
             Settings
           </h1>
-          <p className="text-white/70 mt-2">
-            Manage your account settings and preferences
+          <p className="text-white/70 text-lg">
+            Manage your account security settings
           </p>
         </div>
 
-        {/* FIX: Removed the "max-w-4xl space-y-6" wrapper div */}
-        {/* Security Settings */}
+        {/* Security Settings - Change Password Only */}
         <Card className="p-6">
           <div className="flex items-center gap-3 mb-6">
             <div className="p-2 bg-purple-500/20 rounded-lg">
@@ -139,10 +132,10 @@ const SettingsPage = () => {
             </div>
             <div>
               <h2 className="text-xl font-semibold text-white">
-                Security
+                Change Password
               </h2>
               <p className="text-sm text-white/70">
-                Manage your password and security settings
+                Update your account password
               </p>
             </div>
           </div>
@@ -207,104 +200,6 @@ const SettingsPage = () => {
               </Button>
             </div>
           </form>
-        </Card>
-
-    
-
-        <div className="space-y-4">
-          <div className="flex items-center justify-between p-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg">
-            <div className="flex-1">
-              <p className="font-medium text-white">
-                Email Notifications
-              </p>
-              <p className="text-sm text-white/70">
-                Receive email updates about your account
-              </p>
-            </div>
-            <input
-              type="checkbox"
-              defaultChecked
-              className="w-5 h-5 text-purple-600 bg-neutral-100 border-neutral-300 rounded focus:ring-purple-500 dark:ring-offset-neutral-800 focus:ring-2 dark:bg-neutral-700 dark:border-neutral-600"
-            />
-          </div>
-
-          <div className="flex items-center justify-between p-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg">
-            <div className="flex-1">
-              <p className="font-medium text-white">
-                Credit Alerts
-              </p>
-              <p className="text-sm text-white/70">
-                Get notified when credits are low
-              </p>
-            </div>
-            <input
-              type="checkbox"
-              defaultChecked
-              className="w-5 h-5 text-purple-600 bg-neutral-100 border-neutral-300 rounded focus:ring-purple-500 dark:ring-offset-neutral-800 focus:ring-2 dark:bg-neutral-700 dark:border-neutral-600"
-            />
-          </div>
-
-          <div className="flex items-center justify-between p-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg">
-            <div classNameAme="flex-1">
-              <p className="font-medium text-white">
-                Security Alerts
-              </p>
-              <p className="text-sm text-white/70">
-                Important security updates and alerts
-              </p>
-            </div>
-            <input
-              type="checkbox"
-              defaultChecked
-              className="w-5 h-5 text-purple-600 bg-neutral-100 border-neutral-300 rounded focus:ring-purple-500 dark:ring-offset-neutral-800 focus:ring-2 dark:bg-neutral-700 dark:border-neutral-600"
-            />
-          </div>
-        </div>
-
-        {/* Account Information */}
-        <Card className="p-6">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="p-2 bg-purple-500/20 rounded-lg">
-              <Shield className="w-6 h-6 text-purple-400" />
-            </div>
-            <div>
-              <h2 className="text-xl font-semibold text-white">
-                Account Information
-              </h2>
-              <p className="text-sm text-white/70">
-                View your account details
-              </p>
-            </div>
-          </div>
-
-          <div className="space-y-3">
-            <div className="flex justify-between items-center p-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg">
-              <span className="text-white/70">
-                Account ID
-              </span>
-              <span className="font-mono text-sm text-white">
-                {Math.random().toString(36).substr(2, 9).toUpperCase()}
-              </span>
-            </div>
-
-            <div className="flex justify-between items-center p-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg">
-              <span className="text-white/70">
-                Data Storage
-              </span>
-              <span className="text-white">
-                Encrypted & Secure
-              </span>
-            </div>
-
-            <div className="flex justify-between items-center p-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg">
-              <span className="text-white/70">
-                Two-Factor Auth
-              </span>
-              <span className="text-white">
-                Coming Soon
-              </span>
-            </div>
-          </div>
         </Card>
 
         {/* OTP Modal */}

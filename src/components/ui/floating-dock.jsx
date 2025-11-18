@@ -54,7 +54,7 @@ const FloatingDockMobile = ({ items, className }) => {
                     item.onClick?.();
                     setOpen(false);
                   }}
-                  className="flex h-10 w-10 items-center justify-center rounded-full bg-black/30 backdrop-blur-sm shadow-lg border border-white/10"
+                  className="flex h-10 w-10 items-center justify-center rounded-full bg-black/40 backdrop-blur-md shadow-lg border border-white/10 hover:border-purple-400/50 hover:bg-black/50 transition-all"
                 >
                   <div className="h-4 w-4">{item.icon}</div>
                 </button>
@@ -65,12 +65,12 @@ const FloatingDockMobile = ({ items, className }) => {
       </AnimatePresence>
       <button
         onClick={() => setOpen(!open)}
-        className="flex h-10 w-10 items-center justify-center rounded-full bg-black/30 backdrop-blur-sm shadow-lg border border-white/10"
+        className="flex h-10 w-10 items-center justify-center rounded-full bg-black/40 backdrop-blur-md shadow-lg border border-white/10 hover:border-purple-400/50 transition-all"
       >
         {open ? (
-          <X className="h-5 w-5 text-white/60" />
+          <X className="h-5 w-5 text-white/70" />
         ) : (
-          <Menu className="h-5 w-5 text-white/60" />
+          <Menu className="h-5 w-5 text-white/70" />
         )}
       </button>
     </div>
@@ -84,7 +84,7 @@ const FloatingDockDesktop = ({ items, className }) => {
       onMouseMove={(e) => mouseX.set(e.pageX)}
       onMouseLeave={() => mouseX.set(Infinity)}
       className={cn(
-        "mx-auto hidden h-16 items-end gap-4 rounded-2xl bg-white/80 dark:bg-neutral-900/80 backdrop-blur-md px-4 pb-3 md:flex border border-neutral-200/50 dark:border-neutral-700/50 shadow-lg",
+        "mx-auto hidden h-16 items-end gap-4 rounded-2xl bg-black/40 backdrop-blur-md px-4 pb-3 md:flex border border-white/10 shadow-lg",
         className
       )}
     >
