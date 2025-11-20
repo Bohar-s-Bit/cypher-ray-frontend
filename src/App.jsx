@@ -45,6 +45,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import UsersListPage from "./pages/admin/UsersListPage";
 import AccessRequestsPage from "./pages/admin/AccessRequestsPage";
 import CreateUserPage from "./pages/admin/CreateUserPage";
+import UserDetailsPage from "./pages/admin/UserDetailsPage";
 
 // Constants-check
 import { ROUTES } from "./config/constants";
@@ -183,6 +184,10 @@ function App() {
                     <Route
                       path={ROUTES.ADMIN.CREATE_USER}
                       element={<CreateUserPage />}
+                    />
+                    <Route
+                      path={ROUTES.ADMIN.USER_DETAILS}
+                      element={<UserDetailsPage />}
                     />
                   </Route>
 

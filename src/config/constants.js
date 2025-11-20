@@ -130,8 +130,11 @@ export const ENDPOINTS = {
   GET_USERS: "/admin/users",
   GET_ACCESS_REQUESTS: "/admin/access-requests",
   GET_USER_DETAILS: "/admin/users/:userId",
+  GET_COMPREHENSIVE_USER_DETAILS: "/admin/users/:userId/details",
   UPDATE_USER_CREDITS: "/admin/users/:userId/credits",
   UPDATE_USER_STATUS: "/admin/users/:userId/status",
   DELETE_USER: "/admin/users/:userId",
   PLATFORM_STATS: "/admin/stats",
+  GET_USER_API_KEYS: "/admin/users/:userId/api-keys",
+  REVOKE_API_KEY: "/admin/api-keys/:keyId",
 };
