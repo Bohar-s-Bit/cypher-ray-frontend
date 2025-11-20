@@ -47,9 +47,7 @@ const ResultDetailPage = () => {
   if (error || !data?.data?.job) {
     return (
       <div className="text-center py-12">
-        <h2 className="text-2xl font-bold text-white mb-4">
-          Result Not Found
-        </h2>
+        <h2 className="text-2xl font-bold text-white mb-4">Result Not Found</h2>
         <p className="text-white/70 mb-6">
           The analysis result you're looking for doesn't exist or has been
           deleted.
@@ -96,20 +94,18 @@ const ResultDetailPage = () => {
               <div
                 className={`p-3 rounded-lg ${
                   results?.vulnerability_assessment?.has_vulnerabilities
-                    ? "bg-error-50 dark:bg-error-900/20"
-                    : "bg-success-50 dark:bg-success-900/20"
+                    ? "bg-red-500/20"
+                    : "bg-purple-500/20"
                 }`}
               >
                 {results?.vulnerability_assessment?.has_vulnerabilities ? (
-                  <AlertTriangle className="w-6 h-6 text-error-600 dark:text-error-400" />
+                  <AlertTriangle className="w-6 h-6 text-red-400" />
                 ) : (
-                  <CheckCircle className="w-6 h-6 text-success-600 dark:text-success-400" />
+                  <CheckCircle className="w-6 h-6 text-purple-400" />
                 )}
               </div>
               <div>
-                <p className="text-sm text-white/70">
-                  Status
-                </p>
+                <p className="text-sm text-white/70">Status</p>
                 <p className="text-lg font-bold text-white">
                   {results?.vulnerability_assessment?.has_vulnerabilities
                     ? "Vulnerabilities Found"
@@ -126,26 +122,24 @@ const ResultDetailPage = () => {
               <div
                 className={`p-3 rounded-lg ${
                   results?.vulnerability_assessment?.severity === "High"
-                    ? "bg-error-50 dark:bg-error-900/20"
+                    ? "bg-red-500/20"
                     : results?.vulnerability_assessment?.severity === "Medium"
-                    ? "bg-warning-50 dark:bg-warning-900/20"
-                    : "bg-success-50 dark:bg-success-900/20"
+                    ? "bg-yellow-500/20"
+                    : "bg-purple-500/20"
                 }`}
               >
                 <Shield
                   className={`w-6 h-6 ${
                     results?.vulnerability_assessment?.severity === "High"
-                      ? "text-error-600 dark:text-error-400"
+                      ? "text-red-400"
                       : results?.vulnerability_assessment?.severity === "Medium"
-                      ? "text-warning-600 dark:text-warning-400"
-                      : "text-success-600 dark:text-success-400"
+                      ? "text-yellow-400"
+                      : "text-purple-400"
                   }`}
                 />
               </div>
               <div>
-                <p className="text-sm text-white/70">
-                  Severity
-                </p>
+                <p className="text-sm text-white/70">Severity</p>
                 <p className="text-lg font-bold text-white">
                   {results?.vulnerability_assessment?.severity || "Low"}
                 </p>
@@ -157,19 +151,26 @@ const ResultDetailPage = () => {
         <Card>
           <CardContent className="p-6">
             <div className="flex items-center gap-4">
-              <div className="p-3 rounded-lg bg-secondary-50 dark:bg-secondary-900/20">
-                <Clock className="w-6 h-6 text-secondary-600 dark:text-secondary-400" />
+              <div className="p-3 rounded-lg bg-purple-500/20">
+                <Clock className="w-6 h-6 text-purple-400" />
               </div>
               <div>
-                <p className="text-sm text-white/70">
-                  Processing Time
-                </p>
+                <p className="text-sm text-white/70">Processing Time</p>
                 <p className="text-lg font-bold text-white">
                   {job.completedAt && job.startedAt
-                    ? `${Math.round(
-                        (new Date(job.completedAt) - new Date(job.startedAt)) /
-                          1000
-                      )}s`
+                    ? (() => {
+                        const seconds = Math.round(
+                          (new Date(job.completedAt) -
+                            new Date(job.startedAt)) /
+                            1000
+                        );
+                        if (seconds < 60) return `${seconds}s`;
+                        const minutes = Math.floor(seconds / 60);
+                        const remainingSeconds = seconds % 60;
+                        return `${minutes}m ${remainingSeconds}s`;
+                      })()
+                    : job.status === "processing"
+                    ? "In Progress..."
                     : "N/A"}
                 </p>
               </div>
@@ -187,33 +188,25 @@ const ResultDetailPage = () => {
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <p className="text-sm text-white/70">
-                  File Type
-                </p>
+                <p className="text-sm text-white/70">File Type</p>
                 <p className="font-medium text-white">
                   {results.file_metadata.file_type || "Unknown"}
                 </p>
               </div>
               <div>
-                <p className="text-sm text-white/70">
-                  Size
-                </p>
+                <p className="text-sm text-white/70">Size</p>
                 <p className="font-medium text-white">
                   {(results.file_metadata.size_bytes / 1024).toFixed(2)} KB
                 </p>
               </div>
               <div>
-                <p className="text-sm text-white/70">
-                  MD5
-                </p>
+                <p className="text-sm text-white/70">MD5</p>
                 <p className="font-mono text-xs text-white break-all">
                   {results.file_metadata.md5}
                 </p>
               </div>
               <div>
-                <p className="text-sm text-white/70">
-                  SHA-256
-                </p>
+                <p className="text-sm text-white/70">SHA-256</p>
                 <p className="font-mono text-xs text-white break-all">
                   {results.file_metadata.sha256}
                 </p>
@@ -240,18 +233,16 @@ const ResultDetailPage = () => {
                   Vulnerabilities Detected (
                   {results.vulnerability_assessment.vulnerabilities.length})
                 </h3>
-                <div className="space-y-3">
+                <div className="space-y-3 text-black">
                   {results.vulnerability_assessment.vulnerabilities.map(
                     (vuln, index) => (
                       <div
                         key={index}
-                        className="p-4 border border-error-200 dark:border-error-800 rounded-lg bg-error-50 dark:bg-error-900/10"
+                        className="p-4 border border-red-500/30 rounded-lg bg-red-500/10"
                       >
                         <div className="flex items-start gap-3">
-                          <AlertTriangle className="w-5 h-5 text-error-600 dark:text-error-400 flex-shrink-0 mt-0.5" />
-                          <p className="text-sm text-error-700 dark:text-error-300">
-                            {vuln}
-                          </p>
+                          <AlertTriangle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
+                          <p className="text-sm text-white">{vuln}</p>
                         </div>
                       </div>
                     )
@@ -267,7 +258,7 @@ const ResultDetailPage = () => {
                 Overall Assessment
               </h3>
               <div className="p-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg">
-                <p className="text-neutral-700 dark:text-neutral-300 whitespace-pre-wrap">
+                <p className="text-white/90 whitespace-pre-wrap">
                   {results.overall_assessment}
                 </p>
               </div>
@@ -286,7 +277,7 @@ const ResultDetailPage = () => {
                     (rec, index) => (
                       <li
                         key={index}
-                        className="flex items-start gap-3 text-neutral-700 dark:text-neutral-300"
+                        className="flex items-start gap-3 text-white/90"
                       >
                         <TrendingUp className="w-5 h-5 text-purple-400 flex-shrink-0 mt-0.5" />
                         <span>{rec}</span>
@@ -308,11 +299,11 @@ const ResultDetailPage = () => {
                   {results.detected_algorithms.map((algo, index) => (
                     <div
                       key={index}
-                      className="p-4 border border-white/10 rounded-lg"
+                      className="p-4 border border-purple-500/30 rounded-lg bg-purple-500/5"
                     >
                       <div className="flex items-center justify-between mb-2">
                         <h4 className="font-medium text-white flex items-center gap-2">
-                          <Code className="w-4 h-4" />
+                          <Code className="w-4 h-4 text-purple-400" />
                           {algo.algorithm_name}
                         </h4>
                         <Badge variant="secondary" size="sm">
@@ -344,7 +335,7 @@ const ResultDetailPage = () => {
                   {results.function_analyses.map((func, index) => (
                     <div
                       key={index}
-                      className="p-4 border border-white/10 rounded-lg"
+                      className="p-4 border border-purple-500/30 rounded-lg bg-purple-500/5"
                     >
                       <div className="flex items-center justify-between mb-2">
                         <h4 className="font-mono text-sm font-medium text-white">
@@ -361,7 +352,7 @@ const ResultDetailPage = () => {
                           </Badge>
                         </div>
                       </div>
-                      <p className="text-sm text-neutral-700 dark:text-neutral-300 mb-2">
+                      <p className="text-sm text-white/90 mb-2">
                         {func.function_summary}
                       </p>
                       {func.semantic_tags && func.semantic_tags.length > 0 && (
@@ -389,7 +380,7 @@ const ResultDetailPage = () => {
                 AI Analysis Explanation
               </h3>
               <div className="p-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg">
-                <p className="text-sm text-neutral-700 dark:text-neutral-300 whitespace-pre-wrap">
+                <p className="text-sm text-white/90 whitespace-pre-wrap">
                   {results.xai_explanation}
                 </p>
               </div>
@@ -414,5 +405,3 @@ const ResultDetailPage = () => {
 };
 
 export default ResultDetailPage;
-
-
