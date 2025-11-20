@@ -21,6 +21,16 @@ export const adminService = {
     return response.data;
   },
 
+  // Get comprehensive user details with filters
+  getComprehensiveUserDetails: async (userId, params = {}) => {
+    const endpoint = ENDPOINTS.GET_COMPREHENSIVE_USER_DETAILS.replace(
+      ":userId",
+      userId
+    );
+    const response = await axiosInstance.get(endpoint, { params });
+    return response.data;
+  },
+
   // Update user credits
   updateUserCredits: async (userId, creditData) => {
     const endpoint = ENDPOINTS.UPDATE_USER_CREDITS.replace(":userId", userId);
@@ -53,6 +63,20 @@ export const adminService = {
     const response = await axiosInstance.get(ENDPOINTS.GET_ACCESS_REQUESTS, {
       params,
     });
+    return response.data;
+  },
+
+  // Get user API keys
+  getUserApiKeys: async (userId) => {
+    const endpoint = ENDPOINTS.GET_USER_API_KEYS.replace(":userId", userId);
+    const response = await axiosInstance.get(endpoint);
+    return response.data;
+  },
+
+  // Revoke API key
+  revokeApiKey: async (keyId) => {
+    const endpoint = ENDPOINTS.REVOKE_API_KEY.replace(":keyId", keyId);
+    const response = await axiosInstance.delete(endpoint);
     return response.data;
   },
 };
