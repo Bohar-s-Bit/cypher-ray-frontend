@@ -445,7 +445,7 @@ const LandingPage = () => {
           <hr className="my-6 border-purple-800/30 sm:mx-auto lg:my-8" />
           <div className="sm:flex sm:items-center sm:justify-between">
             <span className="text-sm text-neutral-300 sm:text-center">
-              © 2025 <a href="/" className="hover:underline hover:text-purple-400">{APP_NAME}™</a>. A Government of India Initiative.
+              © 2025 <a href="/" className="hover:underline hover:text-purple-400">{APP_NAME}™</a>. A SIH Project.
             </span>
             <div className="flex mt-4 sm:justify-center sm:mt-0">
               <a href="#" className="text-neutral-300 hover:text-purple-400">

@@ -3,13 +3,13 @@ import { cn } from "../../lib/utils";
 import { cva } from "class-variance-authority";
 
 const cardVariants = cva(
-  "rounded-2xl bg-gradient-to-br from-neutral-900/95 to-neutral-900/80 backdrop-blur-xl border shadow-xl transition-all duration-200",
+  "rounded-2xl backdrop-blur-xl border transition-all duration-200",
   {
     variants: {
       variant: {
-        default: "border border-purple-500/20 shadow-purple-500/5",
-        elevated: "shadow-2xl shadow-purple-500/10 border-purple-500/30",
-        outline: "border-2 border-purple-500/40",
+        default: "border shadow-lg",
+        elevated: "shadow-2xl border",
+        outline: "border-2",
       },
       padding: {
         none: "",
@@ -39,6 +39,11 @@ const Card = ({
   return (
     <div
       className={cn(cardVariants({ variant, padding, hoverable, className }))}
+      style={{ 
+        backgroundColor: '#1F1F24',
+        borderColor: '#3A2F44',
+        boxShadow: '0 4px 6px -1px rgba(128, 80, 180, 0.1), 0 2px 4px -1px rgba(128, 80, 180, 0.06)'
+      }}
       {...props}
     >
       {children}

@@ -130,10 +130,10 @@ const CreditsPage = () => {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div className="relative">
             <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-green-500/10 blur-3xl -z-10"></div>
-            <h1 className="text-4xl md:text-5xl font-display font-bold bg-gradient-to-r from-white via-purple-200 to-green-200 bg-clip-text text-transparent mb-3">
+            <h1 className="text-4xl md:text-5xl font-display font-bold text-text-primary mb-3">
               Credits History
             </h1>
-            <p className="text-white/70 text-lg">
+            <p className="text-text-secondary text-lg">
               Track your credit transactions and usage
             </p>
           </div>
