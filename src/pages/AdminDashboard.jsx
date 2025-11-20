@@ -9,19 +9,7 @@ import {
   IndianRupee,
   Activity,
 } from "lucide-react";
-import {
-  BarChart,
-  Bar,
-  PieChart,
-  Pie,
-  Cell,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from "recharts";
+import { BarSegment, useChart } from "@chakra-ui/charts";
 import { adminService } from "../services/adminService";
 import {
   Card,
@@ -44,45 +32,24 @@ const AdminDashboard = () => {
 
   const stats = statsData?.data || {};
 
-  // Prepare chart data
-  const tierChartData = [
+  // Prepare chart data for Chakra UI
+  const chartData = [
     {
-      name: "Tier 1",
-      users: stats?.tier1Users || 0,
-      fill: "#3b82f6", // Primary blue
+      name: "Tier 1 Users",
+      value: stats?.tier1Users || 0,
+      color: "purple.solid",
     },
     {
-      name: "Tier 2",
-      users: stats?.tier2Users || 0,
-      fill: "#f97316", // Secondary orange
+      name: "Tier 2 Users",
+      value: stats?.tier2Users || 0,
+      color: "blue.solid",
     },
   ];
 
-  const CustomTooltip = ({ active, payload }) => {
-    if (active && payload && payload.length) {
-      return (
-        <div className="bg-black/80 backdrop-blur-sm p-3 border border-white/20 rounded-lg shadow-lg">
-          <p className="font-semibold text-white">
-            {payload[0].name}
-          </p>
-          <p className="text-sm text-white/70">
-            Users:{" "}
-            <span className="font-bold text-purple-400">
-              {payload[0].value}
-            </span>
-          </p>
-          <p className="text-xs text-white/50 mt-1">
-            {stats?.totalUsers > 0
-              ? `${((payload[0].value / stats.totalUsers) * 100).toFixed(
-                  1
-                )}% of total`
-              : "0% of total"}
-          </p>
-        </div>
-      );
-    }
-    return null;
-  };
+  const chart = useChart({
+    sort: { by: "value", direction: "desc" },
+    data: chartData,
+  });
 
   const statCards = [
     {
@@ -136,11 +103,12 @@ const AdminDashboard = () => {
   return (
     <div className="space-y-8 min-h-screen">
       {/* Header */}
-      <div>
-        <h1 className="text-3xl font-display font-bold text-white">
+      <div className="relative">
+        <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-blue-500/10 blur-3xl -z-10"></div>
+        <h1 className="text-4xl md:text-5xl font-display font-bold text-text-primary mb-3">
           Admin Dashboard
         </h1>
-        <p className="text-white/70 mt-2">
+        <p className="text-text-secondary text-lg">
           Platform overview and statistics
         </p>
       </div>
@@ -164,17 +132,19 @@ const AdminDashboard = () => {
                 transition={{ delay: index * 0.1 }}
               >
                 <Card>
-                  <CardContent className="p-6 bg-black/20 backdrop-blur-sm border-white/10">
-                    <div className="flex items-center justify-between mb-4">
-                      <div className={`p-3 rounded-lg ${stat.bgColor}`}>
-                        <Icon className={`w-6 h-6 ${stat.color}`} />
+                  <CardContent className="p-4">
+                    <div className="flex items-center justify-between">
+                      <div className="flex-1">
+                        <p className="text-sm text-text-muted mb-1">
+                          {stat.title}
+                        </p>
+                        <p className="text-2xl font-bold text-text-primary">
+                          {formatNumber(stat.value)}
+                        </p>
                       </div>
-                    </div>
-                    <div className="text-3xl font-bold text-white mb-1">
-                      {formatNumber(stat.value)}
-                    </div>
-                    <div className="text-sm text-white/70">
-                      {stat.title}
+                      <div className={`p-2.5 rounded-lg ${stat.bgColor}`}>
+                        <Icon className={`w-5 h-5 ${stat.color}`} />
+                      </div>
                     </div>
                   </CardContent>
                 </Card>
@@ -187,75 +157,43 @@ const AdminDashboard = () => {
       {/* Tier Distribution Chart */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-white">User Distribution by Tier</CardTitle>
-          <CardDescription className="text-white/70">
+          <CardTitle>User Distribution by Tier</CardTitle>
+          <CardDescription>
             Visual breakdown of users across different tiers
           </CardDescription>
         </CardHeader>
-        <CardContent className="bg-black/20 backdrop-blur-sm border-white/10">
+        <CardContent className="p-6">
           {isLoading ? (
-            <div className="h-64 flex items-center justify-center">
+            <div className="h-32 flex items-center justify-center">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-400"></div>
             </div>
           ) : (
-            <div className="space-y-6">
-              {/* Bar Chart */}
-              <div className="h-64">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={tierChartData}>
-                    <CartesianGrid
-                      strokeDasharray="3 3"
-                      className="dark:stroke-neutral-700"
-                      stroke="#e5e7eb"
-                    />
-                    <XAxis
-                      dataKey="name"
-                      className="dark:stroke-neutral-400"
-                      stroke="#6b7280"
-                      style={{ fontSize: "12px" }}
-                    />
-                    <YAxis
-                      className="dark:stroke-neutral-400"
-                      stroke="#6b7280"
-                      style={{ fontSize: "12px" }}
-                      allowDecimals={false}
-                    />
-                    <Tooltip content={<CustomTooltip />} />
-                    <Bar
-                      dataKey="users"
-                      radius={[8, 8, 0, 0]}
-                      animationDuration={800}
-                    >
-                      {tierChartData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={entry.fill} />
-                      ))}
-                    </Bar>
-                  </BarChart>
-                </ResponsiveContainer>
-              </div>
+            <div className="space-y-4">
+              {/* Chakra UI Bar Segment Chart */}
+              <BarSegment.Root chart={chart}>
+                <BarSegment.Content>
+                  <BarSegment.Value className="text-text-primary font-semibold" />
+                  <BarSegment.Bar className="h-8" />
+                  <BarSegment.Label className="text-text-secondary" />
+                </BarSegment.Content>
+              </BarSegment.Root>
 
               {/* Summary Stats */}
-              <div className="grid grid-cols-2 gap-4 pt-4 border-t border-white/10">
-                {tierChartData.map((tier, index) => (
+              <div className="grid grid-cols-2 gap-4 pt-4 border-t border-border-purple">
+                {chartData.map((tier, index) => (
                   <div
                     key={index}
-                    className="text-center p-3 bg-white/5 backdrop-blur-sm rounded-lg border border-white/10"
+                    className="text-center p-3 bg-surface-dark rounded-lg border border-border-purple"
                   >
-                    <div
-                      className="w-3 h-3 rounded-full mx-auto mb-2"
-                      style={{ backgroundColor: tier.fill }}
-                    ></div>
-                    <div className="text-2xl font-bold text-white">
-                      {formatNumber(tier.users)}
+                    <div className="text-2xl font-bold text-text-primary">
+                      {formatNumber(tier.value)}
                     </div>
-                    <div className="text-xs text-white/70 mt-1">
-                      {tier.name} Users
+                    <div className="text-xs text-text-muted mt-1">
+                      {tier.name}
                     </div>
-                    <div className="text-xs text-white/50 mt-1">
+                    <div className="text-xs text-text-muted mt-1">
                       {stats?.totalUsers > 0
-                        ? `${((tier.users / stats.totalUsers) * 100).toFixed(
-                            1
-                          )}%`
+                        ? `${((tier.value / stats.totalUsers) * 100).toFixed(1)}%`
                         : "0%"}
                     </div>
                   </div>

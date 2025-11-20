@@ -9,6 +9,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "react-hot-toast";
 import { HelmetProvider } from "react-helmet-async";
 import { ErrorBoundary } from "react-error-boundary";
+import { ChakraProvider, defaultSystem } from "@chakra-ui/react";
 
 // Store
 import useAuthStore from "./store/authStore";
@@ -111,9 +112,10 @@ function App() {
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       <HelmetProvider>
         <QueryClientProvider client={queryClient}>
-          <LoadingProvider>
-            <AnalysisProvider>
-              <Router>
+          <ChakraProvider value={defaultSystem}>
+            <LoadingProvider>
+              <AnalysisProvider>
+                <Router>
                 <Routes>
                   {/* Public Routes */}
                   <Route element={<PublicLayout />}>
@@ -225,6 +227,7 @@ function App() {
             }}
           />
           <PerformanceMonitor />
+          </ChakraProvider>
         </QueryClientProvider>
       </HelmetProvider>
     </ErrorBoundary>

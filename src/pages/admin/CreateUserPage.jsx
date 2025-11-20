@@ -94,12 +94,15 @@ const CreateUserPage = () => {
         >
           Back to Users
         </Button>
-        <h1 className="text-3xl font-display font-bold text-neutral-900 dark:text-white">
-          Create New User
-        </h1>
-        <p className="text-neutral-600 dark:text-neutral-400 mt-2">
-          Add a new user or organization to the platform
-        </p>
+        <div className="relative">
+          <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-blue-500/10 blur-3xl -z-10"></div>
+          <h1 className="text-4xl md:text-5xl font-display font-bold text-text-primary mb-3">
+            Create New User
+          </h1>
+          <p className="text-text-secondary text-lg">
+            Add a new user or organization to the platform
+          </p>
+        </div>
       </div>
 
       {/* Form */}

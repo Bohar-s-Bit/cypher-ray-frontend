@@ -80,11 +80,12 @@ const AccessRequestsPage = () => {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div>
-          <h1 className="text-3xl font-display font-bold text-neutral-900 dark:text-white">
+        <div className="relative">
+          <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-blue-500/10 blur-3xl -z-10"></div>
+          <h1 className="text-4xl md:text-5xl font-display font-bold text-text-primary mb-3">
             Access Requests
           </h1>
-          <p className="text-neutral-600 dark:text-neutral-400 mt-1">
+          <p className="text-text-secondary text-lg">
             Review and approve pending access requests
           </p>
         </div>
