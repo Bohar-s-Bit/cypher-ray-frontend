@@ -89,10 +89,10 @@ const UserDashboard = () => {
       {/* Header */}
       <div className="relative">
         <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-blue-500/10 blur-3xl -z-10"></div>
-        <h1 className="text-4xl md:text-5xl font-display font-bold bg-gradient-to-r from-white via-purple-200 to-blue-200 bg-clip-text text-transparent mb-3">
+        <h1 className="text-4xl md:text-5xl font-display font-bold text-text-primary mb-3">
           Welcome back, {userData?.username || "User"}!
         </h1>
-        <p className="text-white/70 text-lg">
+        <p className="text-text-secondary text-lg">
           Here's an overview of your account activity
         </p>
       </div>
@@ -127,10 +127,10 @@ const UserDashboard = () => {
                         </Badge>
                       )}
                     </div>
-                    <div className="text-3xl font-bold text-white mb-2 group-hover:text-purple-300 transition-colors">
+                    <div className="text-3xl font-bold text-text-primary mb-2 group-hover:text-purple-300 transition-colors">
                       {stat.isString ? stat.value : formatNumber(stat.value)}
                     </div>
-                    <div className="text-sm text-white/70">
+                    <div className="text-sm text-text-muted">
                       {stat.title}
                     </div>
                   </CardContent>
@@ -160,14 +160,14 @@ const UserDashboard = () => {
               ))}
             </div>
           ) : creditHistory.length > 0 ? (
-            <div className="overflow-x-auto rounded-xl border border-purple-500/20 bg-gradient-to-br from-neutral-900/60 to-neutral-900/40 backdrop-blur-sm">
+            <div className="overflow-x-auto rounded-xl border border-border-purple bg-surface-dark backdrop-blur-sm">
               <ResizableTableContainer>
-                <Table aria-label="Recent activity table" className="w-full">
+                <Table aria-label="Recent transactions">
                   <TableHeader>
-                    <Column isRowHeader className="text-white/90 text-sm font-semibold">Name</Column>
-                    <Column className="text-white/90 text-sm font-semibold">Type</Column>
-                    <Column className="text-white/90 text-sm font-semibold">Date</Column>
-                    <Column className="text-white/90 text-sm font-semibold">Balance</Column>
+                    <Column isRowHeader className="text-text-primary text-sm font-semibold">Name</Column>
+                    <Column className="text-text-primary text-sm font-semibold">Type</Column>
+                    <Column className="text-text-primary text-sm font-semibold">Date</Column>
+                    <Column className="text-text-primary text-sm font-semibold">Balance</Column>
                   </TableHeader>
                   <TableBody>
                     {creditHistory.slice(0, 5).map((transaction) => {
@@ -182,8 +182,8 @@ const UserDashboard = () => {
                         : transaction.amount;
                       
                       return (
-                        <Row key={transaction._id} className="border-white/10 hover:bg-neutral-800/50">
-                          <Cell className="font-medium text-white text-sm">
+                        <Row key={transaction._id} className="border-border-purple hover:bg-[#15051F]/50">
+                          <Cell className="font-medium text-text-primary text-sm">
                             {transaction.type === "scan" 
                               ? `Scan #${transaction._id.slice(-6)}` 
                               : transaction.description}
@@ -196,7 +196,7 @@ const UserDashboard = () => {
                               {transaction.type || "Credit"}
                             </Badge>
                           </Cell>
-                          <Cell className="text-white/70 text-sm">
+                          <Cell className="text-text-secondary text-sm">
                             {format(
                               new Date(transaction.createdAt),
                               "MMM dd, yyyy HH:mm"
@@ -213,7 +213,7 @@ const UserDashboard = () => {
                               >
                                 {isCredit ? "+" : ""}{displayAmount}
                               </span>
-                              <span className="text-xs text-white/50">
+                              <span className="text-xs text-text-muted">
                                 Bal: {transaction.balanceAfter}
                               </span>
                             </div>
@@ -226,7 +226,7 @@ const UserDashboard = () => {
               </ResizableTableContainer>
             </div>
           ) : (
-            <div className="text-center py-16 text-white/70">
+            <div className="text-center py-16 text-text-muted">
               <Activity className="w-12 h-12 mx-auto mb-4 opacity-50" />
               <p className="text-base">No recent activity</p>
             </div>

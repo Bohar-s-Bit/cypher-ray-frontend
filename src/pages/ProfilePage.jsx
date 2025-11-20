@@ -6,7 +6,6 @@ import toast from "react-hot-toast";
 import {
   User,
   Mail,
-  Calendar,
   Shield,
   CreditCard,
   Edit2,
@@ -189,20 +188,21 @@ const ProfilePage = () => {
         {/* Header */}
         <div className="relative">
           <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-indigo-500/10 blur-3xl -z-10"></div>
-          <h1 className="text-4xl md:text-5xl font-display font-bold bg-gradient-to-r from-white via-purple-200 to-indigo-200 bg-clip-text text-transparent mb-3">
+          <h1 className="text-4xl md:text-5xl font-display font-bold mb-3 text-text-primary">
             Your Profile
           </h1>
-          <p className="text-white/70 text-lg">
+          <p className="text-lg text-text-secondary">
             Manage your account information and preferences
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Profile Information */}
-          <div className="lg:col-span-2">
+          {/* Main Content - Left Side */}
+          <div className="lg:col-span-2 space-y-6">
+            {/* Personal Information */}
             <Card className="p-6">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-semibold text-white">
+                <h2 className="text-xl font-semibold text-text-primary">
                   Personal Information
                 </h2>
                 {!isEditing && (
@@ -258,78 +258,30 @@ const ProfilePage = () => {
                 </form>
               ) : (
                 <div className="space-y-4">
-                  <div className="flex items-start gap-3 p-4 bg-gradient-to-r from-neutral-900/70 to-neutral-900/50 backdrop-blur-sm border border-purple-500/20 rounded-xl hover:border-purple-500/40 transition-all">
-                    <div className="p-2 bg-purple-500/20 rounded-xl border border-purple-500/30">
+                  <div className="flex items-start gap-3 p-4 rounded-xl transition-all bg-[#15051F] border border-border-purple">
+                    <div className="p-2 rounded-xl bg-purple-500/10 border border-border-purple">
                       <User className="w-5 h-5 text-purple-400" />
                     </div>
                     <div className="flex-1">
-                      <p className="text-sm text-white/80">
+                      <p className="text-sm text-text-muted">
                         Username
                       </p>
-                      <p className="font-medium text-white">
+                      <p className="font-medium text-text-primary">
                         {userData?.username || "Not set"}
                       </p>
                     </div>
                   </div>
 
-                  <div className="flex items-start gap-3 p-4 bg-gradient-to-r from-neutral-900/70 to-neutral-900/50 backdrop-blur-sm border border-purple-500/20 rounded-xl hover:border-purple-500/40 transition-all">
-                    <div className="p-2 bg-purple-500/20 rounded-xl border border-purple-500/30">
+                  <div className="flex items-start gap-3 p-4 rounded-xl transition-all bg-[#15051F] border border-border-purple">
+                    <div className="p-2 rounded-xl bg-purple-500/10 border border-border-purple">
                       <Mail className="w-5 h-5 text-purple-400" />
                     </div>
                     <div className="flex-1">
-                      <p className="text-sm text-white/80">
+                      <p className="text-sm text-text-muted">
                         Email Address
                       </p>
-                      <p className="font-medium text-white">
+                      <p className="font-medium text-text-primary">
                         {userData?.email || "Not set"}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-3 p-4 bg-gradient-to-r from-neutral-900/70 to-neutral-900/50 backdrop-blur-sm border border-purple-500/20 rounded-xl hover:border-purple-500/40 transition-all">
-                    <div className="p-2 bg-purple-500/20 rounded-xl border border-purple-500/30">
-                      <Calendar className="w-5 h-5 text-purple-400" />
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-sm text-white/80">
-                        Member Since
-                      </p>
-                      <p className="font-medium text-white">
-                        {userData?.createdAt
-                          ? new Date(userData.createdAt).toLocaleDateString(
-                              "en-US",
-                              {
-                                year: "numeric",
-                                month: "long",
-                                day: "numeric",
-                              }
-                            )
-                          : "Not available"}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-3 p-4 bg-gradient-to-r from-neutral-900/70 to-neutral-900/50 backdrop-blur-sm border border-purple-500/20 rounded-xl hover:border-purple-500/40 transition-all">
-                    <div className="p-2 bg-purple-500/20 rounded-xl border border-purple-500/30">
-                      <Calendar className="w-5 h-5 text-purple-400" />
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-sm text-white/80">
-                        Last Login
-                      </p>
-                      <p className="font-medium text-white">
-                        {userData?.lastLogin
-                          ? new Date(userData.lastLogin).toLocaleString(
-                              "en-US",
-                              {
-                                year: "numeric",
-                                month: "long",
-                                day: "numeric",
-                                hour: "2-digit",
-                                minute: "2-digit",
-                              }
-                            )
-                          : "Not available"}
                       </p>
                     </div>
                   </div>
@@ -340,14 +292,14 @@ const ProfilePage = () => {
             {/* Change Password Section */}
             <Card className="p-6">
               <div className="flex items-center gap-3 mb-6">
-                <div className="p-2 bg-purple-500/20 rounded-lg">
+                <div className="p-2 rounded-lg bg-purple-500/10 border border-border-purple">
                   <Lock className="w-6 h-6 text-purple-400" />
                 </div>
                 <div>
-                  <h2 className="text-xl font-semibold text-white">
+                  <h2 className="text-xl font-semibold text-text-primary">
                     Change Password
                   </h2>
-                  <p className="text-sm text-white/70">
+                  <p className="text-sm text-text-secondary">
                     Update your account password
                   </p>
                 </div>
@@ -400,16 +352,16 @@ const ProfilePage = () => {
             </Card>
           </div>
 
-          {/* Account Details Sidebar */}
+          {/* Sidebar - Right Side */}
           <div className="space-y-6">
             {/* Account Status */}
             <Card className="p-6">
               <div className="flex items-center gap-3 mb-4">
-                <div className="p-2 bg-success-100 dark:bg-success-900/30 rounded-lg">
-                  <Shield className="w-5 h-5 text-success-600 dark:text-success-400" />
+                <div className="p-2 rounded-lg bg-green-500/10 border border-green-500/30">
+                  <Shield className="w-5 h-5 text-green-400" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-white">
+                  <h3 className="font-semibold text-text-primary">
                     Account Status
                   </h3>
                 </div>
@@ -425,11 +377,11 @@ const ProfilePage = () => {
             {/* Subscription Tier */}
             <Card className="p-6">
               <div className="flex items-center gap-3 mb-4">
-                <div className="p-2 bg-purple-500/20 rounded-lg">
+                <div className="p-2 rounded-lg bg-purple-500/10 border border-border-purple">
                   <CreditCard className="w-5 h-5 text-purple-400" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-white">
+                  <h3 className="font-semibold text-text-primary">
                     Subscription Tier
                   </h3>
                 </div>
@@ -437,20 +389,20 @@ const ProfilePage = () => {
 
               {tierInfo ? (
                 <div className="space-y-3">
-                  <div className="p-4 bg-gradient-to-br from-primary-50 to-primary-100 dark:from-primary-900/20 dark:to-primary-800/20 rounded-lg border border-primary-200 dark:border-primary-800">
+                  <div className="p-4 rounded-lg bg-[#15051F] border border-border-purple">
                     <p className="text-2xl font-bold text-purple-400">
                       {tierInfo.name}
                     </p>
-                    <p className="text-sm text-white/70 mt-1">
+                    <p className="text-sm mt-1 text-text-secondary">
                       {tierInfo.monthlyCredits} credits/month
                     </p>
                   </div>
-                  <div className="text-sm text-white/70">
+                  <div className="text-sm text-text-secondary">
                     <p className="font-medium mb-2">Features:</p>
                     <ul className="space-y-1">
                       {tierInfo.features.map((feature, index) => (
                         <li key={index} className="flex items-start gap-2">
-                          <span className="text-purple-400 mt-0.5">
+                          <span className="mt-0.5 text-purple-400">
                             •
                           </span>
                           {feature}
@@ -460,7 +412,7 @@ const ProfilePage = () => {
                   </div>
                 </div>
               ) : (
-                <p className="text-white/70">
+                <p className="text-text-muted">
                   No subscription tier assigned
                 </p>
               )}
@@ -469,11 +421,11 @@ const ProfilePage = () => {
             {/* Credits Overview */}
             <Card className="p-6">
               <div className="flex items-center gap-3 mb-4">
-                <div className="p-2 bg-secondary-100 dark:bg-secondary-900/30 rounded-lg">
-                  <CreditCard className="w-5 h-5 text-secondary-600 dark:text-secondary-400" />
+                <div className="p-2 rounded-lg bg-blue-500/10 border border-blue-500/30">
+                  <CreditCard className="w-5 h-5 text-blue-400" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-white">
+                  <h3 className="font-semibold text-text-primary">
                     Credits
                   </h3>
                 </div>
@@ -481,26 +433,26 @@ const ProfilePage = () => {
 
               <div className="space-y-3">
                 <div className="flex justify-between items-center">
-                  <span className="text-white/70">
+                  <span className="text-text-muted">
                     Available
                   </span>
-                  <span className="text-2xl font-bold text-white">
+                  <span className="text-2xl font-bold text-text-primary">
                     {userData?.credits?.available || 0}
                   </span>
                 </div>
-                <div className="flex justify-between items-center pt-3 border-t border-white/10">
-                  <span className="text-white/70">
+                <div className="flex justify-between items-center pt-3 border-t border-border-purple">
+                  <span className="text-text-muted">
                     Used this month
                   </span>
-                  <span className="font-semibold text-white">
+                  <span className="font-semibold text-text-primary">
                     {userData?.credits?.used || 0}
                   </span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-white/70">
+                  <span className="text-text-muted">
                     Total earned
                   </span>
-                  <span className="font-semibold text-white">
+                  <span className="font-semibold text-text-primary">
                     {userData?.credits?.total || 0}
                   </span>
                 </div>
@@ -523,5 +475,3 @@ const ProfilePage = () => {
 };
 
 export default ProfilePage;
-
-

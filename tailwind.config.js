@@ -23,6 +23,14 @@ export default {
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
+        // Custom theme colors
+        'bg-purple-dark': '#15051F',
+        'bg-purple-darker': '#1E0A2A',
+        'surface-dark': '#1F1F24',
+        'border-purple': '#3A2F44',
+        'text-primary': '#FFFFFF',
+        'text-secondary': '#C9B6E8',
+        'text-muted': 'rgba(255, 255, 255, 0.55)',
         primary: {
           50: "#eff6ff",
           100: "#dbeafe",
