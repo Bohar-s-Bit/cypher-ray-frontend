@@ -15,9 +15,11 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const { setAuth } = useAuthStore();
   const [loading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState("");
 
   const onSubmit = async (data) => {
     setLoading(true);
+    setError(""); // Clear previous errors
     try {
       // Try user login first
       let response = await authService.userLogin(data);
@@ -37,7 +39,10 @@ const LoginPage = () => {
       }
     } catch (error) {
       console.error("Login error:", error);
-      // Error toast is handled by axios interceptor
+      // Set error message for display
+      const errorMessage = error.response?.data?.message || "Invalid email or password. Please try again.";
+      setError(errorMessage);
+      toast.error(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -84,11 +89,11 @@ const LoginPage = () => {
         transition={{ duration: 0.8, ease: "easeOut" }}
         className="relative z-10 flex flex-col items-center"
       >
-        <LoginForm onSubmit={onSubmit} loading={loading} />
+        <LoginForm onSubmit={onSubmit} loading={loading} error={error} />
         
         {/* Footer */}
         <p className="text-center text-sm text-neutral-400 mt-6">
-          © 2025 {APP_NAME}. A Government of India Initiative.
+          © 2025 {APP_NAME}. A SIH Project.
         </p>
       </motion.div>
     </div>

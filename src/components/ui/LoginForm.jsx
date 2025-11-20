@@ -2,20 +2,33 @@ import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { authService } from "../../services/authService";
 
-const LoginForm = ({ onSubmit, loading = false }) => {
+const LoginForm = ({ onSubmit, loading = false, error = "" }) => {
   const [isActive, setIsActive] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [accessLoading, setAccessLoading] = useState(false);
 
-  const handleSignInSubmit = (e) => {
+  const handleSignInSubmit = async (e) => {
+    // Prevent any default browser form submission and stop propagation
     e.preventDefault();
+    e.stopPropagation();
+
     const formData = new FormData(e.target);
     const data = {
       email: formData.get("email"),
       password: formData.get("password"),
       rememberMe: formData.get("rememberMe") === "on",
     };
-    onSubmit(data);
+
+    try {
+      // Await the parent onSubmit so any promise rejection is handled here
+      if (onSubmit) {
+        await onSubmit(data);
+      }
+    } catch (err) {
+      // Swallow errors here to ensure no navigation/reload occurs
+      // Parent should show toast; log for debugging
+      console.error("Sign in submit handler error:", err);
+    }
   };
 
   const handleAccessRequestSubmit = async (e) => {

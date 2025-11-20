@@ -32,21 +32,27 @@ axiosInstance.interceptors.response.use(
   },
   (error) => {
     const message = error.response?.data?.message || "Something went wrong";
+    const currentPath = window.location.pathname;
 
     // Handle specific error codes
     if (error.response?.status === 401) {
-      // Unauthorized - clear local storage and redirect to login
-      localStorage.removeItem(STORAGE_KEYS.TOKEN);
-      localStorage.removeItem(STORAGE_KEYS.USER);
-      window.location.href = "/login";
-      toast.error("Session expired. Please login again.");
+      // Only redirect to login if we're not already on the login page
+      if (currentPath !== "/login" && currentPath !== "/") {
+        // Unauthorized - clear local storage and redirect to login
+        localStorage.removeItem(STORAGE_KEYS.TOKEN);
+        localStorage.removeItem(STORAGE_KEYS.USER);
+        window.location.href = "/login";
+        toast.error("Session expired. Please login again.");
+      }
+      // Don't show toast on login page - let the page handle it
     } else if (error.response?.status === 403) {
       toast.error("Access denied. You do not have permission.");
     } else if (error.response?.status === 404) {
       toast.error("Resource not found.");
     } else if (error.response?.status === 500) {
       toast.error("Server error. Please try again later.");
-    } else {
+    } else if (currentPath !== "/login" && currentPath !== "/") {
+      // Only show generic error toast if not on login page
       toast.error(message);
     }
 
