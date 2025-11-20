@@ -3,9 +3,6 @@ import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import {
   Users,
-  UserCheck,
-  UserX,
-  TrendingUp,
   IndianRupee,
   Activity,
 } from "lucide-react";
@@ -58,45 +55,20 @@ const AdminDashboard = () => {
       icon: Users,
       color: "text-purple-400",
       bgColor: "bg-purple-500/20",
-      changeType: "increase",
-    },
-    {
-      title: "Active Users",
-      value: stats?.activeUsers || 0,
-      icon: UserCheck,
-      color: "text-success-600 dark:text-success-400",
-      bgColor: "bg-success-50 dark:bg-success-900/20",
-      changeType: "increase",
-    },
-    {
-      title: "Inactive Users",
-      value: stats?.inactiveUsers || 0,
-      icon: UserX,
-      color: "text-error-600 dark:text-error-400",
-      bgColor: "bg-error-50 dark:bg-error-900/20",
-      changeType: "decrease",
     },
     {
       title: "Total Credits Issued",
       value: stats?.credits?.totalCreditsDistributed || 0,
       icon: IndianRupee,
-      color: "text-secondary-600 dark:text-secondary-400",
-      bgColor: "bg-secondary-50 dark:bg-secondary-900/20",
-      changeType: "increase",
-    },
-    {
-      title: "Credits Used",
-      value: stats?.credits?.totalCreditsUsed || 0,
-      icon: TrendingUp,
-      color: "text-warning-600 dark:text-warning-400",
-      bgColor: "bg-warning-50 dark:bg-warning-900/20",
+      color: "text-blue-400",
+      bgColor: "bg-blue-500/20",
     },
     {
       title: "Credits Remaining",
       value: stats?.credits?.totalCreditsRemaining || 0,
       icon: Activity,
-      color: "text-purple-400",
-      bgColor: "bg-purple-500/20",
+      color: "text-green-400",
+      bgColor: "bg-green-500/20",
     },
   ];
 
@@ -114,10 +86,10 @@ const AdminDashboard = () => {
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {isLoading ? (
           <>
-            {[...Array(6)].map((_, i) => (
+            {[...Array(3)].map((_, i) => (
               <StatCardSkeleton key={i} />
             ))}
           </>
@@ -132,18 +104,18 @@ const AdminDashboard = () => {
                 transition={{ delay: index * 0.1 }}
               >
                 <Card>
-                  <CardContent className="p-4">
+                  <CardContent className="p-5">
                     <div className="flex items-center justify-between">
                       <div className="flex-1">
-                        <p className="text-sm text-text-muted mb-1">
+                        <p className="text-sm text-text-muted mb-2">
                           {stat.title}
                         </p>
-                        <p className="text-2xl font-bold text-text-primary">
+                        <p className="text-3xl font-bold text-text-primary">
                           {formatNumber(stat.value)}
                         </p>
                       </div>
-                      <div className={`p-2.5 rounded-lg ${stat.bgColor}`}>
-                        <Icon className={`w-5 h-5 ${stat.color}`} />
+                      <div className={`p-3 rounded-lg ${stat.bgColor}`}>
+                        <Icon className={`w-6 h-6 ${stat.color}`} />
                       </div>
                     </div>
                   </CardContent>
@@ -162,9 +134,9 @@ const AdminDashboard = () => {
             Visual breakdown of users across different tiers
           </CardDescription>
         </CardHeader>
-        <CardContent className="p-6">
+        <CardContent className="p-5">
           {isLoading ? (
-            <div className="h-32 flex items-center justify-center">
+            <div className="h-24 flex items-center justify-center">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-400"></div>
             </div>
           ) : (
@@ -179,19 +151,19 @@ const AdminDashboard = () => {
               </BarSegment.Root>
 
               {/* Summary Stats */}
-              <div className="grid grid-cols-2 gap-4 pt-4 border-t border-border-purple">
+              <div className="grid grid-cols-2 gap-3 pt-3 border-t border-border-purple">
                 {chartData.map((tier, index) => (
                   <div
                     key={index}
-                    className="text-center p-3 bg-surface-dark rounded-lg border border-border-purple"
+                    className="text-center p-2.5 bg-surface-dark rounded-lg border border-border-purple"
                   >
-                    <div className="text-2xl font-bold text-text-primary">
+                    <div className="text-xl font-bold text-text-primary">
                       {formatNumber(tier.value)}
                     </div>
                     <div className="text-xs text-text-muted mt-1">
                       {tier.name}
                     </div>
-                    <div className="text-xs text-text-muted mt-1">
+                    <div className="text-xs text-text-muted mt-0.5">
                       {stats?.totalUsers > 0
                         ? `${((tier.value / stats.totalUsers) * 100).toFixed(1)}%`
                         : "0%"}

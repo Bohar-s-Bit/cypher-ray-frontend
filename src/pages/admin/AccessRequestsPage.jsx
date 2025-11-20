@@ -95,7 +95,7 @@ const AccessRequestsPage = () => {
       </div>
 
       {/* Requests Grid */}
-      <div className="grid gap-6">
+      <div className="grid gap-4">
         {isLoading ? (
           <Card>
             <CardContent className="p-6">
@@ -104,94 +104,89 @@ const AccessRequestsPage = () => {
           </Card>
         ) : requests.length > 0 ? (
           requests.map((request, index) => (
-            <motion.div
-              key={request.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-            >
-              <Card className="hover:shadow-lg transition-shadow">
-                <CardContent className="p-6">
-                  <div className="flex flex-col lg:flex-row justify-between gap-6">
-                    {/* Request Info */}
-                    <div className="flex-1 space-y-4">
-                      {/* Name & Email */}
-                      <div>
-                        <h3 className="text-xl font-semibold text-neutral-900 dark:text-white mb-2">
-                          {request.fullName}
-                        </h3>
-                        <div className="flex items-center gap-2 text-neutral-600 dark:text-neutral-400">
-                          <Mail className="w-4 h-4" />
-                          <span className="text-sm">{request.email}</span>
-                        </div>
-                      </div>
-
-                      {/* Organization */}
-                      <div className="flex items-center gap-2 text-neutral-600 dark:text-neutral-400">
-                        <Building2 className="w-4 h-4" />
-                        <span className="text-sm font-medium">
-                          {request.organizationName}
-                        </span>
-                      </div>
-
-                      {/* Reason */}
-                      <div className="space-y-2">
-                        <div className="flex items-center gap-2 text-neutral-700 dark:text-neutral-300">
-                          <MessageSquare className="w-4 h-4" />
-                          <span className="text-sm font-semibold">
-                            Reason for Access:
-                          </span>
-                        </div>
-                        <p className="text-sm text-neutral-600 dark:text-neutral-400 pl-6 leading-relaxed">
-                          {request.reasonForJoining}
-                        </p>
-                      </div>
-
-                      {/* Request Date */}
-                      <div className="flex items-center gap-2 text-neutral-500 dark:text-neutral-500">
-                        <Calendar className="w-4 h-4" />
-                        <span className="text-xs">
-                          Requested on{" "}
-                          {format(
-                            new Date(request.requestedAt),
-                            "MMM dd, yyyy 'at' hh:mm a"
-                          )}
-                        </span>
+            <Card key={request.id} className="hover:shadow-lg transition-shadow">
+              <CardContent className="p-4">
+                <div className="flex flex-col lg:flex-row justify-between gap-4">
+                  {/* Request Info */}
+                  <div className="flex-1 space-y-3">
+                    {/* Name & Email */}
+                    <div>
+                      <h3 className="text-lg font-semibold text-text-primary mb-1">
+                        {request.fullName}
+                      </h3>
+                      <div className="flex items-center gap-2 text-text-secondary">
+                        <Mail className="w-4 h-4" />
+                        <span className="text-sm">{request.email}</span>
                       </div>
                     </div>
 
-                    {/* Actions */}
-                    <div className="flex lg:flex-col gap-3 lg:justify-center">
-                      <Button
-                        variant="primary"
-                        leftIcon={<UserPlus className="w-4 h-4" />}
-                        onClick={() => handleApprove(request)}
-                        className="flex-1 lg:flex-none"
-                      >
-                        Add User
-                      </Button>
-                      <Button
-                        variant="error"
-                        leftIcon={<Trash2 className="w-4 h-4" />}
-                        onClick={() => handleDelete(request.id)}
-                        className="flex-1 lg:flex-none"
-                      >
-                        Delete
-                      </Button>
+                    {/* Organization */}
+                    <div className="flex items-center gap-2 text-text-secondary">
+                      <Building2 className="w-4 h-4" />
+                      <span className="text-sm font-medium">
+                        {request.organizationName}
+                      </span>
+                    </div>
+
+                    {/* Reason */}
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-2 text-text-primary">
+                        <MessageSquare className="w-4 h-4" />
+                        <span className="text-sm font-semibold">
+                          Reason for Access:
+                        </span>
+                      </div>
+                      <p className="text-sm text-text-muted pl-6 leading-relaxed">
+                        {request.reasonForJoining}
+                      </p>
+                    </div>
+
+                    {/* Request Date */}
+                    <div className="flex items-center gap-2 text-text-muted">
+                      <Calendar className="w-4 h-4" />
+                      <span className="text-xs">
+                        Requested on{" "}
+                        {format(
+                          new Date(request.requestedAt),
+                          "MMM dd, yyyy 'at' hh:mm a"
+                        )}
+                      </span>
                     </div>
                   </div>
-                </CardContent>
-              </Card>
-            </motion.div>
+
+                  {/* Actions */}
+                  <div className="flex lg:flex-col gap-2 lg:justify-center">
+                    <Button
+                      variant="primary"
+                      size="sm"
+                      leftIcon={<UserPlus className="w-4 h-4" />}
+                      onClick={() => handleApprove(request)}
+                      className="flex-1 lg:flex-none"
+                    >
+                      Add User
+                    </Button>
+                    <Button
+                      variant="error"
+                      size="sm"
+                      leftIcon={<Trash2 className="w-4 h-4" />}
+                      onClick={() => handleDelete(request.id)}
+                      className="flex-1 lg:flex-none"
+                    >
+                      Delete
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           ))
         ) : (
           <Card>
-            <CardContent className="p-12 text-center">
-              <Users className="w-16 h-16 text-neutral-400 dark:text-neutral-600 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-neutral-700 dark:text-neutral-300 mb-2">
+            <CardContent className="p-8 text-center">
+              <Users className="w-12 h-12 text-text-muted mx-auto mb-3" />
+              <h3 className="text-lg font-semibold text-text-primary mb-2">
                 No Pending Requests
               </h3>
-              <p className="text-neutral-600 dark:text-neutral-400">
+              <p className="text-text-secondary text-sm">
                 All access requests have been processed
               </p>
             </CardContent>

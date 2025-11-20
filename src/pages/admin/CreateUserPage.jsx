@@ -17,7 +17,7 @@ import {
   CardDescription,
   CardContent,
 } from "../../components/ui/Card";
-import { ROUTES, TIERS } from "../../config/constants";
+import { ROUTES } from "../../config/constants";
 
 const createUserSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -106,20 +106,16 @@ const CreateUserPage = () => {
       </div>
 
       {/* Form */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-      >
-        <Card>
-          <CardHeader>
-            <CardTitle>User Information</CardTitle>
-            <CardDescription>
-              Enter the details for the new user. A welcome email with login
-              credentials will be sent automatically.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+      <Card>
+        <CardHeader>
+          <CardTitle>User Information</CardTitle>
+          <CardDescription>
+            Enter the details for the new user. A welcome email with login
+            credentials will be sent automatically.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
               {/* Email */}
               <Input
                 label="Email Address"
@@ -142,15 +138,15 @@ const CreateUserPage = () => {
 
               {/* User Type */}
               <div>
-                <label className="text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2 block">
+                <label className="text-sm font-medium text-text-primary mb-2 block">
                   User Type <span className="text-error-500">*</span>
                 </label>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 gap-3">
                   <label
-                    className={`relative flex flex-col items-center justify-center p-6 border-2 rounded-xl cursor-pointer transition-all ${
+                    className={`relative flex flex-col items-center justify-center p-4 border-2 rounded-xl cursor-pointer transition-all ${
                       userType === "user"
-                        ? "border-primary-500 bg-purple-500/20"
-                        : "border-neutral-200 dark:border-neutral-700 hover:border-neutral-300 dark:hover:border-neutral-600"
+                        ? "border-purple-500 bg-purple-500/20"
+                        : "border-border-purple hover:border-purple-500/50"
                     }`}
                   >
                     <input
@@ -160,31 +156,31 @@ const CreateUserPage = () => {
                       className="sr-only"
                     />
                     <UserPlus
-                      className={`w-8 h-8 mb-2 ${
+                      className={`w-6 h-6 mb-1.5 ${
                         userType === "user"
                           ? "text-purple-400"
-                          : "text-neutral-400 dark:text-neutral-500"
+                          : "text-text-muted"
                       }`}
                     />
                     <span
-                      className={`font-semibold ${
+                      className={`font-semibold text-sm ${
                         userType === "user"
-                          ? "text-primary-900 dark:text-primary-300"
-                          : "text-neutral-700 dark:text-neutral-300"
+                          ? "text-purple-300"
+                          : "text-text-primary"
                       }`}
                     >
                       Regular User
                     </span>
-                    <span className="text-sm text-neutral-600 dark:text-neutral-400 mt-1">
-                      Standard account access
+                    <span className="text-xs text-text-muted mt-0.5">
+                      Standard access
                     </span>
                   </label>
 
                   <label
-                    className={`relative flex flex-col items-center justify-center p-6 border-2 rounded-xl cursor-pointer transition-all ${
+                    className={`relative flex flex-col items-center justify-center p-4 border-2 rounded-xl cursor-pointer transition-all ${
                       userType === "admin"
-                        ? "border-secondary-500 bg-secondary-50 dark:bg-secondary-900/20"
-                        : "border-neutral-200 dark:border-neutral-700 hover:border-neutral-300 dark:hover:border-neutral-600"
+                        ? "border-blue-500 bg-blue-500/20"
+                        : "border-border-purple hover:border-blue-500/50"
                     }`}
                   >
                     <input
@@ -194,23 +190,23 @@ const CreateUserPage = () => {
                       className="sr-only"
                     />
                     <UserPlus
-                      className={`w-8 h-8 mb-2 ${
+                      className={`w-6 h-6 mb-1.5 ${
                         userType === "admin"
-                          ? "text-secondary-600 dark:text-secondary-400"
-                          : "text-neutral-400 dark:text-neutral-500"
+                          ? "text-blue-400"
+                          : "text-text-muted"
                       }`}
                     />
                     <span
-                      className={`font-semibold ${
+                      className={`font-semibold text-sm ${
                         userType === "admin"
-                          ? "text-secondary-900 dark:text-secondary-300"
-                          : "text-neutral-700 dark:text-neutral-300"
+                          ? "text-blue-300"
+                          : "text-text-primary"
                       }`}
                     >
                       Administrator
                     </span>
-                    <span className="text-sm text-neutral-600 dark:text-neutral-400 mt-1">
-                      Full platform access
+                    <span className="text-xs text-text-muted mt-0.5">
+                      Full access
                     </span>
                   </label>
                 </div>
@@ -224,55 +220,63 @@ const CreateUserPage = () => {
               {/* Tier Selection - Only for regular users */}
               {userType === "user" && (
                 <div>
-                  <label className="text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-3 block">
+                  <label className="text-sm font-medium text-text-primary mb-2 block">
                     Select Tier (Optional)
                   </label>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {Object.values(TIERS).map((tier) => (
-                      <label
-                        key={tier.value}
-                        className={`relative flex flex-col p-6 border-2 rounded-xl cursor-pointer transition-all ${
-                          watch("tier") === tier.value
-                            ? "border-primary-500 bg-purple-500/20"
-                            : "border-neutral-200 dark:border-neutral-700 hover:border-neutral-300 dark:hover:border-neutral-600"
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <label
+                      className={`relative flex items-center justify-between p-3 border-2 rounded-xl cursor-pointer transition-all ${
+                        watch("tier") === "tier1"
+                          ? "border-purple-500 bg-purple-500/20"
+                          : "border-border-purple hover:border-purple-500/50"
+                      }`}
+                    >
+                      <input
+                        type="radio"
+                        value="tier1"
+                        {...register("tier")}
+                        className="sr-only"
+                      />
+                      <span
+                        className={`text-base font-semibold ${
+                          watch("tier") === "tier1"
+                            ? "text-purple-300"
+                            : "text-text-primary"
                         }`}
                       >
-                        <input
-                          type="radio"
-                          value={tier.value}
-                          {...register("tier")}
-                          className="sr-only"
-                        />
-                        <div className="flex items-center justify-between mb-3">
-                          <h4
-                            className={`text-lg font-semibold ${
-                              watch("tier") === tier.value
-                                ? "text-primary-900 dark:text-primary-300"
-                                : "text-neutral-900 dark:text-white"
-                            }`}
-                          >
-                            {tier.name}
-                          </h4>
-                          <span className="text-2xl font-bold text-neutral-900 dark:text-white">
-                            ₹{tier.pricePerYear.toLocaleString()}
-                          </span>
-                        </div>
-                        <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-4">
-                          {tier.monthlyCredits} credits per month
-                        </p>
-                        <ul className="space-y-2">
-                          {tier.features.map((feature, index) => (
-                            <li
-                              key={index}
-                              className="flex items-center gap-2 text-sm text-neutral-700 dark:text-neutral-300"
-                            >
-                              <span className="w-1.5 h-1.5 bg-primary-500 dark:bg-primary-400 rounded-full"></span>
-                              {feature}
-                            </li>
-                          ))}
-                        </ul>
-                      </label>
-                    ))}
+                        Tier 1
+                      </span>
+                      <span className="text-base font-bold text-text-secondary">
+                        500 credits
+                      </span>
+                    </label>
+
+                    <label
+                      className={`relative flex items-center justify-between p-3 border-2 rounded-xl cursor-pointer transition-all ${
+                        watch("tier") === "tier2"
+                          ? "border-purple-500 bg-purple-500/20"
+                          : "border-border-purple hover:border-purple-500/50"
+                      }`}
+                    >
+                      <input
+                        type="radio"
+                        value="tier2"
+                        {...register("tier")}
+                        className="sr-only"
+                      />
+                      <span
+                        className={`text-base font-semibold ${
+                          watch("tier") === "tier2"
+                            ? "text-purple-300"
+                            : "text-text-primary"
+                        }`}
+                      >
+                        Tier 2
+                      </span>
+                      <span className="text-base font-bold text-text-secondary">
+                        1000 credits
+                      </span>
+                    </label>
                   </div>
                   {errors.tier && (
                     <p className="text-sm text-error-500 mt-1">
@@ -282,24 +286,11 @@ const CreateUserPage = () => {
                 </div>
               )}
 
-              {/* Info Box */}
-              <div className="p-4 bg-purple-500/20 border border-purple-500/30 rounded-lg">
-                <p className="text-sm text-neutral-700 dark:text-neutral-300">
-                  <strong className="text-neutral-900 dark:text-white">
-                    Note:
-                  </strong>{" "}
-                  A temporary password will be generated and sent to the user's
-                  email address. They will be required to change it on first
-                  login.
-                </p>
-              </div>
-
               {/* Actions */}
-              <div className="flex gap-4 pt-4">
+              <div className="flex gap-3 pt-2">
                 <Button
                   type="submit"
                   variant="primary"
-                  size="lg"
                   fullWidth
                   loading={createUserMutation.isPending}
                   leftIcon={<UserPlus className="w-5 h-5" />}
@@ -309,7 +300,6 @@ const CreateUserPage = () => {
                 <Button
                   type="button"
                   variant="outline"
-                  size="lg"
                   onClick={() => navigate(ROUTES.ADMIN.USERS)}
                   disabled={createUserMutation.isPending}
                 >
@@ -319,7 +309,6 @@ const CreateUserPage = () => {
             </form>
           </CardContent>
         </Card>
-      </motion.div>
     </div>
   );
 };

@@ -237,7 +237,7 @@ const LoginForm = ({ onSubmit, loading = false }) => {
         }`}
       >
         <div
-          className={`bg-gradient-to-br from-purple-600 via-purple-500 to-purple-400 h-full text-white relative -left-full w-[200%] transition-all duration-[600ms] ease-in-out ${
+          className={`bg-gradient-to-br from-[#3d1a5f] via-[#5b2a8a] to-[#7c3aaa] h-full text-white relative -left-full w-[200%] transition-all duration-[600ms] ease-in-out ${
             isActive ? "translate-x-1/2" : "translate-x-0"
           }`}
         >
@@ -255,7 +255,7 @@ const LoginForm = ({ onSubmit, loading = false }) => {
             </p>
             <button
               onClick={() => setIsActive(false)}
-              className="bg-transparent border-2 border-white text-white text-sm px-12 py-3 rounded-lg font-semibold tracking-wide uppercase mt-4 cursor-pointer hover:bg-white hover:text-purple-600 transition-all shadow-lg hover:shadow-xl"
+              className="bg-transparent border-2 border-white text-white text-sm px-12 py-3 rounded-lg font-semibold tracking-wide uppercase mt-4 cursor-pointer hover:bg-white hover:text-[#5b2a8a] transition-all shadow-lg hover:shadow-xl"
             >
               Sign In
             </button>
@@ -275,7 +275,7 @@ const LoginForm = ({ onSubmit, loading = false }) => {
             </p>
             <button
               onClick={() => setIsActive(true)}
-              className="bg-transparent border-2 border-white text-white text-sm px-12 py-3 rounded-lg font-semibold tracking-wide uppercase mt-4 cursor-pointer hover:bg-white hover:text-purple-600 transition-all shadow-lg hover:shadow-xl"
+              className="bg-transparent border-2 border-white text-white text-sm px-12 py-3 rounded-lg font-semibold tracking-wide uppercase mt-4 cursor-pointer hover:bg-white hover:text-[#5b2a8a] transition-all shadow-lg hover:shadow-xl"
             >
               Request Access
             </button>
