@@ -6,7 +6,6 @@ import {
   IndianRupee,
   Activity,
 } from "lucide-react";
-import { BarSegment, useChart } from "@chakra-ui/charts";
 import { adminService } from "../services/adminService";
 import {
   Card,
@@ -29,24 +28,13 @@ const AdminDashboard = () => {
 
   const stats = statsData?.data || {};
 
-  // Prepare chart data for Chakra UI
-  const chartData = [
-    {
-      name: "Tier 1 Users",
-      value: stats?.tier1Users || 0,
-      color: "purple.solid",
-    },
-    {
-      name: "Tier 2 Users",
-      value: stats?.tier2Users || 0,
-      color: "blue.solid",
-    },
-  ];
+  // Prepare chart data
+  const tier1Users = stats?.tier1Users || 0;
+  const tier2Users = stats?.tier2Users || 0;
+  const totalTierUsers = tier1Users + tier2Users;
 
-  const chart = useChart({
-    sort: { by: "value", direction: "desc" },
-    data: chartData,
-  });
+  const tier1Percentage = totalTierUsers > 0 ? (tier1Users / totalTierUsers) * 100 : 0;
+  const tier2Percentage = totalTierUsers > 0 ? (tier2Users / totalTierUsers) * 100 : 0;
 
   const statCards = [
     {
@@ -141,35 +129,77 @@ const AdminDashboard = () => {
             </div>
           ) : (
             <div className="space-y-4">
-              {/* Chakra UI Bar Segment Chart */}
-              <BarSegment.Root chart={chart}>
-                <BarSegment.Content>
-                  <BarSegment.Value className="text-text-primary font-semibold" />
-                  <BarSegment.Bar className="h-8" />
-                  <BarSegment.Label className="text-text-secondary" />
-                </BarSegment.Content>
-              </BarSegment.Root>
-
-              {/* Summary Stats */}
-              <div className="grid grid-cols-2 gap-3 pt-3 border-t border-border-purple">
-                {chartData.map((tier, index) => (
-                  <div
-                    key={index}
-                    className="text-center p-2.5 bg-surface-dark rounded-lg border border-border-purple"
-                  >
-                    <div className="text-xl font-bold text-text-primary">
-                      {formatNumber(tier.value)}
-                    </div>
-                    <div className="text-xs text-text-muted mt-1">
-                      {tier.name}
-                    </div>
-                    <div className="text-xs text-text-muted mt-0.5">
-                      {stats?.totalUsers > 0
-                        ? `${((tier.value / stats.totalUsers) * 100).toFixed(1)}%`
-                        : "0%"}
+              {/* Visual Bar Chart */}
+              <div className="space-y-3">
+                {/* Tier 1 Bar */}
+                <div>
+                  <div className="flex justify-between items-center mb-1">
+                    <span className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
+                      Tier 1 Users
+                    </span>
+                    <span className="text-sm font-semibold text-neutral-900 dark:text-white">
+                      {formatNumber(tier1Users)} ({tier1Percentage.toFixed(1)}%)
+                    </span>
+                  </div>
+                  <div className="w-full bg-neutral-200 dark:bg-neutral-700 rounded-full h-8">
+                    <div
+                      className="bg-gradient-to-r from-purple-500 to-purple-600 h-8 rounded-full flex items-center justify-center text-white text-xs font-medium transition-all duration-500"
+                      style={{ width: `${tier1Percentage}%` }}
+                    >
+                      {tier1Percentage > 10 && `${tier1Percentage.toFixed(0)}%`}
                     </div>
                   </div>
-                ))}
+                </div>
+
+                {/* Tier 2 Bar */}
+                <div>
+                  <div className="flex justify-between items-center mb-1">
+                    <span className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
+                      Tier 2 Users
+                    </span>
+                    <span className="text-sm font-semibold text-neutral-900 dark:text-white">
+                      {formatNumber(tier2Users)} ({tier2Percentage.toFixed(1)}%)
+                    </span>
+                  </div>
+                  <div className="w-full bg-neutral-200 dark:bg-neutral-700 rounded-full h-8">
+                    <div
+                      className="bg-gradient-to-r from-blue-500 to-blue-600 h-8 rounded-full flex items-center justify-center text-white text-xs font-medium transition-all duration-500"
+                      style={{ width: `${tier2Percentage}%` }}
+                    >
+                      {tier2Percentage > 10 && `${tier2Percentage.toFixed(0)}%`}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Summary Stats */}
+              <div className="grid grid-cols-2 gap-3 pt-3 border-t border-neutral-200 dark:border-neutral-700">
+                <div className="text-center p-2.5 bg-neutral-50 dark:bg-neutral-800 rounded-lg border border-neutral-200 dark:border-neutral-700">
+                  <div className="text-xl font-bold text-purple-600 dark:text-purple-400">
+                    {formatNumber(tier1Users)}
+                  </div>
+                  <div className="text-xs text-neutral-600 dark:text-neutral-400 mt-1">
+                    Tier 1 Users
+                  </div>
+                  <div className="text-xs text-neutral-500 dark:text-neutral-500 mt-0.5">
+                    {stats?.totalUsers > 0
+                      ? `${((tier1Users / stats.totalUsers) * 100).toFixed(1)}%`
+                      : "0%"}
+                  </div>
+                </div>
+                <div className="text-center p-2.5 bg-neutral-50 dark:bg-neutral-800 rounded-lg border border-neutral-200 dark:border-neutral-700">
+                  <div className="text-xl font-bold text-blue-600 dark:text-blue-400">
+                    {formatNumber(tier2Users)}
+                  </div>
+                  <div className="text-xs text-neutral-600 dark:text-neutral-400 mt-1">
+                    Tier 2 Users
+                  </div>
+                  <div className="text-xs text-neutral-500 dark:text-neutral-500 mt-0.5">
+                    {stats?.totalUsers > 0
+                      ? `${((tier2Users / stats.totalUsers) * 100).toFixed(1)}%`
+                      : "0%"}
+                  </div>
+                </div>
               </div>
             </div>
           )}
