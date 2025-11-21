@@ -42,6 +42,7 @@ import Badge from "../components/ui/Badge";
 import Button from "../components/ui/Button";
 import Input from "../components/ui/Input";
 import { Modal } from "../components/ui/Modal";
+import { AnimatedModal } from "../components/ui/AnimatedModal";
 import CopyButton from "../components/ui/CopyButton";
 import Spinner from "../components/ui/Spinner";
 import { APP_NAME, QUERY_KEYS, API_BASE_URL } from "../config/constants";
@@ -50,6 +51,15 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { analysisService } from "../services/analysisService";
 import { DockNavigation } from "../components/layout/DockNavigation";
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  Column,
+  Row,
+  Cell,
+  ResizableTableContainer,
+} from "../components/ui/Table";
 
 const SdkDocsPage = () => {
   const [activeSection, setActiveSection] = useState("api-keys");
@@ -319,7 +329,7 @@ const SdkDocsPage = () => {
 
           {/* Scrollable Content Area */}
           <div id="docs-scroll-container" className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-purple-500/50 scrollbar-track-transparent">
-            <main className="w-full px-6 sm:px-8 lg:px-12 xl:px-16 py-8 md:py-12 pb-32">
+            <main className="w-full max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-12 xl:px-16 py-8 md:py-12 pb-32">
           {/* Header */}
           <div className="mb-16">
             <div className="relative">
@@ -366,10 +376,10 @@ const SdkDocsPage = () => {
                     </div>
                   </div>
                 </div>
-                <div className="p-5 bg-gradient-to-br from-green-500/10 to-green-600/5 border border-green-500/20 rounded-xl">
+                <div className="p-5 bg-gradient-to-br from-cyan-500/10 to-cyan-600/5 border border-cyan-500/20 rounded-xl">
                   <div className="flex items-center gap-3">
-                    <div className="p-2.5 bg-green-500/20 rounded-lg">
-                      <Code className="w-5 h-5 text-green-400" />
+                    <div className="p-2.5 bg-cyan-500/20 rounded-lg">
+                      <Code className="w-5 h-5 text-cyan-400" />
                     </div>
                     <div>
                       <p className="text-sm text-white/70">Languages Supported</p>
@@ -421,58 +431,66 @@ const SdkDocsPage = () => {
                       </Button>
                     </div>
                   ) : (
-                    <div className="space-y-4">
-                      {apiKeys.map((key) => (
-                        <div
-                          key={key._id}
-                          className="p-6 border border-purple-500/20 bg-gradient-to-br from-neutral-900/70 to-neutral-800/50 rounded-xl hover:border-purple-500/40 transition-all group"
-                        >
-                          <div className="flex items-start justify-between">
-                            <div className="flex-1 space-y-3">
-                              <div className="flex items-center gap-3">
-                                <h4 className="font-semibold text-white text-lg">
+                    <div className="overflow-x-auto rounded-xl border border-border-purple bg-surface-dark backdrop-blur-sm">
+                      <ResizableTableContainer>
+                        <Table aria-label="API Keys">
+                          <TableHeader>
+                            <Column isRowHeader className="text-text-primary text-sm font-semibold">Name</Column>
+                            <Column className="text-text-primary text-sm font-semibold">Key Preview</Column>
+                            <Column className="text-text-primary text-sm font-semibold">Status</Column>
+                            <Column className="text-text-primary text-sm font-semibold">Created</Column>
+                            <Column className="text-text-primary text-sm font-semibold">Expires</Column>
+                            <Column className="text-text-primary text-sm font-semibold">Actions</Column>
+                          </TableHeader>
+                          <TableBody>
+                            {apiKeys.map((key) => (
+                              <Row key={key._id} className="border-border-purple hover:bg-[#15051F]/50">
+                                <Cell className="font-medium text-text-primary text-sm">
                                   {key.name}
-                                </h4>
-                                <Badge
-                                  variant={key.isActive ? "success" : "error"}
-                                  size="sm"
-                                >
-                                  {key.isActive ? "Active" : "Revoked"}
-                                </Badge>
-                              </div>
-                              <div className="flex items-center gap-3">
-                                <code className="text-sm bg-black/40 backdrop-blur-sm border border-white/10 px-4 py-2 rounded-lg font-mono text-purple-300">
-                                  {key.keyPreview}
-                                </code>
-                                <CopyButton text={key.keyPreview} label="Key Preview" />
-                              </div>
-                              <div className="flex items-center gap-4 text-sm text-white/70">
-                                <span className="flex items-center gap-1.5">
-                                  <Calendar className="w-4 h-4" />
-                                  Created {format(new Date(key.createdAt), "MMM dd, yyyy")}
-                                </span>
-                                {key.expiresAt && (
-                                  <span className="flex items-center gap-1.5">
-                                    <Clock className="w-4 h-4" />
-                                    Expires {format(new Date(key.expiresAt), "MMM dd, yyyy")}
-                                  </span>
-                                )}
-                              </div>
-                            </div>
-                            {key.isActive && (
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                onClick={() => handleRevokeKey(key._id)}
-                                className="text-red-400 hover:text-red-300 hover:bg-red-500/10"
-                              >
-                                <Trash2 className="w-4 h-4 mr-2" />
-                                Revoke
-                              </Button>
-                            )}
-                          </div>
-                        </div>
-                      ))}
+                                </Cell>
+                                <Cell>
+                                  <div className="flex items-center gap-2">
+                                    <code className="text-xs bg-black/40 backdrop-blur-sm border border-white/10 px-3 py-1.5 rounded-lg font-mono text-purple-300">
+                                      {key.keyPreview}
+                                    </code>
+                                    <CopyButton text={key.keyPreview} label="Key Preview" />
+                                  </div>
+                                </Cell>
+                                <Cell>
+                                  <Badge
+                                    variant={key.isActive ? "success" : "error"}
+                                    size="sm"
+                                  >
+                                    {key.isActive ? "Active" : "Revoked"}
+                                  </Badge>
+                                </Cell>
+                                <Cell className="text-text-secondary text-sm">
+                                  {format(new Date(key.createdAt), "MMM dd, yyyy")}
+                                </Cell>
+                                <Cell className="text-text-secondary text-sm">
+                                  {key.expiresAt 
+                                    ? format(new Date(key.expiresAt), "MMM dd, yyyy")
+                                    : <span className="text-white/50">Never</span>
+                                  }
+                                </Cell>
+                                <Cell>
+                                  {key.isActive && (
+                                    <Button
+                                      variant="ghost"
+                                      size="sm"
+                                      onClick={() => handleRevokeKey(key._id)}
+                                      className="text-red-400 hover:text-red-300 hover:bg-red-500/10"
+                                    >
+                                      <Trash2 className="w-4 h-4 mr-1" />
+                                      Revoke
+                                    </Button>
+                                  )}
+                                </Cell>
+                              </Row>
+                            ))}
+                          </TableBody>
+                        </Table>
+                      </ResizableTableContainer>
                     </div>
                   )}
                 </CardContent>
@@ -875,7 +893,7 @@ failOnHigh: true`}
           {/* Performance Section */}
           <Section id="performance" title="Performance" icon={Shield}>
             <div className="space-y-6">
-              <Card variant="bordered" className="bg-gradient-to-br from-green-500/10 to-teal-500/10 border-green-500/30">
+              <Card variant="bordered" className="bg-gradient-to-br from-purple-500/10 to-purple-600/5 border-purple-500/20">
                 <CardContent className="p-6">
                   <h3 className="text-xl font-semibold text-white mb-4">Smart Caching & Deduplication</h3>
                   <p className="text-white/80 mb-4">
@@ -884,22 +902,22 @@ failOnHigh: true`}
                   </p>
                   <div className="grid md:grid-cols-3 gap-4">
                     <div className="bg-neutral-900/50 p-4 rounded-lg text-center">
-                      <div className="text-2xl font-bold text-green-400 mb-1">0.3s</div>
+                      <div className="text-2xl font-bold text-purple-400 mb-1">0.3s</div>
                       <div className="text-sm text-white/70">Cached Results</div>
                     </div>
                     <div className="bg-neutral-900/50 p-4 rounded-lg text-center">
-                      <div className="text-2xl font-bold text-teal-400 mb-1">4-32s</div>
+                      <div className="text-2xl font-bold text-blue-400 mb-1">4-32s</div>
                       <div className="text-sm text-white/70">New Analysis</div>
                     </div>
                     <div className="bg-neutral-900/50 p-4 rounded-lg text-center">
-                      <div className="text-2xl font-bold text-purple-400 mb-1">0 Credits</div>
+                      <div className="text-2xl font-bold text-cyan-400 mb-1">0 Credits</div>
                       <div className="text-sm text-white/70">For Cached</div>
                     </div>
                   </div>
                 </CardContent>
               </Card>
 
-              <Card variant="bordered" className="bg-gradient-to-br from-purple-500/10 to-pink-500/10 border-purple-500/30">
+              <Card variant="bordered" className="bg-gradient-to-br from-blue-500/10 to-blue-600/5 border-blue-500/20">
                 <CardContent className="p-6">
                   <h3 className="text-xl font-semibold text-white mb-4">Optimized Backend Processing</h3>
                   <p className="text-white/80 mb-4">
@@ -921,21 +939,21 @@ failOnHigh: true`}
                         <li>• Store in buffer: 0.1s</li>
                         <li>• Write to temp: 0.1-0.3s</li>
                         <li>• ML Analysis: 3-30s</li>
-                        <li className="font-semibold text-green-400">Total: 4-32 seconds</li>
+                        <li className="font-semibold text-cyan-400">Total: 4-32 seconds</li>
                       </ul>
                     </div>
                   </div>
                   <div className="mt-4 grid md:grid-cols-3 gap-4">
                     <div className="bg-neutral-900/50 p-3 rounded-lg text-center">
-                      <div className="text-xl font-bold text-green-400 mb-1">50% faster</div>
+                      <div className="text-xl font-bold text-purple-400 mb-1">50% faster</div>
                       <div className="text-xs text-white/70">Small files (5MB)</div>
                     </div>
                     <div className="bg-neutral-900/50 p-3 rounded-lg text-center">
-                      <div className="text-xl font-bold text-green-400 mb-1">33% faster</div>
+                      <div className="text-xl font-bold text-blue-400 mb-1">33% faster</div>
                       <div className="text-xs text-white/70">Medium files (20MB)</div>
                     </div>
                     <div className="bg-neutral-900/50 p-3 rounded-lg text-center">
-                      <div className="text-xl font-bold text-green-400 mb-1">18% faster</div>
+                      <div className="text-xl font-bold text-cyan-400 mb-1">18% faster</div>
                       <div className="text-xs text-white/70">Large files (80MB)</div>
                     </div>
                   </div>
@@ -1052,7 +1070,7 @@ exit $?`}
         </div>
 
         {/* Create API Key Modal */}
-        <Modal
+        <AnimatedModal
           isOpen={showCreateModal}
           onClose={() => {
             setShowCreateModal(false);
@@ -1060,10 +1078,13 @@ exit $?`}
             setNewKeyExpiry(365);
           }}
           title="Create New API Key"
+          description="Generate a new API key for SDK authentication"
+          icon={Key}
+          size="lg"
         >
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-2">
+              <label className="block text-sm font-medium text-white/90 mb-2">
                 Key Name
               </label>
               <Input
@@ -1071,11 +1092,11 @@ exit $?`}
                 value={newKeyName}
                 onChange={(e) => setNewKeyName(e.target.value)}
                 placeholder="e.g., Production, Development, CI/CD"
-                className="w-full"
+                className="w-full bg-black/40 border-white/10"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-2">
+              <label className="block text-sm font-medium text-white/90 mb-2">
                 Expires In (days)
               </label>
               <Input
@@ -1084,7 +1105,7 @@ exit $?`}
                 onChange={(e) => setNewKeyExpiry(parseInt(e.target.value))}
                 min="0"
                 placeholder="365 (0 for no expiration)"
-                className="w-full"
+                className="w-full bg-black/40 border-white/10"
               />
               <p className="text-xs text-white/60 mt-1">
                 Set to 0 for keys that never expire
@@ -1092,10 +1113,20 @@ exit $?`}
             </div>
             <div className="flex gap-3 pt-4">
               <Button
-                variant="primary"
+                variant="outline"
+                onClick={() => {
+                  setShowCreateModal(false);
+                  setNewKeyName("");
+                  setNewKeyExpiry(365);
+                }}
+                className="flex-1 bg-white/5 hover:bg-white/10 border-white/10"
+              >
+                Cancel
+              </Button>
+              <Button
                 onClick={handleCreateKey}
                 disabled={createKeyMutation.isPending}
-                className="flex-1"
+                className="flex-1 bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 border-0"
               >
                 {createKeyMutation.isPending ? (
                   <>
@@ -1109,41 +1140,32 @@ exit $?`}
                   </>
                 )}
               </Button>
-              <Button
-                variant="ghost"
-                onClick={() => {
-                  setShowCreateModal(false);
-                  setNewKeyName("");
-                  setNewKeyExpiry(365);
-                }}
-                className="flex-1"
-              >
-                Cancel
-              </Button>
             </div>
           </div>
-        </Modal>
+        </AnimatedModal>
 
         {/* Display Created API Key Modal */}
-        <Modal
+        <AnimatedModal
           isOpen={showFullKey}
           onClose={() => {
             setShowFullKey(false);
             setCreatedKey(null);
             setShowCreateModal(false);
           }}
-          title="API Key Created Successfully"
+          title="API Key Created!"
+          description="Save this key securely. You won't be able to see it again."
+          icon={CheckCircle}
+          size="lg"
         >
           <div className="space-y-4">
-            <Card variant="bordered" className="bg-yellow-500/10 border-yellow-500/30">
+            <Card variant="bordered" className="bg-gradient-to-br from-yellow-500/20 to-orange-500/10 border-yellow-500/30">
               <CardContent className="p-4">
                 <div className="flex gap-3">
                   <AlertCircle className="w-5 h-5 text-yellow-400 flex-shrink-0 mt-0.5" />
-                  <div className="text-sm text-yellow-200">
-                    <p className="font-semibold mb-1">Important!</p>
-                    <p>
-                      Make sure to copy your API key now. You won't be able to see it
-                      again!
+                  <div className="text-sm text-yellow-100">
+                    <p className="font-semibold mb-1">Important Security Notice</p>
+                    <p className="text-yellow-200/80">
+                      Copy your API key now. For security reasons, it won't be displayed again!
                     </p>
                   </div>
                 </div>
@@ -1152,11 +1174,11 @@ exit $?`}
 
             {createdKey && (
               <div>
-                <label className="block text-sm font-medium text-white/80 mb-2">
+                <label className="block text-sm font-medium text-white/90 mb-2">
                   Your API Key
                 </label>
                 <div className="flex gap-2">
-                  <code className="flex-1 text-sm bg-black/40 backdrop-blur-sm border border-white/10 px-4 py-3 rounded-lg font-mono text-purple-300 break-all">
+                  <code className="flex-1 text-sm bg-black/60 backdrop-blur-sm border border-purple-500/30 px-4 py-3 rounded-lg font-mono text-purple-300 break-all">
                     {createdKey.key}
                   </code>
                   <CopyButton text={createdKey.key} label="API Key" />
@@ -1165,18 +1187,17 @@ exit $?`}
             )}
 
             <Button
-              variant="primary"
               onClick={() => {
                 setShowFullKey(false);
                 setCreatedKey(null);
                 setShowCreateModal(false);
               }}
-              className="w-full"
+              className="w-full bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 border-0"
             >
-              Done
+              Got it, I've saved the key
             </Button>
           </div>
-        </Modal>
+        </AnimatedModal>
         </div>
         
         {/* Dock Navigation for page navigation */}
