@@ -247,7 +247,7 @@ const CreateUserPage = () => {
                         Tier 1
                       </span>
                       <span className="text-base font-bold text-text-secondary">
-                        500 credits
+                        1000 credits
                       </span>
                     </label>
 
@@ -274,7 +274,7 @@ const CreateUserPage = () => {
                         Tier 2
                       </span>
                       <span className="text-base font-bold text-text-secondary">
-                        1000 credits
+                        500 credits
                       </span>
                     </label>
                   </div>

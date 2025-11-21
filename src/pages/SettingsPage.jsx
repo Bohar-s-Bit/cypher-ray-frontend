@@ -9,6 +9,8 @@ import {
   Shield,
   Key,
   AlertCircle,
+  Eye,
+  EyeOff,
 } from "lucide-react"; // COMMENTED OUT - Theme icons disabled
 import { authService } from "../services/authService";
 import OTPModal from "../components/auth/OTPModal";
@@ -33,6 +35,9 @@ const SettingsPage = () => {
   });
   const [showOTPModal, setShowOTPModal] = useState(false);
   const [userEmail, setUserEmail] = useState("");
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   // Request OTP mutation
   const requestOTPMutation = useMutation({
@@ -157,38 +162,80 @@ const SettingsPage = () => {
               </div>
             </div>
 
-            <Input
-              label="Current Password"
-              name="currentPassword"
-              type="password"
-              value={passwordData.currentPassword}
-              onChange={handlePasswordChange}
-              placeholder="Enter your current password"
-              required
-              icon={Key}
-            />
+            <div className="relative">
+              <Input
+                label="Current Password"
+                name="currentPassword"
+                type={showCurrentPassword ? "text" : "password"}
+                value={passwordData.currentPassword}
+                onChange={handlePasswordChange}
+                placeholder="Enter your current password"
+                required
+                icon={Key}
+              />
+              <button
+                type="button"
+                onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+                className="absolute right-4 top-[42px] text-neutral-500 hover:text-purple-600 transition-colors"
+                aria-label={showCurrentPassword ? "Hide password" : "Show password"}
+              >
+                {showCurrentPassword ? (
+                  <EyeOff className="w-5 h-5" />
+                ) : (
+                  <Eye className="w-5 h-5" />
+                )}
+              </button>
+            </div>
 
-            <Input
-              label="New Password"
-              name="newPassword"
-              type="password"
-              value={passwordData.newPassword}
-              onChange={handlePasswordChange}
-              placeholder="Enter your new password"
-              required
-              icon={Lock}
-            />
+            <div className="relative">
+              <Input
+                label="New Password"
+                name="newPassword"
+                type={showNewPassword ? "text" : "password"}
+                value={passwordData.newPassword}
+                onChange={handlePasswordChange}
+                placeholder="Enter your new password"
+                required
+                icon={Lock}
+              />
+              <button
+                type="button"
+                onClick={() => setShowNewPassword(!showNewPassword)}
+                className="absolute right-4 top-[42px] text-neutral-500 hover:text-purple-600 transition-colors"
+                aria-label={showNewPassword ? "Hide password" : "Show password"}
+              >
+                {showNewPassword ? (
+                  <EyeOff className="w-5 h-5" />
+                ) : (
+                  <Eye className="w-5 h-5" />
+                )}
+              </button>
+            </div>
 
-            <Input
-              label="Confirm New Password"
-              name="confirmPassword"
-              type="password"
-              value={passwordData.confirmPassword}
-              onChange={handlePasswordChange}
-              placeholder="Confirm your new password"
-              required
-              icon={Lock}
-            />
+            <div className="relative">
+              <Input
+                label="Confirm New Password"
+                name="confirmPassword"
+                type={showConfirmPassword ? "text" : "password"}
+                value={passwordData.confirmPassword}
+                onChange={handlePasswordChange}
+                placeholder="Confirm your new password"
+                required
+                icon={Lock}
+              />
+              <button
+                type="button"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className="absolute right-4 top-[42px] text-neutral-500 hover:text-purple-600 transition-colors"
+                aria-label={showConfirmPassword ? "Hide password" : "Show password"}
+              >
+                {showConfirmPassword ? (
+                  <EyeOff className="w-5 h-5" />
+                ) : (
+                  <Eye className="w-5 h-5" />
+                )}
+              </button>
+            </div>
 
             <div className="pt-4">
               <Button

@@ -44,7 +44,7 @@ const Sidebar = () => {
       end: true,
     },
     {
-      label: "API Docs",
+      label: "SDK Docs",
       icon: Code2,
       path: ROUTES.API_DOCS,
       end: true,

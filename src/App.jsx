@@ -41,7 +41,7 @@ import CreditsPage from "./pages/CreditsPage";
 import AnalyzePage from "./pages/AnalyzePage";
 import ResultsPage from "./pages/ResultsPage";
 import ResultDetailPage from "./pages/ResultDetailPage";
-import ApiDocsPage from "./pages/ApiDocsPage";
+import SdkDocsPage from "./pages/SdkDocsPage";
 import AdminDashboard from "./pages/AdminDashboard";
 import UsersListPage from "./pages/admin/UsersListPage";
 import AccessRequestsPage from "./pages/admin/AccessRequestsPage";
@@ -160,8 +160,17 @@ function App() {
                       path="results/:jobId"
                       element={<ResultDetailPage />}
                     />
-                    <Route path="api-docs" element={<ApiDocsPage />} />
                   </Route>
+
+                  {/* SDK Docs - Standalone Route (No DashboardLayout) */}
+                  <Route
+                    path="api-docs"
+                    element={
+                      <ProtectedRoute>
+                        <SdkDocsPage />
+                      </ProtectedRoute>
+                    }
+                  />
 
                   {/* Protected Admin Routes */}
                   <Route
