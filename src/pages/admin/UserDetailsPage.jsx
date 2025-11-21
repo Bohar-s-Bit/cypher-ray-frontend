@@ -24,14 +24,12 @@ import {
 } from "lucide-react";
 import { format } from "date-fns";
 import toast from "react-hot-toast";
+import { PieChart } from '@mui/x-charts/PieChart';
 import {
   LineChart,
   Line,
   BarChart,
   Bar,
-  PieChart,
-  Pie,
-  Cell,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -52,8 +50,18 @@ import {
 import { TableSkeleton } from "../../components/ui/Skeleton";
 import { Modal, ModalHeader, ModalTitle, ModalBody } from "../../components/ui/Modal";
 import Input from "../../components/ui/Input";
+import {
+  ResizableTableContainer,
+  Table,
+  TableHeader,
+  TableBody,
+  Column,
+  Row,
+  Cell,
+} from "../../components/ui/Table";
 import { QUERY_KEYS, ROUTES } from "../../config/constants";
 import { cn } from "../../lib/utils";
+import "../styles/chart-legend.css";
 
 const CHART_COLORS = {
   primary: "#3b82f6",
@@ -183,7 +191,7 @@ const UserDetailsPage = () => {
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
@@ -216,9 +224,9 @@ const UserDetailsPage = () => {
       </div>
 
       {/* Quick Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card>
-          <CardContent className="p-6">
+          <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-neutral-600 dark:text-neutral-400">
@@ -245,7 +253,7 @@ const UserDetailsPage = () => {
         </Card>
 
         <Card>
-          <CardContent className="p-6">
+          <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-neutral-600 dark:text-neutral-400">
@@ -266,7 +274,7 @@ const UserDetailsPage = () => {
         </Card>
 
         <Card>
-          <CardContent className="p-6">
+          <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-neutral-600 dark:text-neutral-400">
@@ -287,7 +295,7 @@ const UserDetailsPage = () => {
         </Card>
 
         <Card>
-          <CardContent className="p-6">
+          <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-neutral-600 dark:text-neutral-400">
@@ -319,7 +327,7 @@ const UserDetailsPage = () => {
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
                   className={cn(
-                    "flex items-center gap-2 px-6 py-4 font-medium transition-colors relative whitespace-nowrap",
+                    "flex items-center gap-2 px-4 py-3 font-medium transition-colors relative whitespace-nowrap",
                     activeTab === tab.id
                       ? "text-primary-600 dark:text-primary-400"
                       : "text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white"
@@ -339,7 +347,7 @@ const UserDetailsPage = () => {
           </div>
         </div>
 
-        <CardContent className="p-6">
+        <CardContent className="p-4">
           {/* Overview Tab */}
           {activeTab === "overview" && (
             <OverviewTab user={user} analysis={analysis} credits={credits} />
@@ -467,12 +475,12 @@ const UserDetailsPage = () => {
 // Overview Tab Component
 const OverviewTab = ({ user, analysis, credits }) => {
   return (
-    <div className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div className="space-y-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* User Information */}
         <Card variant="bordered">
-          <CardHeader>
-            <CardTitle>User Information</CardTitle>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-base">User Information</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
             <div className="flex justify-between">
@@ -520,8 +528,8 @@ const OverviewTab = ({ user, analysis, credits }) => {
 
         {/* Credit Summary Chart */}
         <Card variant="bordered">
-          <CardHeader>
-            <CardTitle>Credit Usage Trend</CardTitle>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-base">Credit Usage Trend</CardTitle>
             <CardDescription>Last 30 days</CardDescription>
           </CardHeader>
           <CardContent>
@@ -570,40 +578,40 @@ const OverviewTab = ({ user, analysis, credits }) => {
 
       {/* Analysis Overview */}
       <Card variant="bordered">
-        <CardHeader>
-          <CardTitle>Analysis Overview</CardTitle>
+        <CardHeader className="pb-2">
+          <CardTitle className="text-base">Analysis Overview</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="text-center p-4 bg-neutral-50 dark:bg-neutral-800 rounded-lg">
-              <p className="text-3xl font-bold text-neutral-900 dark:text-white">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <div className="text-center p-3 bg-neutral-50 dark:bg-neutral-800 rounded-lg">
+              <p className="text-2xl font-bold text-neutral-900 dark:text-white">
                 {analysis.total}
               </p>
-              <p className="text-sm text-neutral-600 dark:text-neutral-400 mt-1">
+              <p className="text-xs text-neutral-600 dark:text-neutral-400 mt-1">
                 Total Jobs
               </p>
             </div>
-            <div className="text-center p-4 bg-success-50 dark:bg-success-900/20 rounded-lg">
-              <p className="text-3xl font-bold text-success-600 dark:text-success-400">
+            <div className="text-center p-3 bg-success-50 dark:bg-success-900/20 rounded-lg">
+              <p className="text-2xl font-bold text-success-600 dark:text-success-400">
                 {analysis.completed}
               </p>
-              <p className="text-sm text-neutral-600 dark:text-neutral-400 mt-1">
+              <p className="text-xs text-neutral-600 dark:text-neutral-400 mt-1">
                 Completed
               </p>
             </div>
-            <div className="text-center p-4 bg-error-50 dark:bg-error-900/20 rounded-lg">
-              <p className="text-3xl font-bold text-error-600 dark:text-error-400">
+            <div className="text-center p-3 bg-error-50 dark:bg-error-900/20 rounded-lg">
+              <p className="text-2xl font-bold text-error-600 dark:text-error-400">
                 {analysis.failed}
               </p>
-              <p className="text-sm text-neutral-600 dark:text-neutral-400 mt-1">
+              <p className="text-xs text-neutral-600 dark:text-neutral-400 mt-1">
                 Failed
               </p>
             </div>
-            <div className="text-center p-4 bg-primary-50 dark:bg-primary-900/20 rounded-lg">
-              <p className="text-3xl font-bold text-primary-600 dark:text-primary-400">
+            <div className="text-center p-3 bg-primary-50 dark:bg-primary-900/20 rounded-lg">
+              <p className="text-2xl font-bold text-primary-600 dark:text-primary-400">
                 {analysis.totalCreditsConsumed}
               </p>
-              <p className="text-sm text-neutral-600 dark:text-neutral-400 mt-1">
+              <p className="text-xs text-neutral-600 dark:text-neutral-400 mt-1">
                 Credits Used
               </p>
             </div>
@@ -617,10 +625,10 @@ const OverviewTab = ({ user, analysis, credits }) => {
 // Credits Tab Component
 const CreditsTab = ({ credits, timeFilter, setTimeFilter, page, setPage }) => {
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {/* Time Filter */}
       <div className="flex items-center justify-between">
-        <h3 className="text-lg font-semibold text-neutral-900 dark:text-white">
+        <h3 className="text-base font-semibold text-neutral-900 dark:text-white">
           Transaction History
         </h3>
         <div className="flex gap-2">
@@ -641,84 +649,74 @@ const CreditsTab = ({ credits, timeFilter, setTimeFilter, page, setPage }) => {
       </div>
 
       {/* Transactions Table */}
-      <div className="overflow-x-auto">
-        <table className="w-full">
-          <thead className="bg-neutral-50 dark:bg-neutral-800 border-y border-neutral-200 dark:border-neutral-700">
-            <tr>
-              <th className="text-left px-4 py-3 text-sm font-semibold text-neutral-700 dark:text-neutral-300">
+      <div className="overflow-x-auto rounded-xl border border-purple-500/20 bg-gradient-to-br from-neutral-900/60 to-neutral-900/40 backdrop-blur-sm">
+        <ResizableTableContainer>
+          <Table aria-label="Credit transactions table" className="w-full">
+            <TableHeader>
+              <Column isRowHeader className="text-white/90 text-sm font-semibold">
                 Date
-              </th>
-              <th className="text-left px-4 py-3 text-sm font-semibold text-neutral-700 dark:text-neutral-300">
-                Type
-              </th>
-              <th className="text-left px-4 py-3 text-sm font-semibold text-neutral-700 dark:text-neutral-300">
-                Description
-              </th>
-              <th className="text-right px-4 py-3 text-sm font-semibold text-neutral-700 dark:text-neutral-300">
-                Amount
-              </th>
-              <th className="text-right px-4 py-3 text-sm font-semibold text-neutral-700 dark:text-neutral-300">
-                Balance
-              </th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-neutral-200 dark:divide-neutral-700">
-            {credits.history.transactions.length > 0 ? (
-              credits.history.transactions.map((transaction) => (
-                <tr
-                  key={transaction._id}
-                  className="hover:bg-neutral-50 dark:hover:bg-neutral-800 transition-colors"
-                >
-                  <td className="px-4 py-3 text-sm text-neutral-900 dark:text-white">
-                    {format(
-                      new Date(transaction.createdAt),
-                      "MMM dd, yyyy HH:mm"
-                    )}
-                  </td>
-                  <td className="px-4 py-3">
-                    <Badge
-                      variant={
-                        transaction.type === "debit"
-                          ? "error"
-                          : transaction.type === "bonus"
-                          ? "success"
-                          : "secondary"
-                      }
-                    >
-                      {transaction.type}
-                    </Badge>
-                  </td>
-                  <td className="px-4 py-3 text-sm text-neutral-900 dark:text-white">
-                    {transaction.description}
-                  </td>
-                  <td
-                    className={cn(
-                      "px-4 py-3 text-sm font-medium text-right",
-                      transaction.type === "debit"
-                        ? "text-error-600 dark:text-error-400"
-                        : "text-success-600 dark:text-success-400"
-                    )}
+              </Column>
+              <Column className="text-white/90 text-sm font-semibold">Type</Column>
+              <Column className="text-white/90 text-sm font-semibold">Description</Column>
+              <Column className="text-white/90 text-sm font-semibold">Amount</Column>
+              <Column className="text-white/90 text-sm font-semibold">Balance After</Column>
+            </TableHeader>
+            <TableBody>
+              {credits.history.transactions.length > 0 ? (
+                credits.history.transactions.map((transaction) => (
+                  <Row
+                    key={transaction._id}
+                    className="border-white/10 hover:bg-neutral-800/50"
                   >
-                    {transaction.type === "debit" ? "-" : "+"}
-                    {transaction.amount.toLocaleString()}
-                  </td>
-                  <td className="px-4 py-3 text-sm font-medium text-neutral-900 dark:text-white text-right">
-                    {transaction.balanceAfter.toLocaleString()}
-                  </td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td
-                  colSpan={5}
-                  className="px-4 py-8 text-center text-neutral-500"
-                >
-                  No transactions found
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+                    <Cell className="text-white/70 text-sm">
+                      {format(
+                        new Date(transaction.createdAt),
+                        "MMM dd, yyyy HH:mm"
+                      )}
+                    </Cell>
+                    <Cell>
+                      <Badge
+                        variant={
+                          transaction.type === "debit"
+                            ? "error"
+                            : transaction.type === "bonus"
+                            ? "success"
+                            : "secondary"
+                        }
+                        size="sm"
+                      >
+                        {transaction.type}
+                      </Badge>
+                    </Cell>
+                    <Cell className="font-medium text-white text-sm">
+                      {transaction.description}
+                    </Cell>
+                    <Cell
+                      className={cn(
+                        "font-semibold text-sm",
+                        transaction.type === "debit"
+                          ? "text-red-400"
+                          : "text-green-400"
+                      )}
+                    >
+                      {transaction.type === "debit" ? "-" : "+"}
+                      {transaction.amount.toLocaleString()}
+                    </Cell>
+                    <Cell className="font-medium text-white text-sm">
+                      {transaction.balanceAfter.toLocaleString()}
+                    </Cell>
+                  </Row>
+                ))
+              ) : (
+                <Row>
+                  <Cell colSpan={5} className="text-center py-8 text-white/50">
+                    No transactions found
+                  </Cell>
+                </Row>
+              )}
+            </TableBody>
+          </Table>
+        </ResizableTableContainer>
       </div>
 
       {/* Pagination */}
@@ -764,10 +762,10 @@ const PaymentsTab = ({
   setPage,
 }) => {
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {/* Time Filter */}
       <div className="flex items-center justify-between">
-        <h3 className="text-lg font-semibold text-neutral-900 dark:text-white">
+        <h3 className="text-base font-semibold text-neutral-900 dark:text-white">
           Payment History
         </h3>
         <div className="flex gap-2">
@@ -788,73 +786,63 @@ const PaymentsTab = ({
       </div>
 
       {/* Payments Table */}
-      <div className="overflow-x-auto">
-        <table className="w-full">
-          <thead className="bg-neutral-50 dark:bg-neutral-800 border-y border-neutral-200 dark:border-neutral-700">
-            <tr>
-              <th className="text-left px-4 py-3 text-sm font-semibold text-neutral-700 dark:text-neutral-300">
+      <div className="overflow-x-auto rounded-xl border border-purple-500/20 bg-gradient-to-br from-neutral-900/60 to-neutral-900/40 backdrop-blur-sm">
+        <ResizableTableContainer>
+          <Table aria-label="Payment history table" className="w-full">
+            <TableHeader>
+              <Column isRowHeader className="text-white/90 text-sm font-semibold">
                 Date
-              </th>
-              <th className="text-left px-4 py-3 text-sm font-semibold text-neutral-700 dark:text-neutral-300">
-                Plan
-              </th>
-              <th className="text-right px-4 py-3 text-sm font-semibold text-neutral-700 dark:text-neutral-300">
-                Amount
-              </th>
-              <th className="text-center px-4 py-3 text-sm font-semibold text-neutral-700 dark:text-neutral-300">
-                Credits
-              </th>
-              <th className="text-center px-4 py-3 text-sm font-semibold text-neutral-700 dark:text-neutral-300">
-                Status
-              </th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-neutral-200 dark:divide-neutral-700">
-            {payments.history.length > 0 ? (
-              payments.history.map((payment) => (
-                <tr
-                  key={payment.id}
-                  className="hover:bg-neutral-50 dark:hover:bg-neutral-800 transition-colors"
-                >
-                  <td className="px-4 py-3 text-sm text-neutral-900 dark:text-white">
-                    {format(new Date(payment.createdAt), "MMM dd, yyyy HH:mm")}
-                  </td>
-                  <td className="px-4 py-3 text-sm text-neutral-900 dark:text-white">
-                    {payment.plan || "N/A"}
-                  </td>
-                  <td className="px-4 py-3 text-sm font-medium text-neutral-900 dark:text-white text-right">
-                    {payment.currency} {payment.amount.toLocaleString()}
-                  </td>
-                  <td className="px-4 py-3 text-sm text-neutral-900 dark:text-white text-center">
-                    {payment.credits?.toLocaleString() || "N/A"}
-                  </td>
-                  <td className="px-4 py-3 text-center">
-                    <Badge
-                      variant={
-                        payment.status === "success"
-                          ? "success"
-                          : payment.status === "pending"
-                          ? "warning"
-                          : "error"
-                      }
-                    >
-                      {payment.status}
-                    </Badge>
-                  </td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td
-                  colSpan={5}
-                  className="px-4 py-8 text-center text-neutral-500"
-                >
-                  No payments found
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+              </Column>
+              <Column className="text-white/90 text-sm font-semibold">Plan</Column>
+              <Column className="text-white/90 text-sm font-semibold">Amount</Column>
+              <Column className="text-white/90 text-sm font-semibold">Credits</Column>
+              <Column className="text-white/90 text-sm font-semibold">Status</Column>
+            </TableHeader>
+            <TableBody>
+              {payments.history.length > 0 ? (
+                payments.history.map((payment) => (
+                  <Row
+                    key={payment.id}
+                    className="border-white/10 hover:bg-neutral-800/50"
+                  >
+                    <Cell className="text-white/70 text-sm">
+                      {format(new Date(payment.createdAt), "MMM dd, yyyy HH:mm")}
+                    </Cell>
+                    <Cell className="font-medium text-white text-sm">
+                      {payment.plan || "N/A"}
+                    </Cell>
+                    <Cell className="font-semibold text-white text-sm">
+                      {payment.currency} {payment.amount.toLocaleString()}
+                    </Cell>
+                    <Cell className="text-white text-sm">
+                      {payment.credits?.toLocaleString() || "N/A"}
+                    </Cell>
+                    <Cell>
+                      <Badge
+                        variant={
+                          payment.status === "success"
+                            ? "success"
+                            : payment.status === "pending"
+                            ? "warning"
+                            : "error"
+                        }
+                        size="sm"
+                      >
+                        {payment.status}
+                      </Badge>
+                    </Cell>
+                  </Row>
+                ))
+              ) : (
+                <Row>
+                  <Cell colSpan={5} className="text-center py-8 text-white/50">
+                    No payments found
+                  </Cell>
+                </Row>
+              )}
+            </TableBody>
+          </Table>
+        </ResizableTableContainer>
       </div>
 
       {/* Pagination */}
@@ -893,86 +881,101 @@ const PaymentsTab = ({
 const AnalysisTab = ({ analysis }) => {
   const statusData = [
     {
-      name: "Completed",
+      id: 0,
       value: analysis.completed,
-      color: CHART_COLORS.success,
+      label: "Completed",
+      color: "#a855f7", // purple-500
     },
-    { name: "Failed", value: analysis.failed, color: CHART_COLORS.error },
     {
-      name: "Processing",
+      id: 1,
+      value: analysis.failed,
+      label: "Failed",
+      color: "#3b82f6", // blue-500
+    },
+    {
+      id: 2,
       value: analysis.processing,
-      color: CHART_COLORS.warning,
+      label: "Processing",
+      color: "#14b8a6", // teal-500
     },
   ];
 
   return (
-    <div className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div className="space-y-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Status Distribution Chart */}
         <Card variant="bordered">
-          <CardHeader>
-            <CardTitle>Job Status Distribution</CardTitle>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-base">Job Status Distribution</CardTitle>
           </CardHeader>
-          <CardContent>
-            <ResponsiveContainer width="100%" height={250}>
-              <PieChart>
-                <Pie
-                  data={statusData}
-                  cx="50%"
-                  cy="50%"
-                  labelLine={false}
-                  label={({ name, percent }) =>
-                    `${name}: ${(percent * 100).toFixed(0)}%`
-                  }
-                  outerRadius={80}
-                  fill="#8884d8"
-                  dataKey="value"
-                >
-                  {statusData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
-                  ))}
-                </Pie>
-                <Tooltip />
-              </PieChart>
-            </ResponsiveContainer>
+          <CardContent className="pt-4 pb-4">
+            <div style={{ color: 'white' }}>
+              <PieChart
+                series={[
+                  {
+                    data: statusData,
+                    innerRadius: 40,
+                    outerRadius: 100,
+                    paddingAngle: 2,
+                    cornerRadius: 5,
+                    highlightScope: { faded: 'global', highlighted: 'item' },
+                    faded: { innerRadius: 30, additionalRadius: -30, color: 'gray' },
+                  },
+                ]}
+                width={400}
+                height={240}
+                colors={statusData.map(item => item.color)}
+                margin={{ right: 5 }}
+                slotProps={{
+                  legend: {
+                    direction: 'column',
+                    position: { vertical: 'middle', horizontal: 'right' },
+                    itemMarkWidth: 12,
+                    itemMarkHeight: 12,
+                    markGap: 6,
+                    itemGap: 10,
+                  },
+                }}
+              />
+            </div>
           </CardContent>
         </Card>
 
         {/* Stats Summary */}
         <Card variant="bordered">
-          <CardHeader>
-            <CardTitle>Analysis Statistics</CardTitle>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-base">Analysis Statistics</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="flex justify-between items-center p-3 bg-neutral-50 dark:bg-neutral-800 rounded-lg">
-              <span className="text-neutral-700 dark:text-neutral-300">
+          <CardContent className="pt-4 space-y-3">
+            <div className="flex justify-between items-center p-2.5 bg-neutral-50 dark:bg-neutral-800 rounded-lg">
+              <span className="text-sm text-neutral-700 dark:text-neutral-300">
                 Total Jobs
               </span>
-              <span className="text-xl font-bold text-neutral-900 dark:text-white">
+              <span className="text-lg font-bold text-neutral-900 dark:text-white">
                 {analysis.total}
               </span>
             </div>
-            <div className="flex justify-between items-center p-3 bg-neutral-50 dark:bg-neutral-800 rounded-lg">
-              <span className="text-neutral-700 dark:text-neutral-300">
+            <div className="flex justify-between items-center p-2.5 bg-neutral-50 dark:bg-neutral-800 rounded-lg">
+              <span className="text-sm text-neutral-700 dark:text-neutral-300">
                 Total Credits Consumed
               </span>
-              <span className="text-xl font-bold text-primary-600 dark:text-primary-400">
+              <span className="text-lg font-bold text-primary-600 dark:text-primary-400">
                 {analysis.totalCreditsConsumed.toLocaleString()}
               </span>
             </div>
-            <div className="flex justify-between items-center p-3 bg-neutral-50 dark:bg-neutral-800 rounded-lg">
-              <span className="text-neutral-700 dark:text-neutral-300">
+            <div className="flex justify-between items-center p-2.5 bg-neutral-50 dark:bg-neutral-800 rounded-lg">
+              <span className="text-sm text-neutral-700 dark:text-neutral-300">
                 Avg Processing Time
               </span>
-              <span className="text-xl font-bold text-neutral-900 dark:text-white">
+              <span className="text-lg font-bold text-neutral-900 dark:text-white">
                 {analysis.averageProcessingTime}s
               </span>
             </div>
-            <div className="flex justify-between items-center p-3 bg-neutral-50 dark:bg-neutral-800 rounded-lg">
-              <span className="text-neutral-700 dark:text-neutral-300">
+            <div className="flex justify-between items-center p-2.5 bg-neutral-50 dark:bg-neutral-800 rounded-lg">
+              <span className="text-sm text-neutral-700 dark:text-neutral-300">
                 Success Rate
               </span>
-              <span className="text-xl font-bold text-success-600 dark:text-success-400">
+              <span className="text-lg font-bold text-success-600 dark:text-success-400">
                 {analysis.total > 0
                   ? ((analysis.completed / analysis.total) * 100).toFixed(1)
                   : 0}
@@ -989,16 +992,16 @@ const AnalysisTab = ({ analysis }) => {
 // API Keys Tab Component
 const ApiKeysTab = ({ apiKeys, onRevokeKey, isRevoking }) => {
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {/* API Usage Chart */}
       {apiKeys.usageStats && apiKeys.usageStats.length > 0 && (
         <Card variant="bordered">
-          <CardHeader>
-            <CardTitle>API Usage Statistics</CardTitle>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-base">API Usage Statistics</CardTitle>
             <CardDescription>Request count by API key</CardDescription>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width="100%" height={250}>
+            <ResponsiveContainer width="100%" height={200}>
               <BarChart data={apiKeys.usageStats}>
                 <CartesianGrid strokeDasharray="3 3" opacity={0.1} />
                 <XAxis dataKey="name" tick={{ fontSize: 12 }} />
@@ -1024,14 +1027,14 @@ const ApiKeysTab = ({ apiKeys, onRevokeKey, isRevoking }) => {
 
       {/* API Keys List */}
       <div>
-        <h3 className="text-lg font-semibold text-neutral-900 dark:text-white mb-4">
+        <h3 className="text-base font-semibold text-neutral-900 dark:text-white mb-3">
           API Keys ({apiKeys.total})
         </h3>
         <div className="space-y-3">
           {apiKeys.keys.length > 0 ? (
             apiKeys.keys.map((key) => (
               <Card key={key.id} variant="bordered">
-                <CardContent className="p-4">
+                <CardContent className="p-3">
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-2">
@@ -1042,7 +1045,7 @@ const ApiKeysTab = ({ apiKeys, onRevokeKey, isRevoking }) => {
                           {key.isActive ? "Active" : "Revoked"}
                         </Badge>
                       </div>
-                      <p className="text-sm font-mono text-neutral-600 dark:text-neutral-400 mb-3">
+                      <p className="text-sm font-mono text-neutral-600 dark:text-neutral-400 mb-2">
                         {key.keyPreview}
                       </p>
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">

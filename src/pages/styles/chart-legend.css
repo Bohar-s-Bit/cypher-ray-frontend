@@ -1,0 +1,20 @@
+/* MUI X Charts Legend - Force white text color */
+.MuiChartsLegend-root text,
+.MuiChartsLegend-series text,
+.MuiChartsLegend-label {
+  fill: white !important;
+  color: white !important;
+}
+
+/* Additional specificity for dark mode compatibility */
+[data-theme="dark"] .MuiChartsLegend-root text,
+[data-theme="dark"] .MuiChartsLegend-series text,
+[data-theme="dark"] .MuiChartsLegend-label {
+  fill: white !important;
+  color: white !important;
+}
+
+/* Ensure legend mark colors remain intact */
+.MuiChartsLegend-mark {
+  rx: 2;
+}
