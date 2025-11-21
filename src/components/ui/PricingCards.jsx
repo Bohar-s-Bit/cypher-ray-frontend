@@ -1,6 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CheckCircle } from 'lucide-react';
+import useEmblaCarousel from 'embla-carousel-react';
+import AutoScroll from 'embla-carousel-auto-scroll';
 import Button from './Button';
 import Badge from './Badge';
 import { paymentService } from '../../services/paymentService';
@@ -11,22 +13,19 @@ const PricingCard = ({ plan, featured = false }) => {
   const navigate = useNavigate();
 
   const handleGetStarted = () => {
-    // Navigate to login page - user needs to be authenticated to purchase
     navigate(ROUTES.LOGIN);
   };
 
   return (
     <div
       className={cn(
-        'flex flex-col rounded-2xl border p-6 text-left transition-all duration-300',
+        'flex flex-col rounded-2xl border p-6 text-left transition-all duration-300 h-full',
         'bg-gradient-to-br backdrop-blur-lg',
         featured
           ? 'border-[#c084fc] shadow-lg shadow-purple-500/20 ring-2 ring-[#c084fc]/20 from-purple-900/40 to-purple-800/30'
           : 'border-purple-500/30 from-purple-900/20 to-purple-950/20 hover:border-purple-400/50'
       )}
-      aria-label={`${plan.name} plan`}
     >
-      {/* Header */}
       <div className="text-center">
         <div className="inline-flex items-center gap-2 mb-4">
           <Badge variant={featured ? 'primary' : 'neutral'} size="md">
@@ -39,57 +38,52 @@ const PricingCard = ({ plan, featured = false }) => {
           )}
         </div>
 
-        {/* Price */}
         <h4 className="mb-2 text-4xl font-bold bg-gradient-to-r from-[#7c3aed] to-[#c084fc] bg-clip-text text-transparent">
           ₹{(plan.amount / 100).toLocaleString()}
         </h4>
-        
-        {/* Credits */}
+
         <p className="text-sm text-purple-300 mb-2">
           {plan.credits.toLocaleString()} Credits
         </p>
 
-        {/* Price per credit */}
         <p className="text-xs text-purple-400/70">
           ₹{(plan.amount / plan.credits / 100).toFixed(2)} per credit
         </p>
       </div>
 
-      {/* Divider */}
       <div className="my-6 border-t border-purple-500/20" />
 
-      {/* Features */}
       <ul className="space-y-3 flex-grow">
         <li className="flex items-start text-sm text-gray-200">
-          <CheckCircle className="mr-3 h-5 w-5 text-[#c084fc] flex-shrink-0 mt-0.5" aria-hidden />
+          <CheckCircle className="mr-3 h-5 w-5 text-[#c084fc] flex-shrink-0 mt-0.5" />
           <span>{plan.credits.toLocaleString()} malware analysis credits</span>
         </li>
         <li className="flex items-start text-sm text-gray-200">
-          <CheckCircle className="mr-3 h-5 w-5 text-[#c084fc] flex-shrink-0 mt-0.5" aria-hidden />
+          <CheckCircle className="mr-3 h-5 w-5 text-[#c084fc] flex-shrink-0 mt-0.5" />
           <span>Advanced threat detection</span>
         </li>
         <li className="flex items-start text-sm text-gray-200">
-          <CheckCircle className="mr-3 h-5 w-5 text-[#c084fc] flex-shrink-0 mt-0.5" aria-hidden />
+          <CheckCircle className="mr-3 h-5 w-5 text-[#c084fc] flex-shrink-0 mt-0.5" />
           <span>Detailed security reports</span>
         </li>
         <li className="flex items-start text-sm text-gray-200">
-          <CheckCircle className="mr-3 h-5 w-5 text-[#c084fc] flex-shrink-0 mt-0.5" aria-hidden />
+          <CheckCircle className="mr-3 h-5 w-5 text-[#c084fc] flex-shrink-0 mt-0.5" />
           <span>API access & integration</span>
         </li>
         {featured && (
           <li className="flex items-start text-sm text-gray-200">
-            <CheckCircle className="mr-3 h-5 w-5 text-[#c084fc] flex-shrink-0 mt-0.5" aria-hidden />
+            <CheckCircle className="mr-3 h-5 w-5 text-[#c084fc] flex-shrink-0 mt-0.5" />
             <span>Priority email support</span>
           </li>
         )}
         {plan.name === 'Ultimate' && (
           <>
             <li className="flex items-start text-sm text-gray-200">
-              <CheckCircle className="mr-3 h-5 w-5 text-[#c084fc] flex-shrink-0 mt-0.5" aria-hidden />
+              <CheckCircle className="mr-3 h-5 w-5 text-[#c084fc] flex-shrink-0 mt-0.5" />
               <span>Dedicated account manager</span>
             </li>
             <li className="flex items-start text-sm text-gray-200">
-              <CheckCircle className="mr-3 h-5 w-5 text-[#c084fc] flex-shrink-0 mt-0.5" aria-hidden />
+              <CheckCircle className="mr-3 h-5 w-5 text-[#c084fc] flex-shrink-0 mt-0.5" />
               <span>Custom enterprise features</span>
             </li>
           </>
@@ -104,26 +98,41 @@ const PricingCards = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // Continuous auto-scroll plugin
+  const autoScroll = useCallback(
+    () =>
+      AutoScroll({
+        speed: 1.2,
+        startDelay: 0,
+        stopOnMouseEnter: true,
+        stopOnInteraction: false,
+      }),
+    []
+  );
+
+  // Embla
+  const [emblaRef, emblaApi] = useEmblaCarousel(
+    {
+      loop: true,
+      align: 'start',
+      dragFree: true,
+      containScroll: false,
+    },
+    [autoScroll()]
+  );
+
   useEffect(() => {
     const fetchPlans = async () => {
       try {
         setLoading(true);
         const response = await paymentService.getPlans();
-        
-        // Extract plans from response
         const allPlans = response.plans || [];
-        
-        // Filter only Basic, Premium, and Ultimate
-        const selectedPlans = allPlans.filter((plan) =>
-          ['basic', 'premium', 'ultimate'].includes(plan.id.toLowerCase())
-        );
 
-        // Sort by price: Basic, Premium, Ultimate
-        const sortedPlans = selectedPlans.sort((a, b) => a.amount - b.amount);
-        
+     
+        const sortedPlans = allPlans.sort((a, b) => a.amount - b.amount);
+
         setPlans(sortedPlans);
       } catch (err) {
-        console.error('Failed to fetch pricing plans:', err);
         setError('Failed to load pricing plans. Please try again later.');
       } finally {
         setLoading(false);
@@ -136,55 +145,67 @@ const PricingCards = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-20">
-        <div className="text-center">
-          <div className="w-12 h-12 border-4 border-[#7c3aed] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-purple-300 text-sm">Loading pricing plans...</p>
-        </div>
+        <div className="w-12 h-12 border-4 border-[#7c3aed] border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
   }
 
   if (error) {
-    return (
-      <div className="flex items-center justify-center py-20">
-        <div className="text-center">
-          <p className="text-red-400">{error}</p>
-        </div>
-      </div>
-    );
+    return <div className="text-center text-red-400 py-20">{error}</div>;
   }
 
   if (plans.length === 0) {
     return (
-      <div className="flex items-center justify-center py-20">
-        <p className="text-purple-300">No pricing plans available at the moment.</p>
+      <div className="text-center text-purple-300 py-20">
+        No pricing plans available at the moment.
       </div>
     );
   }
 
-  // Premium (middle plan) is featured
   const featuredPlanId = 'premium';
 
   return (
     <section className="py-12 md:py-16">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col items-center gap-4 text-center mb-12">
+      {/* Carousel section width - Change max-w-7xl to adjust overall carousel width */}
+      {/* Options: max-w-7xl (1280px), max-w-[90rem] (1440px), max-w-[100rem] (1600px) */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-white">
             Pricing Plans
           </h2>
-          <p className="text-lg md:text-xl text-purple-300 max-w-2xl">
+          <p className="text-lg text-purple-300">
             Select the plan that best suits your security needs.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-6 md:gap-8 min-[900px]:grid-cols-3">
-          {plans.map((plan) => (
-            <PricingCard
-              key={plan.id}
-              plan={plan}
-              featured={plan.id.toLowerCase() === featuredPlanId}
-            />
-          ))}
+        {/* Outer container holds gradients */}
+        <div className="relative overflow-hidden">
+
+          {/* Left fade */}
+          <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-[#060010] to-transparent z-10 pointer-events-none" />
+
+          {/* Right fade */}
+          <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-[#060010] to-transparent z-10 pointer-events-none" />
+
+          {/* Actual Embla viewport (no gradients inside) */}
+          <div ref={emblaRef} className="overflow-hidden">
+            <div className="flex will-change-transform -ml-3">
+              {plans.map((plan, idx) => (
+                // Card width container - Adjust these values to change individual card width
+                // Current: full width on mobile, 1/2 on sm/md, 280px fixed on lg+
+                // To customize: change 'lg:w-[280px]' to your desired width (e.g., lg:w-[320px], lg:w-1/4)
+                <div
+                  key={`${plan.id}-${idx}`}
+                  className="flex-shrink-0 w-full sm:w-1/2 md:w-1/2 lg:w-[350px] px-3"
+                >
+                  <PricingCard
+                    plan={plan}
+                    featured={plan.id.toLowerCase() === featuredPlanId}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </section>

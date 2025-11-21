@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 import {
   LayoutDashboard,
   Search,
@@ -70,6 +71,7 @@ export const UserDockNavigation = () => {
       ),
       onClick: () => {
         logout();
+        toast.success("Logged out successfully!");
         navigate(ROUTES.LOGIN);
       },
       variant: "danger",
@@ -123,6 +125,7 @@ export const AdminDockNavigation = () => {
       ),
       onClick: () => {
         logout();
+        toast.success("Logged out successfully!");
         navigate(ROUTES.LOGIN);
       },
       variant: "danger",
