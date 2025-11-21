@@ -46,13 +46,13 @@ const AnalyzePage = () => {
     if (!currentJob) {
       return 0;
     }
-    
+
     switch (currentJob.status) {
-      case 'queued':
+      case "queued":
         return 2; // Analyzing file structure
-      case 'processing':
+      case "processing":
         return 5; // Analyzing dependencies
-      case 'completed':
+      case "completed":
         return 7; // Finalizing analysis
       default:
         return 0;
@@ -111,7 +111,7 @@ const AnalyzePage = () => {
     if (analyzeMutation.isPending) {
       return "Uploading and queuing analysis...";
     }
-    
+
     if (hasActiveAnalysis) {
       switch (currentJob.status) {
         case "queued":
@@ -122,7 +122,7 @@ const AnalyzePage = () => {
           return "Analysis in progress...";
       }
     }
-    
+
     return "Ready to analyze";
   };
 
@@ -139,85 +139,82 @@ const AnalyzePage = () => {
       />
 
       <div className="space-y-8 min-h-screen">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div className="relative">
-          <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-cyan-500/10 blur-3xl -z-10"></div>
-          <h1 className="text-4xl md:text-5xl font-display font-bold bg-gradient-to-r from-white via-purple-200 to-cyan-200 bg-clip-text text-transparent mb-3">
-            Binary Analysis
-          </h1>
-          <p className="text-white/70 text-lg">
-            Upload a binary file to analyze for security vulnerabilities
-          </p>
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div className="relative">
+            <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-cyan-500/10 blur-3xl -z-10"></div>
+            <h1 className="text-4xl md:text-5xl font-display font-bold bg-gradient-to-r from-white via-purple-200 to-cyan-200 bg-clip-text text-transparent mb-3">
+              Binary Analysis
+            </h1>
+            <p className="text-white/70 text-lg">
+              Upload a binary file to analyze for security vulnerabilities
+            </p>
+          </div>
+          <Button variant="outline" onClick={() => navigate(ROUTES.RESULTS)}>
+            <List className="w-4 h-4 mr-2" />
+            View History
+          </Button>
         </div>
-        <Button variant="outline" onClick={() => navigate(ROUTES.RESULTS)}>
-          <List className="w-4 h-4 mr-2" />
-          View History
-        </Button>
-      </div>
 
-      {/* Upload Section */}
-     <Card>
-        {isAnalyzing ? (
-          // --- ANALYSIS IN PROGRESS ---
-          // This content is shown when isAnalyzing is true
-          <CardContent>
-            <div className="flex flex-col items-center justify-center py-12 space-y-4">
-              <Spinner size="lg" />
-              <div className="text-center">
-                <p className="text-lg font-medium text-white">
-                  {getAnalysisStatusText()}
-                </p>
-                <p className="text-sm text-white/70 mt-1">
-                  {hasActiveAnalysis
-                    ? "You can navigate freely while analysis is in progress."
-                    : "Analysis will start shortly"}
-                </p>
-                {hasActiveAnalysis && (
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => navigate(ROUTES.RESULTS)}
-                    className="mt-4"
-                  >
-                    View Results
-                  </Button>
-                )}
-              </div>
-            </div>
-          </CardContent>
-        ) : (
-          // --- READY TO UPLOAD ---
-          // This content is shown when isAnalyzing is false
-          <>
-            <CardContent className="space-y-6">
-              <FileUpload
-                onChange={handleFileSelect}
-                accept=".bin,.elf,.hex,.out"
-                maxSize={100 * 1024 * 1024}
-              />
-
-              {selectedFile && (
-                <div className="flex justify-end">
-                  <Button
-                    onClick={handleStartAnalysis}
-                    size="lg"
-                    disabled={!selectedFile}
-                  >
-                    <Search className="w-5 h-5 mr-2" />
-                    Start Analysis
-                  </Button>
+        {/* Upload Section */}
+        <Card>
+          {isAnalyzing ? (
+            // --- ANALYSIS IN PROGRESS ---
+            // This content is shown when isAnalyzing is true
+            <CardContent>
+              <div className="flex flex-col items-center justify-center py-12 space-y-4">
+                <Spinner size="lg" />
+                <div className="text-center">
+                  <p className="text-lg font-medium text-white">
+                    {getAnalysisStatusText()}
+                  </p>
+                  <p className="text-sm text-white/70 mt-1">
+                    {hasActiveAnalysis
+                      ? "You can navigate freely while analysis is in progress."
+                      : "Analysis will start shortly"}
+                  </p>
+                  {hasActiveAnalysis && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => navigate(ROUTES.RESULTS)}
+                      className="mt-4"
+                    >
+                      View Results
+                    </Button>
+                  )}
                 </div>
-              )}
+              </div>
             </CardContent>
-          </>
-        )}
-      </Card>
-    </div>
+          ) : (
+            // --- READY TO UPLOAD ---
+            // This content is shown when isAnalyzing is false
+            <>
+              <CardContent className="space-y-6">
+                <FileUpload
+                  onChange={handleFileSelect}
+                  maxSize={100 * 1024 * 1024}
+                />
+
+                {selectedFile && (
+                  <div className="flex justify-end">
+                    <Button
+                      onClick={handleStartAnalysis}
+                      size="lg"
+                      disabled={!selectedFile}
+                    >
+                      <Search className="w-5 h-5 mr-2" />
+                      Start Analysis
+                    </Button>
+                  </div>
+                )}
+              </CardContent>
+            </>
+          )}
+        </Card>
+      </div>
     </>
   );
 };
 
 export default AnalyzePage;
-
-
