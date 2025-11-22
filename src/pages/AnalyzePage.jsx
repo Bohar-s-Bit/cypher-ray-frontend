@@ -47,13 +47,13 @@ const AnalyzePage = () => {
     if (!currentJob) {
       return 0;
     }
-    
+
     switch (currentJob.status) {
-      case 'queued':
+      case "queued":
         return 2; // Analyzing file structure
-      case 'processing':
+      case "processing":
         return 5; // Analyzing dependencies
-      case 'completed':
+      case "completed":
         return 7; // Finalizing analysis
       default:
         return 0;
@@ -112,7 +112,7 @@ const AnalyzePage = () => {
     if (analyzeMutation.isPending) {
       return "Uploading and queuing analysis...";
     }
-    
+
     if (hasActiveAnalysis) {
       switch (currentJob.status) {
         case "queued":
@@ -123,7 +123,7 @@ const AnalyzePage = () => {
           return "Analysis in progress...";
       }
     }
-    
+
     return "Ready to analyze";
   };
 
@@ -216,96 +216,93 @@ const AnalyzePage = () => {
         {/* Upload Section */}
         <Card className="relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 via-transparent to-blue-500/5 pointer-events-none"></div>
-        {isAnalyzing ? (
-          // --- ANALYSIS IN PROGRESS ---
-          <CardContent>
-            <div className="flex flex-col items-center justify-center py-16 space-y-6">
-              <div className="relative">
-                <div className="absolute inset-0 bg-purple-500/20 blur-2xl animate-pulse"></div>
-                <Spinner size="lg" className="relative" />
-              </div>
-              <div className="text-center max-w-md">
-                <p className="text-xl font-semibold text-white mb-2">
-                  {getAnalysisStatusText()}
-                </p>
-                <p className="text-sm text-white/70">
-                  {hasActiveAnalysis
-                    ? "You can navigate freely while analysis is in progress. We'll notify you when it's complete."
-                    : "Preparing your analysis..."}
-                </p>
-                {hasActiveAnalysis && (
-                  <div className="mt-6 p-4 bg-purple-500/10 border border-purple-500/20 rounded-lg">
-                    <div className="flex items-center justify-center gap-2 text-purple-400 mb-2">
-                      <CheckCircle2 className="w-4 h-4" />
-                      <span className="text-sm font-medium">Analysis Running</span>
+          {isAnalyzing ? (
+            // --- ANALYSIS IN PROGRESS ---
+            <CardContent>
+              <div className="flex flex-col items-center justify-center py-16 space-y-6">
+                <div className="relative">
+                  <div className="absolute inset-0 bg-purple-500/20 blur-2xl animate-pulse"></div>
+                  <Spinner size="lg" className="relative" />
+                </div>
+                <div className="text-center max-w-md">
+                  <p className="text-xl font-semibold text-white mb-2">
+                    {getAnalysisStatusText()}
+                  </p>
+                  <p className="text-sm text-white/70">
+                    {hasActiveAnalysis
+                      ? "You can navigate freely while analysis is in progress. We'll notify you when it's complete."
+                      : "Preparing your analysis..."}
+                  </p>
+                  {hasActiveAnalysis && (
+                    <div className="mt-6 p-4 bg-purple-500/10 border border-purple-500/20 rounded-lg">
+                      <div className="flex items-center justify-center gap-2 text-purple-400 mb-2">
+                        <CheckCircle2 className="w-4 h-4" />
+                        <span className="text-sm font-medium">Analysis Running</span>
+                      </div>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => navigate(ROUTES.RESULTS)}
+                        className="mt-2"
+                      >
+                        View Results Dashboard
+                      </Button>
                     </div>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => navigate(ROUTES.RESULTS)}
-                      className="mt-2"
-                    >
-                      View Results Dashboard
-                    </Button>
-                  </div>
-                )}
-              </div>
-            </div>
-          </CardContent>
-        ) : (
-          // --- READY TO UPLOAD ---
-          <>
-            <CardContent className="space-y-6 relative">
-              <div className="text-center mb-6">
-                <div className="inline-flex items-center gap-2 px-4 py-2 bg-purple-500/10 border border-purple-500/20 rounded-full mb-4">
-                  <AlertTriangle className="w-4 h-4 text-purple-400" />
-                  <span className="text-sm text-purple-300">Supported: .bin, .elf, .hex, .out files (max 100MB)</span>
+                  )}
                 </div>
               </div>
-
-              <FileUpload
-                onChange={handleFileSelect}
-                accept=".bin,.elf,.hex,.out"
-                maxSize={100 * 1024 * 1024}
-              />
-
-              {selectedFile && (
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 bg-green-500/10 border border-green-500/20 rounded-xl"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 bg-green-500/20 rounded-lg">
-                      <CheckCircle2 className="w-5 h-5 text-green-400" />
-                    </div>
-                    <div>
-                      <p className="text-white font-medium">{selectedFile.name}</p>
-                      <p className="text-sm text-white/60">
-                        {(selectedFile.size / 1024 / 1024).toFixed(2)} MB
-                      </p>
-                    </div>
-                  </div>
-                  <Button
-                    onClick={handleStartAnalysis}
-                    size="lg"
-                    disabled={!selectedFile}
-                    className="bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600"
-                  >
-                    <Search className="w-5 h-5 mr-2" />
-                    Start Analysis
-                  </Button>
-                </motion.div>
-              )}
             </CardContent>
-          </>
-        )}
-      </Card>
-    </div>
+          ) : (
+            // --- READY TO UPLOAD ---
+            <>
+              <CardContent className="space-y-6 relative">
+                <div className="text-center mb-6">
+                  <div className="inline-flex items-center gap-2 px-4 py-2 bg-purple-500/10 border border-purple-500/20 rounded-full mb-4">
+                    <AlertTriangle className="w-4 h-4 text-purple-400" />
+                    <span className="text-sm text-purple-300">Supported: All executable files (max 100MB)</span>
+                  </div>
+                </div>
+
+                <FileUpload
+                  onChange={handleFileSelect}
+                  maxSize={100 * 1024 * 1024}
+                />
+
+                {selectedFile && (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 bg-green-500/10 border border-green-500/20 rounded-xl"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 bg-green-500/20 rounded-lg">
+                        <CheckCircle2 className="w-5 h-5 text-green-400" />
+                      </div>
+                      <div>
+                        <p className="text-white font-medium">{selectedFile.name}</p>
+                        <p className="text-sm text-white/60">
+                          {(selectedFile.size / 1024 / 1024).toFixed(2)} MB
+                        </p>
+                      </div>
+                    </div>
+                    <Button
+                      onClick={handleStartAnalysis}
+                      size="lg"
+                      disabled={!selectedFile}
+                      className="bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600"
+                    >
+                      <Search className="w-5 h-5 mr-2" />
+                      Start Analysis
+                    </Button>
+                  </motion.div>
+                )}
+              </CardContent>
+            </>
+          )}
+        </Card>
+      </div>
     </>
   );
 };
 
 export default AnalyzePage;
-
-
