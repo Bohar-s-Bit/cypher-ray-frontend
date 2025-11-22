@@ -12,30 +12,56 @@ import Button from "../ui/Button";
 const PlanCard = ({ plan, onSelect, isSelected, isLoading }) => {
   const { id, name, credits, price, popular, discount } = plan;
   const perCreditCost = calculatePerCreditCost(price, credits);
+  const isFeatured = id === "standard"; // Show star for Standard plan
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      whileHover={{ y: -5, transition: { duration: 0.2 } }}
+      animate={{ 
+        opacity: 1, 
+        y: 0,
+        ...(popular && {
+          boxShadow: [
+            "0 0 15px rgba(168, 85, 247, 0.3)",
+            "0 0 20px rgba(168, 85, 247, 0.4)",
+            "0 0 15px rgba(168, 85, 247, 0.3)",
+          ]
+        })
+      }}
+      transition={{ 
+        duration: 0.3,
+        ...(popular && {
+          boxShadow: {
+            duration: 2,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }
+        })
+      }}
       className={cn(
-        "relative rounded-2xl p-6 border-2 transition-all duration-300",
+        "relative rounded-2xl p-6 border transition-all duration-300 cursor-pointer",
+        "flex flex-col h-full", // Make card flexible height
         popular
-          ? "border-primary-500 bg-gradient-to-br from-primary-50 to-white dark:from-primary-900/20 dark:to-neutral-800 shadow-xl"
-          : "border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 hover:border-primary-300 dark:hover:border-primary-600",
-        isSelected && "ring-4 ring-primary-200 dark:ring-primary-800"
+          ? "bg-gradient-to-br from-purple-500/20 via-purple-900/30 to-blue-900/20 backdrop-blur-lg border-purple-400 shadow-xl shadow-purple-500/30 ring-2 ring-purple-400/20"
+          : "bg-gradient-to-br from-purple-900/20 to-purple-950/20 backdrop-blur-lg border-purple-500/30 hover:border-purple-400/50",
+        isSelected && "ring-4 ring-purple-500/40 border-purple-400"
       )}
+      onClick={() => onSelect(plan)}
     >
       {/* Popular Badge */}
       {popular && (
         <div className="absolute -top-4 left-1/2 -translate-x-1/2">
-          <Badge
-            variant="primary"
-            className="px-4 py-1.5 font-semibold shadow-lg"
-          >
-            <Star className="w-3.5 h-3.5 mr-1 fill-current" />
+          <span className="rounded-full bg-gradient-to-r from-purple-500 to-blue-500 px-4 py-1.5 text-xs font-semibold text-white border border-purple-300/50 shadow-lg shadow-purple-500/50">
+            <Star className="w-3.5 h-3.5 mr-1 inline fill-current" />
             Most Popular
-          </Badge>
+          </span>
+        </div>
+      )}
+
+      {/* Featured Star Icon (top right) */}
+      {isFeatured && !popular && (
+        <div className="absolute top-4 right-4">
+          <Star className="w-6 h-6 text-purple-400 fill-purple-400" />
         </div>
       )}
 
@@ -48,86 +74,88 @@ const PlanCard = ({ plan, onSelect, isSelected, isLoading }) => {
         </div>
       )}
 
-      <div className="space-y-4">
+      <div className="flex flex-col flex-grow">
         {/* Plan Name */}
-        <div className="flex items-center justify-between">
-          <h3 className="text-2xl font-bold text-neutral-900 dark:text-white">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
             {name}
           </h3>
-          {popular && <Zap className="w-6 h-6 text-primary-500 fill-current" />}
+          {popular && <Zap className="w-6 h-6 text-purple-400 fill-current" />}
         </div>
 
         {/* Credits */}
-        <div className="flex items-baseline gap-2">
-          <span className="text-4xl font-bold text-primary-600 dark:text-primary-400">
+        <div className="flex items-baseline gap-2 mb-3">
+          <span className="text-4xl font-bold text-purple-400">
             {credits}
           </span>
-          <span className="text-lg text-neutral-600 dark:text-neutral-400">
+          <span className="text-lg text-gray-400">
             credits
           </span>
         </div>
 
         {/* Price */}
-        <div className="flex items-baseline gap-2">
-          <span className="text-3xl font-bold text-neutral-900 dark:text-white">
+        <div className="flex items-baseline gap-2 mb-2">
+          <span className="text-3xl font-bold text-white">
             {formatCurrency(price)}
           </span>
-          <span className="text-sm text-neutral-500 dark:text-neutral-400">
+          <span className="text-sm text-gray-400">
             one-time
           </span>
         </div>
 
         {/* Per Credit Cost */}
-        <div className="text-sm text-neutral-600 dark:text-neutral-400">
+        <div className="text-sm text-gray-400 mb-4">
           ₹{perCreditCost} per credit
         </div>
 
         {/* Divider */}
-        <div className="border-t border-neutral-200 dark:border-neutral-700" />
+        <div className="border-t border-purple-500/20 mb-4" />
 
-        {/* Features */}
-        <ul className="space-y-2">
+        {/* Features - Flex grow to take available space */}
+        <ul className="space-y-2 mb-4 flex-grow">
           <li className="flex items-start gap-2 text-sm">
-            <Check className="w-4 h-4 text-success-500 mt-0.5 flex-shrink-0" />
-            <span className="text-neutral-700 dark:text-neutral-300">
+            <Check className="w-4 h-4 text-purple-400 mt-0.5 flex-shrink-0" />
+            <span className="text-gray-300">
               {credits} firmware analysis credits
             </span>
           </li>
           <li className="flex items-start gap-2 text-sm">
-            <Check className="w-4 h-4 text-success-500 mt-0.5 flex-shrink-0" />
-            <span className="text-neutral-700 dark:text-neutral-300">
+            <Check className="w-4 h-4 text-purple-400 mt-0.5 flex-shrink-0" />
+            <span className="text-gray-300">
               Never expires
             </span>
           </li>
           <li className="flex items-start gap-2 text-sm">
-            <Check className="w-4 h-4 text-success-500 mt-0.5 flex-shrink-0" />
-            <span className="text-neutral-700 dark:text-neutral-300">
+            <Check className="w-4 h-4 text-purple-400 mt-0.5 flex-shrink-0" />
+            <span className="text-gray-300">
               Detailed security reports
             </span>
           </li>
           {popular && (
             <li className="flex items-start gap-2 text-sm">
-              <Check className="w-4 h-4 text-success-500 mt-0.5 flex-shrink-0" />
-              <span className="text-neutral-700 dark:text-neutral-300">
+              <Check className="w-4 h-4 text-purple-400 mt-0.5 flex-shrink-0" />
+              <span className="text-gray-300">
                 Best value for money
               </span>
             </li>
           )}
         </ul>
 
-        {/* Select Button */}
-        <Button
-          variant={popular ? "primary" : "outline"}
-          fullWidth
-          onClick={() => onSelect(plan)}
-          disabled={isLoading}
-          className={cn(
-            "mt-4 font-semibold",
-            popular && "shadow-lg shadow-primary-500/30"
-          )}
-        >
-          {isLoading ? "Processing..." : "Select Plan"}
-        </Button>
+        {/* Select Button - Stays at bottom */}
+        <div className="mt-auto">
+          <Button
+            variant={popular ? "primary" : "outline"}
+            fullWidth
+            onClick={() => onSelect(plan)}
+            disabled={isLoading}
+            className={cn(
+              "font-semibold",
+              popular && "shadow-lg shadow-purple-500/30"
+            )}
+          >
+            {isLoading ? "Processing..." : "Select Plan"}
+          </Button>
+        </div>
       </div>
     </motion.div>
   );

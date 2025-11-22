@@ -86,6 +86,22 @@ const PlanSelectionModal = ({ isOpen, onClose }) => {
     }
   }, [isOpen]);
 
+  // Handle scroll to update current plan index
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    const handleScroll = () => {
+      const scrollLeft = container.scrollLeft;
+      const cardWidth = container.scrollWidth / plans.length;
+      const newIndex = Math.round(scrollLeft / cardWidth);
+      setCurrentPlanIndex(newIndex);
+    };
+
+    container.addEventListener('scroll', handleScroll);
+    return () => container.removeEventListener('scroll', handleScroll);
+  }, [plans.length]);
+
   // Handle plan selection
   const handlePlanSelect = (plan) => {
     setSelectedPlan(plan);
@@ -254,21 +270,21 @@ const PlanSelectionModal = ({ isOpen, onClose }) => {
       <Modal isOpen={isOpen} onClose={onClose} size="lg">
         <ModalHeader onClose={onClose}>
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-primary-100 dark:bg-primary-900/30 rounded-lg">
-              <CreditCard className="w-6 h-6 text-primary-600 dark:text-primary-400" />
+            <div className="p-2 bg-purple-500/20 rounded-lg border border-purple-500/30">
+              <CreditCard className="w-6 h-6 text-purple-400" />
             </div>
             <div>
-              <h2 className="text-2xl font-bold text-neutral-900 dark:text-white">
+              <h2 className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
                 Choose Your Plan
               </h2>
-              <p className="text-sm text-neutral-600 dark:text-neutral-400 mt-1">
+              <p className="text-sm text-gray-400 mt-1">
                 Select a credit plan to continue analyzing firmware
               </p>
             </div>
           </div>
         </ModalHeader>
 
-        <ModalBody className="py-6">
+        <ModalBody className="pt-10 pb-6 px-6">
           {/* Loading State */}
           {isLoadingPlans && (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -283,11 +299,11 @@ const PlanSelectionModal = ({ isOpen, onClose }) => {
           {/* Error State */}
           {plansError && (
             <div className="text-center py-12">
-              <AlertCircle className="w-16 h-16 text-error-500 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-neutral-900 dark:text-white mb-2">
+              <AlertCircle className="w-16 h-16 text-red-400 mx-auto mb-4" />
+              <h3 className="text-lg font-semibold text-white mb-2">
                 Failed to Load Plans
               </h3>
-              <p className="text-neutral-600 dark:text-neutral-400 mb-6">
+              <p className="text-gray-400 mb-6">
                 Unable to fetch credit plans. Please try again.
               </p>
               <Button variant="primary" onClick={handleRetryPlans}>
@@ -298,23 +314,23 @@ const PlanSelectionModal = ({ isOpen, onClose }) => {
 
           {/* Plans Grid - Scrollable */}
           {!isLoadingPlans && !plansError && plans.length > 0 && (
-            <div className="relative">
+            <div className="relative px-2 pt-8 pb-4">
               {/* Navigation Buttons */}
               {plans.length > 1 && (
                 <>
                   <button
                     onClick={handlePrevPlan}
                     disabled={currentPlanIndex === 0}
-                    className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 p-2 bg-white dark:bg-neutral-800 rounded-full shadow-lg border border-neutral-200 dark:border-neutral-700 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-neutral-50 dark:hover:bg-neutral-700 transition-colors"
+                    className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 p-2 bg-purple-900/50 backdrop-blur-sm rounded-full shadow-lg border border-purple-500/30 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-purple-800/50 transition-colors"
                   >
-                    <ChevronLeft className="w-6 h-6 text-neutral-900 dark:text-white" />
+                    <ChevronLeft className="w-6 h-6 text-purple-400" />
                   </button>
                   <button
                     onClick={handleNextPlan}
                     disabled={currentPlanIndex === plans.length - 1}
-                    className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 p-2 bg-white dark:bg-neutral-800 rounded-full shadow-lg border border-neutral-200 dark:border-neutral-700 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-neutral-50 dark:hover:bg-neutral-700 transition-colors"
+                    className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 p-2 bg-purple-900/50 backdrop-blur-sm rounded-full shadow-lg border border-purple-500/30 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-purple-800/50 transition-colors"
                   >
-                    <ChevronRight className="w-6 h-6 text-neutral-900 dark:text-white" />
+                    <ChevronRight className="w-6 h-6 text-purple-400" />
                   </button>
                 </>
               )}
@@ -322,13 +338,13 @@ const PlanSelectionModal = ({ isOpen, onClose }) => {
               {/* Scrollable Container */}
               <div
                 ref={scrollContainerRef}
-                className="flex gap-6 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-4"
+                className="flex gap-6 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-4 px-1"
                 style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
               >
                 {plans.map((plan, index) => (
                   <div
                     key={plan.id}
-                    className="flex-shrink-0 w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] snap-center"
+                    className="flex-shrink-0 w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] snap-center flex"
                   >
                     <PlanCard
                       plan={plan}
@@ -349,8 +365,8 @@ const PlanSelectionModal = ({ isOpen, onClose }) => {
                       onClick={() => scrollToPlan(index)}
                       className={`h-2 rounded-full transition-all ${
                         index === currentPlanIndex
-                          ? "w-8 bg-primary-600 dark:bg-primary-400"
-                          : "w-2 bg-neutral-300 dark:bg-neutral-600"
+                          ? "w-8 bg-purple-500"
+                          : "w-2 bg-purple-500/30"
                       }`}
                     />
                   ))}
@@ -361,30 +377,30 @@ const PlanSelectionModal = ({ isOpen, onClose }) => {
 
           {/* Selected Plan Summary */}
           {selectedPlan && (
-            <div className="mt-8 p-6 bg-primary-50 dark:bg-primary-900/20 rounded-xl border-2 border-primary-200 dark:border-primary-800">
-              <h3 className="font-semibold text-neutral-900 dark:text-white mb-3">
+            <div className="mt-8 p-6 bg-gradient-to-br from-purple-500/10 to-purple-600/5 rounded-xl border-2 border-purple-500/30 backdrop-blur-sm">
+              <h3 className="font-semibold text-purple-300 mb-3">
                 Selected Plan Summary
               </h3>
               <div className="grid grid-cols-3 gap-4 text-sm">
                 <div>
-                  <p className="text-neutral-600 dark:text-neutral-400">Plan</p>
-                  <p className="font-semibold text-neutral-900 dark:text-white">
+                  <p className="text-gray-400">Plan</p>
+                  <p className="font-semibold text-white">
                     {selectedPlan.name}
                   </p>
                 </div>
                 <div>
-                  <p className="text-neutral-600 dark:text-neutral-400">
+                  <p className="text-gray-400">
                     Credits
                   </p>
-                  <p className="font-semibold text-neutral-900 dark:text-white">
+                  <p className="font-semibold text-white">
                     {selectedPlan.credits}
                   </p>
                 </div>
                 <div>
-                  <p className="text-neutral-600 dark:text-neutral-400">
+                  <p className="text-gray-400">
                     Amount
                   </p>
-                  <p className="font-semibold text-neutral-900 dark:text-white">
+                  <p className="font-semibold text-white">
                     ₹{selectedPlan.price.toLocaleString()}
                   </p>
                 </div>

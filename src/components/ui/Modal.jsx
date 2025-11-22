@@ -22,7 +22,7 @@ const Modal = ({ isOpen, onClose, children, size = "md", className }) => {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         onClick={onClose}
-        className="fixed inset-0 bg-black/50 dark:bg-black/70 backdrop-blur-sm z-40"
+        className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40"
       />
 
       {/* Modal */}
@@ -33,7 +33,7 @@ const Modal = ({ isOpen, onClose, children, size = "md", className }) => {
           exit={{ opacity: 0, scale: 0.95, y: 20 }}
           transition={{ duration: 0.2 }}
           className={cn(
-            "relative bg-black/40 backdrop-blur-md border border-white/20 rounded-2xl shadow-2xl w-full",
+            "relative bg-gradient-to-br from-purple-500/20 via-neutral-900 to-blue-500/20 backdrop-blur-md border border-purple-500/30 rounded-2xl shadow-2xl shadow-purple-500/20 w-full",
             sizeClasses[size],
             className
           )}
@@ -50,7 +50,7 @@ const ModalHeader = ({ children, onClose, className }) => {
   return (
     <div
       className={cn(
-        "flex items-center justify-between p-6 border-b border-white/10",
+        "flex items-center justify-between p-6 border-b border-purple-500/20",
         className
       )}
     >
@@ -58,7 +58,7 @@ const ModalHeader = ({ children, onClose, className }) => {
       {onClose && (
         <button
           onClick={onClose}
-          className="ml-4 text-white/50 hover:text-white transition-colors"
+          className="ml-4 text-white/70 hover:text-white transition-colors"
         >
           <X className="w-5 h-5" />
         </button>
@@ -88,7 +88,7 @@ const ModalFooter = ({ children, className }) => {
   return (
     <div
       className={cn(
-        "flex items-center justify-end gap-3 p-6 border-t border-white/10 bg-black/20 rounded-b-2xl",
+        "flex items-center justify-end gap-3 p-6 border-t border-purple-500/20 bg-purple-950/20 rounded-b-2xl",
         className
       )}
     >

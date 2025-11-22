@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import { Search, List } from "lucide-react";
+import { Search, List, Shield, Zap, Lock, AlertTriangle, CheckCircle2 } from "lucide-react";
 import {
   Card,
   CardHeader,
@@ -17,6 +17,7 @@ import { MultiStepLoader } from "../components/ui/MultiStepLoader";
 import { analysisService } from "../services/analysisService";
 import { useAnalysis } from "../contexts/AnalysisContext";
 import { ROUTES } from "../config/constants";
+import { motion } from "framer-motion";
 
 const loadingStates = [
   { text: "Uploading binary file..." },
@@ -139,15 +140,15 @@ const AnalyzePage = () => {
       />
 
       <div className="space-y-8 min-h-screen">
-        {/* Header */}
+        {/* Header with animated gradient */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div className="relative">
-            <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-cyan-500/10 blur-3xl -z-10"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 via-blue-500/20 to-purple-500/20 blur-3xl -z-10 animate-pulse"></div>
             <h1 className="text-4xl md:text-5xl font-display font-bold bg-gradient-to-r from-white via-purple-200 to-cyan-200 bg-clip-text text-transparent mb-3">
               Binary Analysis
             </h1>
             <p className="text-white/70 text-lg">
-              Upload a binary file to analyze for security vulnerabilities
+              Upload a binary file to analyze for security vulnerabilities and cryptographic implementations
             </p>
           </div>
           <Button variant="outline" onClick={() => navigate(ROUTES.RESULTS)}>
@@ -156,57 +157,144 @@ const AnalyzePage = () => {
           </Button>
         </div>
 
+        {/* Feature Cards */}
+        {!isAnalyzing && (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              className="p-4 rounded-xl bg-gradient-to-br from-purple-500/10 to-purple-600/5 border border-purple-500/20"
+            >
+              <div className="flex items-start gap-3">
+                <div className="p-2 bg-purple-500/20 rounded-lg">
+                  <Shield className="w-5 h-5 text-purple-400" />
+                </div>
+                <div>
+                  <h3 className="text-white font-semibold mb-1">Vulnerability Detection</h3>
+                  <p className="text-sm text-white/60">Identify security flaws and potential exploits</p>
+                </div>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="p-4 rounded-xl bg-gradient-to-br from-blue-500/10 to-blue-600/5 border border-blue-500/20"
+            >
+              <div className="flex items-start gap-3">
+                <div className="p-2 bg-blue-500/20 rounded-lg">
+                  <Lock className="w-5 h-5 text-blue-400" />
+                </div>
+                <div>
+                  <h3 className="text-white font-semibold mb-1">Crypto Analysis</h3>
+                  <p className="text-sm text-white/60">Detect encryption algorithms and key patterns</p>
+                </div>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="p-4 rounded-xl bg-gradient-to-br from-cyan-500/10 to-cyan-600/5 border border-cyan-500/20"
+            >
+              <div className="flex items-start gap-3">
+                <div className="p-2 bg-cyan-500/20 rounded-lg">
+                  <Zap className="w-5 h-5 text-cyan-400" />
+                </div>
+                <div>
+                  <h3 className="text-white font-semibold mb-1">Fast Processing</h3>
+                  <p className="text-sm text-white/60">Results in minutes with ML-powered analysis</p>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        )}
+
         {/* Upload Section */}
-        <Card>
+        <Card className="relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 via-transparent to-blue-500/5 pointer-events-none"></div>
           {isAnalyzing ? (
             // --- ANALYSIS IN PROGRESS ---
-            // This content is shown when isAnalyzing is true
             <CardContent>
-              <div className="flex flex-col items-center justify-center py-12 space-y-4">
-                <Spinner size="lg" />
-                <div className="text-center">
-                  <p className="text-lg font-medium text-white">
+              <div className="flex flex-col items-center justify-center py-16 space-y-6">
+                <div className="relative">
+                  <div className="absolute inset-0 bg-purple-500/20 blur-2xl animate-pulse"></div>
+                  <Spinner size="lg" className="relative" />
+                </div>
+                <div className="text-center max-w-md">
+                  <p className="text-xl font-semibold text-white mb-2">
                     {getAnalysisStatusText()}
                   </p>
-                  <p className="text-sm text-white/70 mt-1">
+                  <p className="text-sm text-white/70">
                     {hasActiveAnalysis
-                      ? "You can navigate freely while analysis is in progress."
-                      : "Analysis will start shortly"}
+                      ? "You can navigate freely while analysis is in progress. We'll notify you when it's complete."
+                      : "Preparing your analysis..."}
                   </p>
                   {hasActiveAnalysis && (
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => navigate(ROUTES.RESULTS)}
-                      className="mt-4"
-                    >
-                      View Results
-                    </Button>
+                    <div className="mt-6 p-4 bg-purple-500/10 border border-purple-500/20 rounded-lg">
+                      <div className="flex items-center justify-center gap-2 text-purple-400 mb-2">
+                        <CheckCircle2 className="w-4 h-4" />
+                        <span className="text-sm font-medium">Analysis Running</span>
+                      </div>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => navigate(ROUTES.RESULTS)}
+                        className="mt-2"
+                      >
+                        View Results Dashboard
+                      </Button>
+                    </div>
                   )}
                 </div>
               </div>
             </CardContent>
           ) : (
             // --- READY TO UPLOAD ---
-            // This content is shown when isAnalyzing is false
             <>
-              <CardContent className="space-y-6">
+              <CardContent className="space-y-6 relative">
+                <div className="text-center mb-6">
+                  <div className="inline-flex items-center gap-2 px-4 py-2 bg-purple-500/10 border border-purple-500/20 rounded-full mb-4">
+                    <AlertTriangle className="w-4 h-4 text-purple-400" />
+                    <span className="text-sm text-purple-300">Supported: All executable files (max 100MB)</span>
+                  </div>
+                </div>
+
                 <FileUpload
                   onChange={handleFileSelect}
                   maxSize={100 * 1024 * 1024}
                 />
 
                 {selectedFile && (
-                  <div className="flex justify-end">
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 bg-green-500/10 border border-green-500/20 rounded-xl"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 bg-green-500/20 rounded-lg">
+                        <CheckCircle2 className="w-5 h-5 text-green-400" />
+                      </div>
+                      <div>
+                        <p className="text-white font-medium">{selectedFile.name}</p>
+                        <p className="text-sm text-white/60">
+                          {(selectedFile.size / 1024 / 1024).toFixed(2)} MB
+                        </p>
+                      </div>
+                    </div>
                     <Button
                       onClick={handleStartAnalysis}
                       size="lg"
                       disabled={!selectedFile}
+                      className="bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600"
                     >
                       <Search className="w-5 h-5 mr-2" />
                       Start Analysis
                     </Button>
-                  </div>
+                  </motion.div>
                 )}
               </CardContent>
             </>

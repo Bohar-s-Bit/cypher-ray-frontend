@@ -13,6 +13,8 @@ import {
   Check,
   Lock,
   Key,
+  Eye,
+  EyeOff,
 } from "lucide-react";
 import { authService } from "../services/authService";
 import useAuthStore from "../store/authStore";
@@ -47,6 +49,11 @@ const ProfilePage = () => {
   });
   const [showOTPModal, setShowOTPModal] = useState(false);
   const [userEmail, setUserEmail] = useState("");
+  
+  // Password visibility state
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   // Fetch user profile
   const { data: profileData, isLoading } = useQuery({
@@ -306,38 +313,77 @@ const ProfilePage = () => {
               </div>
 
               <form onSubmit={handlePasswordSubmit} className="space-y-4">
-                <Input
-                  label="Current Password"
-                  name="currentPassword"
-                  type="password"
-                  value={passwordData.currentPassword}
-                  onChange={handlePasswordChange}
-                  placeholder="Enter your current password"
-                  required
-                  icon={Key}
-                />
+                <div className="relative">
+                  <Input
+                    label="Current Password"
+                    name="currentPassword"
+                    type={showCurrentPassword ? "text" : "password"}
+                    value={passwordData.currentPassword}
+                    onChange={handlePasswordChange}
+                    placeholder="Enter your current password"
+                    required
+                    icon={Key}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+                    className="absolute right-3 top-[38px] text-text-muted hover:text-text-primary transition-colors"
+                  >
+                    {showCurrentPassword ? (
+                      <EyeOff className="w-5 h-5" />
+                    ) : (
+                      <Eye className="w-5 h-5" />
+                    )}
+                  </button>
+                </div>
 
-                <Input
-                  label="New Password"
-                  name="newPassword"
-                  type="password"
-                  value={passwordData.newPassword}
-                  onChange={handlePasswordChange}
-                  placeholder="Enter your new password"
-                  required
-                  icon={Lock}
-                />
+                <div className="relative">
+                  <Input
+                    label="New Password"
+                    name="newPassword"
+                    type={showNewPassword ? "text" : "password"}
+                    value={passwordData.newPassword}
+                    onChange={handlePasswordChange}
+                    placeholder="Enter your new password"
+                    required
+                    icon={Lock}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowNewPassword(!showNewPassword)}
+                    className="absolute right-3 top-[38px] text-text-muted hover:text-text-primary transition-colors"
+                  >
+                    {showNewPassword ? (
+                      <EyeOff className="w-5 h-5" />
+                    ) : (
+                      <Eye className="w-5 h-5" />
+                    )}
+                  </button>
+                </div>
 
-                <Input
-                  label="Confirm New Password"
-                  name="confirmPassword"
-                  type="password"
-                  value={passwordData.confirmPassword}
-                  onChange={handlePasswordChange}
-                  placeholder="Confirm your new password"
-                  required
-                  icon={Lock}
-                />
+                <div className="relative">
+                  <Input
+                    label="Confirm New Password"
+                    name="confirmPassword"
+                    type={showConfirmPassword ? "text" : "password"}
+                    value={passwordData.confirmPassword}
+                    onChange={handlePasswordChange}
+                    placeholder="Confirm your new password"
+                    required
+                    icon={Lock}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    className="absolute right-3 top-[38px] text-text-muted hover:text-text-primary transition-colors"
+                  >
+                    {showConfirmPassword ? (
+                      <EyeOff className="w-5 h-5" />
+                    ) : (
+                      <Eye className="w-5 h-5" />
+                    )}
+                  </button>
+                </div>
 
                 <div className="pt-4">
                   <Button
