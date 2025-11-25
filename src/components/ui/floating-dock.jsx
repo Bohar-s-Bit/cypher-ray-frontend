@@ -68,9 +68,9 @@ const FloatingDockMobile = ({ items, className }) => {
         className="flex h-10 w-10 items-center justify-center rounded-full bg-black/40 backdrop-blur-md shadow-lg border border-white/10 hover:border-purple-400/50 transition-all"
       >
         {open ? (
-          <X className="h-5 w-5 text-white/70" />
+          <X className="h-5 w-5 text-purple-300" />
         ) : (
-          <Menu className="h-5 w-5 text-white/70" />
+          <Menu className="h-5 w-5 text-purple-300" />
         )}
       </button>
     </div>
