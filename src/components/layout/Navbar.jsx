@@ -70,14 +70,9 @@ const Navbar = () => {
       textColor: "#fff",
       links: [
         { 
-          label: "Company", 
-          ariaLabel: "About Company",
-          href: "#about",
-          onClick: (e) => {
-            e.preventDefault();
-            const element = document.getElementById('about');
-            element?.scrollIntoView({ behavior: 'smooth' });
-          }
+          label: "FAQs", 
+          ariaLabel: "Frequently Asked Questions",
+          href: "/faq",
         },
         { 
           label: "Contact", 
