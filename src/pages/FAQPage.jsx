@@ -7,6 +7,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "../components/ui/Accordion";
+import Navbar from "../components/layout/Navbar";
 
 export default function FAQPage() {
   const [query, setQuery] = useState("");
@@ -71,6 +72,9 @@ export default function FAQPage() {
 
   return (
     <div className="min-h-screen">
+      {/* Navbar */}
+      <Navbar />
+
       {/* Hero Section with Gradient Background */}
       <section className="relative overflow-hidden py-16">
         {/* Gradient Background matching system */}
@@ -86,7 +90,7 @@ export default function FAQPage() {
         <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-transparent to-blue-900/10" />
 
         {/* Content */}
-        <div className="relative mx-auto w-full max-w-3xl px-4 pt-16">
+        <div className="relative mx-auto w-full max-w-6xl px-4 pt-16">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -107,6 +111,7 @@ export default function FAQPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
+              className="max-w-xl"
             >
               <div className="relative">
                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-purple-400/50" />
@@ -123,7 +128,7 @@ export default function FAQPage() {
         </div>
       </section>
 
-      {/* FAQ Accordion Section */}
+      {/* Main Content - Two Column Layout */}
       <section
         className="relative py-7"
         style={{
@@ -131,125 +136,138 @@ export default function FAQPage() {
             "linear-gradient(135deg, #060010 0%, #0a0015 50%, #060010 100%)",
         }}
       >
-        <div className="mx-auto w-full max-w-3xl px-4">
-          {filtered.length === 0 ? (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="text-center py-16"
-            >
-              <MessageCircle className="w-16 h-16 text-purple-400/50 mx-auto mb-4" />
-              <p className="text-white/60 text-lg mb-6">
-                No FAQs found matching "{query}"
-              </p>
-              <button
-                onClick={() => setQuery("")}
-                className="px-6 py-3 bg-purple-600 hover:bg-purple-500 text-white rounded-lg transition-colors"
+        <div className="mx-auto w-full max-w-6xl px-4">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            {/* Left Column - Contact Section */}
+            <div className="lg:col-span-4">
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6 }}
+                className="sticky top-24"
               >
-                Clear Search
-              </button>
-            </motion.div>
-          ) : (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-            >
-              <Accordion
-                type="single"
-                collapsible
-                className="bg-white/5 dark:bg-white/5 backdrop-blur-sm w-full -space-y-px rounded-lg border border-purple-500/20"
-                defaultValue="item-1"
-              >
-                {filtered.map((item) => (
-                  <AccordionItem
-                    value={item.id}
-                    key={item.id}
-                    className="relative border-x border-purple-500/20 first:rounded-t-lg first:border-t last:rounded-b-lg last:border-b"
-                  >
-                    <AccordionTrigger className="px-4 py-4 text-[15px] leading-6 hover:no-underline text-white hover:text-purple-300 transition-colors">
-                      {item.title}
-                    </AccordionTrigger>
-                    <AccordionContent className="text-white/70 pb-4 px-4">
-                      {item.content}
-                    </AccordionContent>
-                  </AccordionItem>
-                ))}
-              </Accordion>
-            </motion.div>
-          )}
+                <div className="bg-gradient-to-br from-purple-900/20 to-purple-950/20 backdrop-blur-sm border border-purple-500/20 rounded-xl p-6">
+                  <h3 className="text-xl font-bold text-white mb-3">
+                    Still have questions?
+                  </h3>
+                  <p className="text-sm text-white/70 mb-6">
+                    Can't find what you're looking for? Our support team is here to help you with any questions or concerns.
+                  </p>
 
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.4 }}
-            className="text-white/60 mt-7"
-          >
-            Can't find what you're looking for? Contact our{" "}
-            <a
-              href="mailto:support@cypherray.com"
-              className="text-purple-400 hover:text-purple-300 hover:underline transition-colors"
-            >
-              customer support team
-            </a>
-          </motion.p>
+                  <div className="space-y-3">
+                    <a
+                      href="mailto:support@cypherray.com"
+                      className="flex items-center gap-3 px-4 py-3 bg-gradient-to-r from-purple-600 to-purple-500 text-white rounded-lg hover:from-purple-500 hover:to-purple-400 transition-all shadow-lg shadow-purple-500/20 hover:shadow-purple-500/40 w-full"
+                    >
+                      <Mail className="w-5 h-5 flex-shrink-0" />
+                      <div className="text-left">
+                        <div className="text-sm font-semibold">Email Support</div>
+                        <div className="text-xs opacity-90">support@cypherray.com</div>
+                      </div>
+                    </a>
+                    
+                    <a
+                      href="#contact"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        const element = document.getElementById("contact");
+                        element?.scrollIntoView({ behavior: "smooth" });
+                      }}
+                      className="flex items-center gap-3 px-4 py-3 bg-white/5 backdrop-blur-sm border border-purple-500/30 text-white rounded-lg hover:bg-white/10 hover:border-purple-400/50 transition-all w-full"
+                    >
+                      <MessageCircle className="w-5 h-5 flex-shrink-0" />
+                      <div className="text-left">
+                        <div className="text-sm font-semibold">Contact Form</div>
+                        <div className="text-xs opacity-70">Fill out our form</div>
+                      </div>
+                    </a>
+                  </div>
+
+                  <div className="mt-6 pt-6 border-t border-purple-500/20">
+                    <p className="text-xs text-white/50">
+                      Our support team typically responds within 24 hours during business days.
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+
+            {/* Right Column - FAQ Accordion */}
+            <div className="lg:col-span-8">
+              {filtered.length === 0 ? (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="text-center py-16"
+                >
+                  <MessageCircle className="w-16 h-16 text-purple-400/50 mx-auto mb-4" />
+                  <p className="text-white/60 text-lg mb-6">
+                    No FAQs found matching "{query}"
+                  </p>
+                  <button
+                    onClick={() => setQuery("")}
+                    className="px-6 py-3 bg-purple-600 hover:bg-purple-500 text-white rounded-lg transition-colors"
+                  >
+                    Clear Search
+                  </button>
+                </motion.div>
+              ) : (
+                <motion.div
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.6 }}
+                >
+                  <Accordion
+                    type="single"
+                    collapsible
+                    className="bg-white/5 dark:bg-white/5 backdrop-blur-sm w-full -space-y-px rounded-lg border border-purple-500/20"
+                    defaultValue="item-1"
+                  >
+                    {filtered.map((item) => (
+                      <AccordionItem
+                        value={item.id}
+                        key={item.id}
+                        className="relative border-x border-purple-500/20 first:rounded-t-lg first:border-t last:rounded-b-lg last:border-b"
+                      >
+                        <AccordionTrigger className="px-4 py-4 text-[15px] leading-6 hover:no-underline text-white hover:text-purple-300 transition-colors">
+                          {item.title}
+                        </AccordionTrigger>
+                        <AccordionContent className="text-white/70 pb-4 px-4">
+                          {item.content}
+                        </AccordionContent>
+                      </AccordionItem>
+                    ))}
+                  </Accordion>
+
+                  <p className="text-white/60 mt-7 text-sm">
+                    Can't find what you're looking for? Contact our{" "}
+                    <a
+                      href="mailto:support@cypherray.com"
+                      className="text-purple-400 hover:text-purple-300 hover:underline transition-colors"
+                    >
+                      customer support team
+                    </a>
+                  </p>
+                </motion.div>
+              )}
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* Contact Section */}
+      {/* Footer */}
       <section
-        className="relative py-16 border-t border-purple-500/20"
+        className="relative py-8 border-t border-purple-500/20"
         style={{
           background:
             "linear-gradient(135deg, #060010 0%, #0a0015 50%, #060010 100%)",
         }}
       >
-        <div className="max-w-3xl mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center"
-          >
-            <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">
-              Still have questions?
-            </h2>
-            <p className="text-base text-white/70 mb-6">
-              Our support team is here to help you with any questions or concerns.
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
-              <a
-                href="mailto:support@cypherray.com"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-600 to-purple-500 text-white rounded-lg hover:from-purple-500 hover:to-purple-400 transition-all shadow-lg shadow-purple-500/20 hover:shadow-purple-500/40 text-sm"
-              >
-                <Mail className="w-4 h-4" />
-                Email Support
-              </a>
-              <a
-                href="#contact"
-                onClick={(e) => {
-                  e.preventDefault();
-                  const element = document.getElementById("contact");
-                  element?.scrollIntoView({ behavior: "smooth" });
-                }}
-                className="inline-flex items-center gap-2 px-6 py-3 bg-white/5 backdrop-blur-sm border border-purple-500/30 text-white rounded-lg hover:bg-white/10 hover:border-purple-400/50 transition-all text-sm"
-              >
-                <MessageCircle className="w-4 h-4" />
-                Contact Form
-              </a>
-            </div>
-          </motion.div>
-        </div>
-
-        {/* Footer */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ delay: 0.3 }}
-          className="mt-12 text-center"
+          className="text-center"
         >
           <p className="text-sm text-white/40">
             © {new Date().getFullYear()} Cypher-Ray — Advanced Firmware Security
