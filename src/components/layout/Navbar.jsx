@@ -16,6 +16,11 @@ const Navbar = () => {
       textColor: "#fff",
       links: [
         { 
+          label: "View All Features", 
+          ariaLabel: "View All Features",
+          href: "/features",
+        },
+        { 
           label: "Security Analysis", 
           ariaLabel: "Security Analysis Features",
           href: "#features",

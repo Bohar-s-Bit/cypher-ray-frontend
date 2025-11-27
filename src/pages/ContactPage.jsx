@@ -55,7 +55,7 @@ export default function ContactPage() {
             >
               {/* Service Selection */}
               <div>
-                <label className="block text-purple-300 text-xs font-bold mb-3 uppercase tracking-wide">
+                <label className="block text-white text-xs font-bold mb-3 uppercase tracking-wide">
                   Select Service
                 </label>
                 <div className="flex flex-wrap gap-2">
@@ -78,7 +78,7 @@ export default function ContactPage() {
 
               {/* Pricing Selection */}
               <div>
-                <label className="block text-purple-300 text-xs font-bold mb-3 uppercase tracking-wide">
+                <label className="block text-white text-xs font-bold mb-3 uppercase tracking-wide">
                   Pricing Tier
                 </label>
                 <div className="flex flex-wrap gap-2">

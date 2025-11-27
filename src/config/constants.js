@@ -79,6 +79,7 @@ export const ROUTES = {
   API_DOCS: "/api-docs",
   FAQ: "/faq",
   CONTACT: "/contact",
+  FEATURES: "/features",
 
   // Admin Routes
   ADMIN: {
