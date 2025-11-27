@@ -77,12 +77,7 @@ const Navbar = () => {
         { 
           label: "Contact", 
           ariaLabel: "Contact Us",
-          href: "#contact",
-          onClick: (e) => {
-            e.preventDefault();
-            const element = document.getElementById('contact');
-            element?.scrollIntoView({ behavior: 'smooth' });
-          }
+          href: "/contact",
         }
       ]
     }

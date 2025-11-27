@@ -36,6 +36,7 @@ import {
 import LandingPage from "./pages/LandingPage";
 import LoginPage from "./pages/LoginPage";
 import FAQPage from "./pages/FAQPage";
+import ContactPage from "./pages/ContactPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import ServerErrorPage from "./pages/ServerErrorPage";
 import UserDashboard from "./pages/UserDashboard";
@@ -149,6 +150,14 @@ function App() {
                       element={
                         <PublicRoute>
                           <FAQPage />
+                        </PublicRoute>
+                      }
+                    />
+                    <Route
+                      path={ROUTES.CONTACT}
+                      element={
+                        <PublicRoute>
+                          <ContactPage />
                         </PublicRoute>
                       }
                     />
