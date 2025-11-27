@@ -75,9 +75,9 @@ export default function FAQPage() {
       {/* Navbar */}
       <Navbar />
 
-      {/* Hero Section with Gradient Background */}
-      <section className="relative overflow-hidden py-16 pt-28 md:pt-32">
-        {/* Gradient Background matching system */}
+      {/* Hero Section with Enhanced Visual Effects */}
+      <section className="relative overflow-hidden pt-52 md:pt-52 pb-12">
+        {/* Dark Background Base */}
         <div
           className="absolute inset-0 w-full h-full"
           style={{
@@ -86,57 +86,73 @@ export default function FAQPage() {
           }}
         />
 
-        {/* Purple overlay gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-transparent to-blue-900/10" />
+        {/* Subtle purple overlay */}
+        <div className="absolute inset-0 bg-gradient-to-br from-purple-900/10 via-transparent to-purple-900/5" />
+
+        {/* Radial glow effect behind title - more subtle */}
+        <div className="absolute top-24 md:top-28 left-1/2 -translate-x-1/2 w-[500px] h-[300px] bg-purple-600/10 rounded-full blur-[100px] pointer-events-none" />
 
         {/* Content */}
-        <div className="relative mx-auto w-full max-w-6xl px-4">
+        <div className="relative mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            className="text-center mb-8"
           >
-            {/* Title */}
-            <div className="space-y-2 mb-8">
-              <h2 className="text-3xl font-bold md:text-4xl text-white">
+            {/* Title with gradient and glow */}
+            <div className="space-y-3 mb-8">
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold bg-gradient-to-r from-purple-200 via-white to-purple-200 bg-clip-text text-transparent leading-tight">
                 Frequently Asked Questions
-              </h2>
-              <p className="text-white/60 max-w-2xl">
-                Here are some common questions and answers that you might encounter when using Cypher-Ray. If you don't find the answer you're looking for, feel free to reach out.
+              </h1>
+              <p className="text-base md:text-lg text-purple-200/60 max-w-2xl mx-auto">
+                Find answers to common questions about Cypher-Ray
               </p>
             </div>
 
             {/* Search Bar */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="max-w-xl"
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="max-w-xl mx-auto"
             >
               <div className="relative">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-purple-400/50" />
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-purple-400/70" />
                 <input
                   type="text"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   placeholder="Search questions..."
-                  className="w-full h-12 pl-12 pr-4 rounded-xl bg-white/5 backdrop-blur-sm border border-purple-500/30 text-white placeholder:text-white/40 outline-none focus:border-purple-400/60 focus:ring-2 focus:ring-purple-500/20 transition-all"
+                  className="w-full h-12 pl-12 pr-5 rounded-xl bg-white/5 backdrop-blur-sm border border-purple-500/20 text-white placeholder:text-white/40 outline-none focus:border-purple-400/40 focus:ring-1 focus:ring-purple-500/20 transition-all"
                 />
               </div>
             </motion.div>
           </motion.div>
         </div>
+
+        {/* Smooth gradient transition to next section */}
+        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-b from-transparent via-purple-950/20 to-[#060010] pointer-events-none" />
       </section>
 
       {/* Main Content - Two Column Layout */}
       <section
-        className="relative py-7"
+        className="relative py-16"
         style={{
           background:
-            "linear-gradient(135deg, #060010 0%, #0a0015 50%, #060010 100%)",
+            "linear-gradient(180deg, #060010 0%, #0a0015 50%, #060010 100%)",
         }}
       >
-        <div className="mx-auto w-full max-w-6xl px-4">
+        {/* Top gradient fade-in effect */}
+        <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-transparent to-purple-900/10 pointer-events-none" />
+        
+        {/* Subtle grid pattern overlay */}
+        <div className="absolute inset-0 opacity-[0.015]" style={{
+          backgroundImage: 'radial-gradient(circle at 1px 1px, rgb(168 85 247) 1px, transparent 0)',
+          backgroundSize: '40px 40px'
+        }} />
+
+        <div className="relative mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
             {/* Left Column - Contact Section */}
             <div className="lg:col-span-4">
@@ -198,7 +214,7 @@ export default function FAQPage() {
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  className="text-center py-16"
+                  className="text-center py-16 px-6 rounded-2xl bg-gradient-to-br from-purple-900/10 to-transparent border border-purple-500/10"
                 >
                   <MessageCircle className="w-16 h-16 text-purple-400/50 mx-auto mb-4" />
                   <p className="text-white/60 text-lg mb-6">
@@ -206,7 +222,7 @@ export default function FAQPage() {
                   </p>
                   <button
                     onClick={() => setQuery("")}
-                    className="px-6 py-3 bg-purple-600 hover:bg-purple-500 text-white rounded-lg transition-colors"
+                    className="px-6 py-3 bg-purple-600 hover:bg-purple-500 text-white rounded-lg transition-colors shadow-lg shadow-purple-500/20"
                   >
                     Clear Search
                   </button>
@@ -220,26 +236,26 @@ export default function FAQPage() {
                   <Accordion
                     type="single"
                     collapsible
-                    className="bg-white/5 dark:bg-white/5 backdrop-blur-sm w-full -space-y-px rounded-lg border border-purple-500/20"
+                    className="bg-gradient-to-br from-white/5 to-purple-950/5 backdrop-blur-sm w-full -space-y-px rounded-xl border border-purple-500/20 shadow-xl shadow-purple-900/10 overflow-hidden"
                     defaultValue="item-1"
                   >
                     {filtered.map((item) => (
                       <AccordionItem
                         value={item.id}
                         key={item.id}
-                        className="relative border-x border-purple-500/20 first:rounded-t-lg first:border-t last:rounded-b-lg last:border-b"
+                        className="relative border-x border-purple-500/20 first:rounded-t-xl first:border-t last:rounded-b-xl last:border-b hover:bg-purple-900/10 transition-colors"
                       >
-                        <AccordionTrigger className="px-4 py-4 text-[15px] leading-6 hover:no-underline text-white hover:text-purple-300 transition-colors">
+                        <AccordionTrigger className="px-6 py-5 text-[15px] leading-6 hover:no-underline text-white hover:text-purple-300 transition-colors font-medium">
                           {item.title}
                         </AccordionTrigger>
-                        <AccordionContent className="text-white/70 pb-4 px-4">
+                        <AccordionContent className="text-white/70 pb-5 px-6 leading-relaxed">
                           {item.content}
                         </AccordionContent>
                       </AccordionItem>
                     ))}
                   </Accordion>
 
-                  <p className="text-white/60 mt-7 text-sm">
+                  <p className="text-white/60 mt-8 text-sm text-center bg-gradient-to-r from-transparent via-purple-900/20 to-transparent py-4 rounded-lg">
                     Can't find what you're looking for? Contact our{" "}
                     <a
                       href="mailto:support@cypherray.com"
