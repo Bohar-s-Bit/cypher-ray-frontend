@@ -76,7 +76,7 @@ export default function FAQPage() {
       <Navbar />
 
       {/* Hero Section with Gradient Background */}
-      <section className="relative overflow-hidden py-16">
+      <section className="relative overflow-hidden py-16 pt-28 md:pt-32">
         {/* Gradient Background matching system */}
         <div
           className="absolute inset-0 w-full h-full"
@@ -90,7 +90,7 @@ export default function FAQPage() {
         <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-transparent to-blue-900/10" />
 
         {/* Content */}
-        <div className="relative mx-auto w-full max-w-6xl px-4 pt-16">
+        <div className="relative mx-auto w-full max-w-6xl px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}

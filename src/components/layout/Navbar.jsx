@@ -99,6 +99,7 @@ const Navbar = () => {
       buttonTextColor="#fff"
       ease="power3.out"
       onGetStartedClick={() => navigate(ROUTES.LOGIN)}
+      onLogoClick={() => navigate(ROUTES.HOME)}
     />
   );
 };
