@@ -27,7 +27,7 @@ const TopBadge = ({ icon: Icon, text, leftPosition }) => {
   );
 };
 
-const DatabaseWithRestApi = ({
+const CypherRayFlow = ({
   className,
   circleText,
   badgeTexts,
@@ -236,4 +236,4 @@ const DatabaseWithRestApi = ({
   );
 };
 
-export default DatabaseWithRestApi;
+export default CypherRayFlow;

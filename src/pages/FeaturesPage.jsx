@@ -2,7 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { MessageCircle, Zap, BarChart3, Check } from "lucide-react";
 import Navbar from "../components/layout/Navbar";
-import DatabaseWithRestApi from "../components/ui/DatabaseWithRestApi";
+import MagicBento from "../components/ui/MagicBento";
 import { cn } from "../lib/utils";
 
 const FeaturedIcon = ({ icon: Icon, className }) => {
@@ -184,24 +184,17 @@ export default function FeaturesPage() {
           transition={{ duration: 0.6 }}
           className="flex justify-center w-full pt-12 pb-20"
         >
-          <DatabaseWithRestApi
-            title="Firmware Binary Analysis"
-            circleText="AI"
-            badgeTexts={{
-              first: "CypherLLM",
-              second: "Model 1",
-              third: "Model 2",
-              fourth: "SDK",
-            }}
-            buttonTexts={{
-              first: "Encryption",
-              second: "Cryptography",
-              third: "Homologs",
-              fourth: "Algorithms",
-              fifth: "Security",
-              sixth: "Source Code",
-            }}
-            lightColor="#a855f7"
+          <MagicBento 
+            textAutoHide={true}
+            enableStars={true}
+            enableSpotlight={true}
+            enableBorderGlow={true}
+            enableTilt={true}
+            enableMagnetism={true}
+            clickEffect={true}
+            spotlightRadius={300}
+            particleCount={12}
+            glowColor="132, 0, 255"
           />
         </motion.div>
       </section>
