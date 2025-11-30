@@ -52,6 +52,7 @@ import UsersListPage from "./pages/admin/UsersListPage";
 import AccessRequestsPage from "./pages/admin/AccessRequestsPage";
 import CreateUserPage from "./pages/admin/CreateUserPage";
 import UserDetailsPage from "./pages/admin/UserDetailsPage";
+import CypherRayWebsiteWorkflow from "./pages/CypherRayWebsiteWorkflow";
 
 // Constants-check
 import { ROUTES } from "./config/constants";
@@ -151,6 +152,14 @@ function App() {
                       element={
                         <PublicRoute>
                           <FAQPage />
+                        </PublicRoute>
+                      }
+                    />
+                    <Route
+                      path="/workflow"
+                      element={
+                        <PublicRoute>
+                          <CypherRayWebsiteWorkflow />
                         </PublicRoute>
                       }
                     />

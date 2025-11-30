@@ -23,29 +23,14 @@ const Navbar = () => {
       ]
     },
     {
-      label: "Solutions", 
+      label: "Workflows", 
       bgColor: "#2d1b47",
       textColor: "#fff",
       links: [
         { 
-          label: "Enterprise", 
-          ariaLabel: "Enterprise Solutions",
-          href: "#enterprise",
-          onClick: (e) => {
-            e.preventDefault();
-            const element = document.getElementById('enterprise');
-            element?.scrollIntoView({ behavior: 'smooth' });
-          }
-        },
-        { 
-          label: "Government", 
-          ariaLabel: "Government Solutions",
-          href: "#government",
-          onClick: (e) => {
-            e.preventDefault();
-            const element = document.getElementById('government');
-            element?.scrollIntoView({ behavior: 'smooth' });
-          }
+          label: "Analysis Pipeline", 
+          ariaLabel: "Analysis Pipeline",
+          href: "/workflow",
         }
       ]
     },
