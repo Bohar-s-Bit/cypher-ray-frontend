@@ -20,26 +20,6 @@ const Navbar = () => {
           ariaLabel: "View All Features",
           href: "/features",
         },
-        { 
-          label: "Security Analysis", 
-          ariaLabel: "Security Analysis Features",
-          href: "#features",
-          onClick: (e) => {
-            e.preventDefault();
-            const element = document.getElementById('features');
-            element?.scrollIntoView({ behavior: 'smooth' });
-          }
-        },
-        { 
-          label: "Vulnerability Detection", 
-          ariaLabel: "Vulnerability Detection",
-          href: "#vulnerability",
-          onClick: (e) => {
-            e.preventDefault();
-            const element = document.getElementById('vulnerability');
-            element?.scrollIntoView({ behavior: 'smooth' });
-          }
-        }
       ]
     },
     {
