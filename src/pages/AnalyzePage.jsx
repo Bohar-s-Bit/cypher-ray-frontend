@@ -11,6 +11,7 @@ import {
   CardContent,
 } from "../components/ui/Card";
 import Button from "../components/ui/Button";
+import BookmarkButton from "../components/ui/BookmarkButton";
 import FileUpload from "../components/ui/FileUpload";
 import Spinner from "../components/ui/Spinner";
 import { MultiStepLoader } from "../components/ui/MultiStepLoader";
@@ -272,28 +273,17 @@ const AnalyzePage = () => {
                   <motion.div
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 bg-green-500/10 border border-green-500/20 rounded-xl"
+                    className="flex justify-center mt-6"
                   >
-                    <div className="flex items-center gap-3">
-                      <div className="p-2 bg-green-500/20 rounded-lg">
-                        <CheckCircle2 className="w-5 h-5 text-green-400" />
-                      </div>
-                      <div>
-                        <p className="text-white font-medium">{selectedFile.name}</p>
-                        <p className="text-sm text-white/60">
-                          {(selectedFile.size / 1024 / 1024).toFixed(2)} MB
-                        </p>
-                      </div>
-                    </div>
-                    <Button
+                    <BookmarkButton
                       onClick={handleStartAnalysis}
-                      size="lg"
-                      disabled={!selectedFile}
-                      className="bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600"
-                    >
-                      <Search className="w-5 h-5 mr-2" />
-                      Start Analysis
-                    </Button>
+                      text="Start Analysis"
+                      icon={Search}
+                      width="220px"
+                      height="55px"
+                      iconSize="45px"
+                      fontSize="1.1em"
+                    />
                   </motion.div>
                 )}
               </CardContent>

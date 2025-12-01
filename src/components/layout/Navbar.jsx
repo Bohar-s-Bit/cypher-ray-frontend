@@ -16,51 +16,26 @@ const Navbar = () => {
       textColor: "#fff",
       links: [
         { 
-          label: "Security Analysis", 
-          ariaLabel: "Security Analysis Features",
-          href: "#features",
-          onClick: (e) => {
-            e.preventDefault();
-            const element = document.getElementById('features');
-            element?.scrollIntoView({ behavior: 'smooth' });
-          }
+          label: "View All Features", 
+          ariaLabel: "View All Features",
+          href: "/features",
         },
-        { 
-          label: "Vulnerability Detection", 
-          ariaLabel: "Vulnerability Detection",
-          href: "#vulnerability",
-          onClick: (e) => {
-            e.preventDefault();
-            const element = document.getElementById('vulnerability');
-            element?.scrollIntoView({ behavior: 'smooth' });
-          }
-        }
       ]
     },
     {
-      label: "Solutions", 
+      label: "Workflows", 
       bgColor: "#2d1b47",
       textColor: "#fff",
       links: [
         { 
-          label: "Enterprise", 
-          ariaLabel: "Enterprise Solutions",
-          href: "#enterprise",
-          onClick: (e) => {
-            e.preventDefault();
-            const element = document.getElementById('enterprise');
-            element?.scrollIntoView({ behavior: 'smooth' });
-          }
+          label: "System Workflow", 
+          ariaLabel: "System Workflow",
+          href: "/workflow",
         },
         { 
-          label: "Government", 
-          ariaLabel: "Government Solutions",
-          href: "#government",
-          onClick: (e) => {
-            e.preventDefault();
-            const element = document.getElementById('government');
-            element?.scrollIntoView({ behavior: 'smooth' });
-          }
+          label: "SDK Workflow", 
+          ariaLabel: "SDK Workflow",
+          href: "/workflow/sdk",
         }
       ]
     },
@@ -70,24 +45,14 @@ const Navbar = () => {
       textColor: "#fff",
       links: [
         { 
-          label: "Company", 
-          ariaLabel: "About Company",
-          href: "#about",
-          onClick: (e) => {
-            e.preventDefault();
-            const element = document.getElementById('about');
-            element?.scrollIntoView({ behavior: 'smooth' });
-          }
+          label: "FAQs", 
+          ariaLabel: "Frequently Asked Questions",
+          href: "/faq",
         },
         { 
           label: "Contact", 
           ariaLabel: "Contact Us",
-          href: "#contact",
-          onClick: (e) => {
-            e.preventDefault();
-            const element = document.getElementById('contact');
-            element?.scrollIntoView({ behavior: 'smooth' });
-          }
+          href: "/contact",
         }
       ]
     }
@@ -104,6 +69,7 @@ const Navbar = () => {
       buttonTextColor="#fff"
       ease="power3.out"
       onGetStartedClick={() => navigate(ROUTES.LOGIN)}
+      onLogoClick={() => navigate(ROUTES.HOME)}
     />
   );
 };

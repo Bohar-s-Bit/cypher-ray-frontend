@@ -25,42 +25,42 @@ export const UserDockNavigation = () => {
     {
       title: "Dashboard",
       icon: (
-        <LayoutDashboard className="w-full h-full text-neutral-600 dark:text-neutral-300" />
+        <LayoutDashboard className="w-full h-full text-purple-300 dark:text-purple-300" />
       ),
       onClick: () => navigate(ROUTES.DASHBOARD),
     },
     {
       title: "Analysis",
       icon: (
-        <Search className="w-full h-full text-neutral-600 dark:text-neutral-300" />
+        <Search className="w-full h-full text-purple-300 dark:text-purple-300" />
       ),
       onClick: () => navigate(ROUTES.ANALYZE),
     },
     {
       title: "Results",
       icon: (
-        <BarChart3 className="w-full h-full text-neutral-600 dark:text-neutral-300" />
+        <BarChart3 className="w-full h-full text-purple-300 dark:text-purple-300" />
       ),
       onClick: () => navigate(ROUTES.RESULTS),
     },
     {
       title: "API Docs",
       icon: (
-        <Code2 className="w-full h-full text-neutral-600 dark:text-neutral-300" />
+        <Code2 className="w-full h-full text-purple-300 dark:text-purple-300" />
       ),
       onClick: () => navigate(ROUTES.API_DOCS),
     },
     {
       title: "Profile",
       icon: (
-        <User className="w-full h-full text-neutral-600 dark:text-neutral-300" />
+        <User className="w-full h-full text-purple-300 dark:text-purple-300" />
       ),
       onClick: () => navigate(ROUTES.PROFILE),
     },
     {
       title: "Credits",
       icon: (
-        <CreditCard className="w-full h-full text-neutral-600 dark:text-neutral-300" />
+        <CreditCard className="w-full h-full text-purple-300 dark:text-purple-300" />
       ),
       onClick: () => navigate(ROUTES.CREDITS),
     },
@@ -93,28 +93,28 @@ export const AdminDockNavigation = () => {
     {
       title: "Dashboard",
       icon: (
-        <LayoutDashboard className="w-full h-full text-neutral-600 dark:text-neutral-300" />
+        <LayoutDashboard className="w-full h-full text-purple-300 dark:text-purple-300" />
       ),
       onClick: () => navigate(ROUTES.ADMIN.DASHBOARD),
     },
     {
       title: "Users",
       icon: (
-        <Users className="w-full h-full text-neutral-600 dark:text-neutral-300" />
+        <Users className="w-full h-full text-purple-300 dark:text-purple-300" />
       ),
       onClick: () => navigate(ROUTES.ADMIN.USERS),
     },
     {
       title: "Access Requests",
       icon: (
-        <UserCog className="w-full h-full text-neutral-600 dark:text-neutral-300" />
+        <UserCog className="w-full h-full text-purple-300 dark:text-purple-300" />
       ),
       onClick: () => navigate(ROUTES.ADMIN.ACCESS_REQUESTS),
     },
     {
       title: "Create User",
       icon: (
-        <UserPlus className="w-full h-full text-neutral-600 dark:text-neutral-300" />
+        <UserPlus className="w-full h-full text-purple-300 dark:text-purple-300" />
       ),
       onClick: () => navigate(ROUTES.ADMIN.CREATE_USER),
     },

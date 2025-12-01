@@ -22,7 +22,7 @@ import { ROUTES, APP_NAME } from "../config/constants";
 
 // Lazy load heavy components
 const FloatingLines = lazy(() => import("../components/ui/FloatingLines"));
-const MagicBento = lazy(() => import("../components/ui/MagicBento"));
+const CypherRayFlow = lazy(() => import("../components/ui/CypherRayFlow"));
 const Terminal = lazy(() => import("../components/ui/Terminal").then(module => ({ default: module.Terminal })));
 const TypingAnimation = lazy(() => import("../components/ui/Terminal").then(module => ({ default: module.TypingAnimation })));
 const AnimatedSpan = lazy(() => import("../components/ui/Terminal").then(module => ({ default: module.AnimatedSpan })));
@@ -215,23 +215,26 @@ const LandingPage = () => {
             className="flex justify-center"
           >
             <Suspense fallback={
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl w-full">
-                {[...Array(6)].map((_, i) => (
-                  <div key={i} className="h-40 bg-neutral-800 rounded-xl animate-pulse" />
-                ))}
-              </div>
+              <div className="h-[500px] w-full bg-neutral-800/50 rounded-xl animate-pulse" />
             }>
-              <MagicBento 
-                textAutoHide={true}
-                enableStars={true}
-                enableSpotlight={true}
-                enableBorderGlow={true}
-                enableTilt={true}
-                enableMagnetism={true}
-                clickEffect={true}
-                spotlightRadius={300}
-                particleCount={12}
-                glowColor="132, 0, 255"
+              <CypherRayFlow 
+                title="Firmware Binary Analysis"
+                circleText="AI"
+                badgeTexts={{
+                  first: "CypherLLM",
+                  second: "Model 1",
+                  third: "Model 2",
+                  fourth: "SDK",
+                }}
+                buttonTexts={{
+                  first: "Encryption",
+                  second: "Cryptography",
+                  third: "Homologs",
+                  fourth: "Algorithms",
+                  fifth: "Security",
+                  sixth: "Source Code",
+                }}
+                lightColor="#a855f7"
               />
             </Suspense>
           </motion.div>

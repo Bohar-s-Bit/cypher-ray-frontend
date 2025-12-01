@@ -13,7 +13,8 @@ const CardNav = ({
   menuColor,
   buttonBgColor,
   buttonTextColor,
-  onGetStartedClick
+  onGetStartedClick,
+  onLogoClick
 }) => {
   const [isHamburgerOpen, setIsHamburgerOpen] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
@@ -170,9 +171,18 @@ const CardNav = ({
             <img 
               src={logo} 
               alt={logoAlt} 
-              className="logo h-[100px] md:h-[130px] max-w-none object-contain scale-150" 
+              className="logo h-[100px] md:h-[130px] max-w-none object-contain scale-150 cursor-pointer hover:opacity-80 transition-opacity" 
               loading="lazy"
               decoding="async"
+              onClick={onLogoClick}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  onLogoClick?.();
+                }
+              }}
             />
           </div>
 
