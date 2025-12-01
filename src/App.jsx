@@ -47,6 +47,7 @@ import AnalyzePage from "./pages/AnalyzePage";
 import ResultsPage from "./pages/ResultsPage";
 import ResultDetailPage from "./pages/ResultDetailPage";
 import SdkDocsPage from "./pages/SdkDocsPage";
+import SDKWorkflowPage from "./pages/SDKWorkflowPage";
 import AdminDashboard from "./pages/AdminDashboard";
 import UsersListPage from "./pages/admin/UsersListPage";
 import AccessRequestsPage from "./pages/admin/AccessRequestsPage";
@@ -160,6 +161,22 @@ function App() {
                       element={
                         <PublicRoute>
                           <CypherRayWebsiteWorkflow />
+                        </PublicRoute>
+                      }
+                    />
+                    <Route
+                      path="/workflow"
+                      element={
+                        <PublicRoute>
+                          <CypherRayWebsiteWorkflow />
+                        </PublicRoute>
+                      }
+                    />
+                    <Route
+                      path="/workflow/sdk"
+                      element={
+                        <PublicRoute>
+                          <SDKWorkflowPage />
                         </PublicRoute>
                       }
                     />

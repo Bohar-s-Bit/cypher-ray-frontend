@@ -28,9 +28,14 @@ const Navbar = () => {
       textColor: "#fff",
       links: [
         { 
-          label: "Analysis Pipeline", 
-          ariaLabel: "Analysis Pipeline",
+          label: "System Workflow", 
+          ariaLabel: "System Workflow",
           href: "/workflow",
+        },
+        { 
+          label: "SDK Workflow", 
+          ariaLabel: "SDK Workflow",
+          href: "/workflow/sdk",
         }
       ]
     },
