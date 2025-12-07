@@ -6,6 +6,7 @@ export const analysisService = {
   analyzeFile: async (file) => {
     const formData = new FormData();
     formData.append("file", file);
+    formData.append("force_deep", "true"); // Always use deep analysis (skip triage)
 
     const response = await axiosInstance.post(
       ENDPOINTS.USER_ANALYZE,
