@@ -18,11 +18,13 @@ export const AnalysisProvider = ({ children }) => {
   const redirectCallbackRef = useRef(null);
 
   // Start monitoring a new job
-  const startMonitoring = (jobId, initialStatus = 'queued', onComplete = null) => {
+  const startMonitoring = (jobId, initialStatus = 'queued', onComplete = null, fileSize = null) => {
     setCurrentJob({
       jobId,
       status: initialStatus,
-      startTime: Date.now()
+      startTime: Date.now(),
+      fileSize: fileSize,
+      analysisStartTime: Date.now()
     });
 
     // Store the redirect callback

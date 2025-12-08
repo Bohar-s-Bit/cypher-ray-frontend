@@ -34,31 +34,69 @@ const loadingStates = [
 const AnalyzePage = () => {
   const navigate = useNavigate();
   const [selectedFile, setSelectedFile] = useState(null);
+  const [uploadStartTime, setUploadStartTime] = useState(null);
   const { startMonitoring, getActiveJob } = useAnalysis();
 
   // Check if there's any active analysis
   const currentJob = getActiveJob();
   const hasActiveAnalysis = !!currentJob;
 
-  // Determine loader step based on analysis status
+  // Calculate estimated duration based on file size (in milliseconds)
+  const getEstimatedDuration = (fileSize) => {
+    if (!fileSize) return 30000; // Default 30 seconds
+    
+    const sizeInMB = fileSize / (1024 * 1024);
+    
+    // Small files (< 5MB): 20-30s
+    if (sizeInMB < 5) return 25000;
+    // Medium files (5-20MB): 30-45s
+    if (sizeInMB < 20) return 37000;
+    // Large files (20-50MB): 45-60s
+    if (sizeInMB < 50) return 52000;
+    // Very large files (50MB+): 60-90s
+    return 75000;
+  };
+
+  // Determine loader step based on time-based simulation
   const getLoaderStep = () => {
+    // If upload is pending, show first step
     if (analyzeMutation.isPending) {
-      return 0; // Uploading binary file
+      if (!uploadStartTime) {
+        setUploadStartTime(Date.now());
+      }
+      // Spend 2-3 seconds on upload step
+      const uploadElapsed = uploadStartTime ? Date.now() - uploadStartTime : 0;
+      return uploadElapsed < 2500 ? 0 : 1;
     }
-    if (!currentJob) {
+    
+    if (!currentJob || !currentJob.analysisStartTime) {
       return 0;
     }
 
-    switch (currentJob.status) {
-      case "queued":
-        return 2; // Analyzing file structure
-      case "processing":
-        return 5; // Analyzing dependencies
-      case "completed":
-        return 7; // Finalizing analysis
-      default:
-        return 0;
+    const elapsed = Date.now() - currentJob.analysisStartTime;
+    const estimatedDuration = getEstimatedDuration(currentJob.fileSize || selectedFile?.size);
+    
+    // If analysis is complete, show final step
+    if (currentJob.status === 'completed' || currentJob.status === 'failed') {
+      return loadingStates.length - 1;
     }
+    
+    // Calculate progress ratio (0 to 1)
+    // Cap at 0.85 to prevent reaching last step prematurely
+    const progressRatio = Math.min(elapsed / estimatedDuration, 0.85);
+    
+    // Map progress to step (0 to length-2, reserving last step for completion)
+    const maxStep = loadingStates.length - 2; // Reserve last step
+    let calculatedStep = Math.floor(progressRatio * (maxStep + 1));
+    
+    // If we've exceeded estimated time, stay on second-to-last step
+    if (elapsed > estimatedDuration) {
+      calculatedStep = maxStep;
+    }
+    
+    // Ensure we're at least on step 2 after upload completes
+    const minStep = 2;
+    return Math.max(minStep, Math.min(calculatedStep, maxStep));
   };
 
   // Analyze file mutation
@@ -80,11 +118,13 @@ const AnalyzePage = () => {
         navigate(`${ROUTES.RESULTS}/${jobId}`);
       } else {
         toast.success("Analysis started!");
+        // Reset upload timer
+        setUploadStartTime(null);
         // Start monitoring the job globally with auto-redirect
         startMonitoring(jobId, "queued", (completedJobId, status) => {
           // Auto-redirect to results page when analysis completes
           navigate(`${ROUTES.RESULTS}/${completedJobId}`);
-        });
+        }, selectedFile?.size);
         // Clear selected file since analysis has started
         setSelectedFile(null);
       }
