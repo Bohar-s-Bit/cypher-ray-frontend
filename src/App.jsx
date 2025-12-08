@@ -35,18 +35,25 @@ import {
 // Pages
 import LandingPage from "./pages/LandingPage";
 import LoginPage from "./pages/LoginPage";
+import FAQPage from "./pages/FAQPage";
+import ContactPage from "./pages/ContactPage";
+import FeaturesPage from "./pages/FeaturesPage";
+import NotFoundPage from "./pages/NotFoundPage";
+import ServerErrorPage from "./pages/ServerErrorPage";
 import UserDashboard from "./pages/UserDashboard";
 import ProfilePage from "./pages/ProfilePage";
 import CreditsPage from "./pages/CreditsPage";
 import AnalyzePage from "./pages/AnalyzePage";
 import ResultsPage from "./pages/ResultsPage";
 import ResultDetailPage from "./pages/ResultDetailPage";
-import ApiDocsPage from "./pages/ApiDocsPage";
+import SdkDocsPage from "./pages/SdkDocsPage";
+import SDKWorkflowPage from "./pages/SDKWorkflowPage";
 import AdminDashboard from "./pages/AdminDashboard";
 import UsersListPage from "./pages/admin/UsersListPage";
 import AccessRequestsPage from "./pages/admin/AccessRequestsPage";
 import CreateUserPage from "./pages/admin/CreateUserPage";
 import UserDetailsPage from "./pages/admin/UserDetailsPage";
+import CypherRayWebsiteWorkflow from "./pages/CypherRayWebsiteWorkflow";
 
 // Constants-check
 import { ROUTES } from "./config/constants";
@@ -64,12 +71,17 @@ const queryClient = new QueryClient({
 
 // Error Fallback Component
 const ErrorFallback = ({ error, resetErrorBoundary }) => {
+  const navigate = useNavigate();
+  
   return (
-    <div className="min-h-screen flex items-center justify-center bg-neutral-900 p-4">
-      <div className="max-w-md w-full bg-neutral-800 rounded-xl shadow-lg p-8 text-center">
-        <div className="w-16 h-16 bg-error-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+    <div className="w-full relative flex min-h-screen items-center justify-center overflow-hidden text-white" style={{ background: 'linear-gradient(135deg, #060010 0%, #0a0015 50%, #060010 100%)' }}>
+      {/* Purple gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-purple-900/10 via-transparent to-purple-900/5" />
+      
+      <div className="relative max-w-md w-full bg-gradient-to-br from-purple-900/20 to-purple-950/20 backdrop-blur-sm border border-purple-500/20 rounded-xl shadow-xl p-8 text-center mx-4">
+        <div className="w-16 h-16 bg-purple-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
           <svg
-            className="w-8 h-8 text-error-400"
+            className="w-8 h-8 text-purple-400"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -82,15 +94,15 @@ const ErrorFallback = ({ error, resetErrorBoundary }) => {
             />
           </svg>
         </div>
-        <h2 className="text-2xl font-bold text-white mb-2">
+        <h2 className="text-2xl font-bold bg-gradient-to-r from-purple-200 via-white to-purple-200 bg-clip-text text-transparent mb-2">
           Oops! Something went wrong
         </h2>
-        <p className="text-neutral-400 mb-6">
+        <p className="text-purple-200/60 mb-6">
           {error.message || "An unexpected error occurred"}
         </p>
         <button
           onClick={resetErrorBoundary}
-          className="px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
+          className="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors shadow-lg shadow-purple-500/20"
         >
           Try again
         </button>
@@ -136,6 +148,54 @@ function App() {
                         </PublicRoute>
                       }
                     />
+                    <Route
+                      path={ROUTES.FAQ}
+                      element={
+                        <PublicRoute>
+                          <FAQPage />
+                        </PublicRoute>
+                      }
+                    />
+                    <Route
+                      path="/workflow"
+                      element={
+                        <PublicRoute>
+                          <CypherRayWebsiteWorkflow />
+                        </PublicRoute>
+                      }
+                    />
+                    <Route
+                      path="/workflow"
+                      element={
+                        <PublicRoute>
+                          <CypherRayWebsiteWorkflow />
+                        </PublicRoute>
+                      }
+                    />
+                    <Route
+                      path="/workflow/sdk"
+                      element={
+                        <PublicRoute>
+                          <SDKWorkflowPage />
+                        </PublicRoute>
+                      }
+                    />
+                    <Route
+                      path={ROUTES.CONTACT}
+                      element={
+                        <PublicRoute>
+                          <ContactPage />
+                        </PublicRoute>
+                      }
+                    />
+                    <Route
+                      path={ROUTES.FEATURES}
+                      element={
+                        <PublicRoute>
+                          <FeaturesPage />
+                        </PublicRoute>
+                      }
+                    />
                   </Route>
 
                   {/* Protected User Routes */}
@@ -160,8 +220,17 @@ function App() {
                       path="results/:jobId"
                       element={<ResultDetailPage />}
                     />
-                    <Route path="api-docs" element={<ApiDocsPage />} />
                   </Route>
+
+                  {/* SDK Docs - Standalone Route (No DashboardLayout) */}
+                  <Route
+                    path="api-docs"
+                    element={
+                      <ProtectedRoute>
+                        <SdkDocsPage />
+                      </ProtectedRoute>
+                    }
+                  />
 
                   {/* Protected Admin Routes */}
                   <Route
@@ -193,11 +262,11 @@ function App() {
                     />
                   </Route>
 
-                  {/* 404 Redirect */}
-                  <Route
-                    path="*"
-                    element={<Navigate to={ROUTES.HOME} replace />}
-                  />
+                  {/* Error Pages */}
+                  <Route path="/500" element={<ServerErrorPage />} />
+                  
+                  {/* 404 - Catch all */}
+                  <Route path="*" element={<NotFoundPage />} />
                 </Routes>
               </Router>
             </AnalysisProvider>

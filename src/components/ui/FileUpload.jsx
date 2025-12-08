@@ -25,11 +25,7 @@ const secondaryVariant = {
   },
 };
 
-const FileUpload = ({
-  onChange,
-  accept,
-  maxSize = 100 * 1024 * 1024,
-}) => {
+const FileUpload = ({ onChange, accept, maxSize = 100 * 1024 * 1024 }) => {
   const [file, setFile] = useState(null);
   const fileInputRef = useRef(null);
 
@@ -60,7 +56,8 @@ const FileUpload = ({
   const { getRootProps, isDragActive } = useDropzone({
     multiple: false,
     noClick: true,
-    accept: accept,
+    // Remove accept restriction to allow all executable files
+    // accept: accept,
     maxSize: maxSize,
     onDrop: handleFileChange,
     onDropRejected: (error) => {
@@ -79,7 +76,6 @@ const FileUpload = ({
           ref={fileInputRef}
           id="file-upload-handle"
           type="file"
-          accept={accept}
           onChange={(e) => handleFileChange(Array.from(e.target.files || []))}
           className="hidden"
         />
@@ -106,7 +102,7 @@ const FileUpload = ({
                 >
                   <X className="h-4 w-4 text-white/70" />
                 </button>
-                
+
                 <div className="flex justify-between w-full items-center gap-4 pr-8">
                   <motion.p
                     initial={{ opacity: 0 }}
@@ -133,7 +129,7 @@ const FileUpload = ({
                     layout
                     className="px-1 py-0.5 rounded-md bg-gray-100 dark:bg-neutral-800"
                   >
-                    {file.type || 'Binary file'}
+                    {file.type || "Binary file"}
                   </motion.p>
 
                   <motion.p

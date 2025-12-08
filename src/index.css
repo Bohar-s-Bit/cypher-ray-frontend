@@ -248,3 +248,76 @@
     transform: translate(-20px, 20px) scale(0.9);
   }
 }
+
+/* Custom Scrollbar Styles */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(168, 85, 247, 0.4);
+  border-radius: 10px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(168, 85, 247, 0.6);
+  background-clip: padding-box;
+}
+
+/* Firefox Scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(168, 85, 247, 0.4) rgba(0, 0, 0, 0.1);
+}
+
+/* Database With REST API Animations */
+.database {
+  offset-anchor: 10px 0px;
+  animation: database-animation-path;
+  animation-iteration-count: infinite;
+  animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  animation-duration: 4s;
+  animation-delay: 1s;
+}
+
+/* Updated offset paths to match the structured SVG paths (extended length) */
+.db-light-1 {
+  offset-path: path("M 30 10 v 15 q 0 5 5 5 h 58 q 5 0 5 5 v 45");
+}
+
+.db-light-2 {
+  offset-path: path("M 76 10 v 10 q 0 5 5 5 h 12 q 5 0 5 5 v 45");
+}
+
+.db-light-3 {
+  offset-path: path("M 124 10 v 10 q 0 5 -5 5 h -14 q -5 0 -5 5 v 45");
+}
+
+.db-light-4 {
+  offset-path: path("M 170 10 v 15 q 0 5 -5 5 h -60 q -5 0 -5 5 v 45");
+}
+
+@keyframes database-animation-path {
+  0% {
+    offset-distance: 0%;
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    offset-distance: 100%;
+    opacity: 0;
+  }
+}
