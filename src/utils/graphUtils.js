@@ -182,113 +182,190 @@ export const transformAnalysisToGraph = (analysisResult) => {
   const results = analysisResult.results;
   let nodeIdCounter = 0;
 
-  // Create nodes from detected algorithms
+  // 1. Create Root Node (The Binary File)
+  const rootNode = {
+    id: "root-file",
+    label: analysisResult.filename || "Analyzed File",
+    type: "key",
+    ring: 0,
+    data: {
+      description: "Binary File",
+      fileType: results.file_metadata?.file_type || "Unknown",
+      size: results.file_metadata?.size_bytes
+        ? `${(results.file_metadata.size_bytes / 1024).toFixed(2)} KB`
+        : "N/A",
+    }
+  };
+  nodes.push(rootNode);
+
+  // 2. Create Protocol Nodes (Children of Root)
+  const protocolNodes = [];
+  const protocols = results.detected_protocols || [];
+  
+  protocols.forEach((protocol, index) => {
+    const nodeId = `proto-${index}`;
+    let label = "Unknown Protocol";
+    let description = "Network Protocol";
+    let cipherSuites = [];
+
+    if (typeof protocol === 'string') {
+      label = protocol;
+    } else {
+      if (protocol.cipher_suites && protocol.cipher_suites.length > 0) {
+        label = protocol.cipher_suites[0];
+        description = `Protocol: ${protocol.name || protocol.protocol_name || "TLS"}`;
+        cipherSuites = protocol.cipher_suites;
+      } else {
+        label = protocol.name || protocol.protocol_name || "Protocol";
+        description = protocol.version ? `Version ${protocol.version}` : "Network Protocol";
+      }
+    }
+
+    const protoNode = {
+      id: nodeId,
+      label: label,
+      type: "protocol",
+      ring: 1,
+      data: {
+        description: description,
+        version: typeof protocol === 'object' ? protocol.version : "N/A",
+        cipherSuites: cipherSuites.join(", ")
+      }
+    };
+    nodes.push(protoNode);
+    protocolNodes.push(protoNode);
+    
+    // Link to Root
+    edges.push({
+      source: rootNode.id,
+      target: nodeId,
+      label: "contains",
+      weight: 2
+    });
+  });
+
+  // 3. Create Algorithm Nodes (Children of Protocols or Root)
+  const algorithmNodes = [];
   if (results.detected_algorithms && results.detected_algorithms.length > 0) {
     results.detected_algorithms.forEach((algo) => {
       const nodeId = `algo-${nodeIdCounter++}`;
-      nodes.push({
+      const algoNode = {
         id: nodeId,
         label: algo.algorithm_name,
         type: "algorithm",
-        ring: 1, // Primary ring for detected algorithms
+        ring: 2,
         data: {
           description: algo.algorithm_class,
           confidence: `${Math.round(algo.confidence_score * 100)}%`,
           signature: algo.structural_signature || "N/A",
         },
-      });
+      };
+      nodes.push(algoNode);
+      algorithmNodes.push(algoNode);
+
+      // Link to Protocols
+      let linkedToProto = false;
+      if (protocolNodes.length > 0) {
+        const algoName = algo.algorithm_name.toLowerCase();
+        const algoParts = algoName.split(/[^a-z0-9]/).filter(p => p.length >= 2);
+
+        protocolNodes.forEach(proto => {
+          const protoLabel = proto.label.toLowerCase();
+          const protoData = (proto.data.cipherSuites || "").toLowerCase();
+          
+          const match = algoParts.some(part => protoLabel.includes(part) || protoData.includes(part));
+          
+          if (match) {
+            edges.push({
+              source: proto.id,
+              target: nodeId,
+              label: "uses",
+              weight: 1.5
+            });
+            linkedToProto = true;
+          }
+        });
+      }
+
+      // If not linked to any protocol, link to Root
+      if (!linkedToProto) {
+        edges.push({
+          source: rootNode.id,
+          target: nodeId,
+          label: "detected in",
+          weight: 1
+        });
+      }
     });
   }
 
-  // Create nodes from function analyses
+  // 4. Create Function Nodes (Children of Algorithms)
   if (results.function_analyses && results.function_analyses.length > 0) {
-    results.function_analyses.forEach((func, index) => {
+    results.function_analyses.forEach((func) => {
       const nodeId = `func-${nodeIdCounter++}`;
       const isCrypto = func.is_crypto;
       
-      nodes.push({
+      const funcNode = {
         id: nodeId,
         label: func.function_name,
-        type: isCrypto ? "protocol" : "entity",
-        ring: isCrypto ? 1 : 2,
+        type: isCrypto ? "entity" : "default",
+        ring: 3,
         data: {
           description: func.function_summary,
           confidence: `${Math.round(func.confidence_score * 100)}%`,
           tags: func.semantic_tags?.join(", ") || "None",
         },
-      });
+      };
+      nodes.push(funcNode);
 
-      // Create edges between cryptographic functions and detected algorithms
-      if (isCrypto && nodes.length > 1) {
-        // Link to first algorithm node (simplified relationship)
-        const algoNode = nodes.find((n) => n.type === "algorithm");
-        if (algoNode) {
+      // Link to matching Algorithm
+      let linked = false;
+      if (algorithmNodes.length > 0) {
+        const tags = (func.semantic_tags || []).map(t => t.toLowerCase());
+        const name = func.function_name.toLowerCase();
+        
+        let bestMatch = null;
+        let maxScore = 0;
+
+        algorithmNodes.forEach(algo => {
+          const algoName = algo.label.toLowerCase();
+          const algoParts = algoName.split(/[^a-z0-9]/).filter(p => p.length >= 2);
+          
+          let score = 0;
+          if (name.includes(algoName)) score += 10;
+          
+          const matchingParts = algoParts.filter(part => name.includes(part));
+          if (matchingParts.length > 0) score += matchingParts.length * 2;
+          
+          const matchingTags = tags.filter(t => t.includes(algoName) || algoParts.some(p => t.includes(p)));
+          if (matchingTags.length > 0) score += matchingTags.length;
+
+          if (score > maxScore) {
+            maxScore = score;
+            bestMatch = algo;
+          }
+        });
+
+        if (bestMatch && maxScore > 0) {
           edges.push({
-            source: nodeId,
-            target: algoNode.id,
+            source: bestMatch.id,
+            target: nodeId,
             label: "implements",
-            weight: func.confidence_score,
+            weight: 1
           });
+          linked = true;
         }
       }
-    });
-  }
 
-  // Add vulnerability nodes if present
-  if (
-    results.vulnerability_assessment?.vulnerabilities &&
-    results.vulnerability_assessment.vulnerabilities.length > 0
-  ) {
-    const vulnNodeId = `vuln-${nodeIdCounter++}`;
-    nodes.push({
-      id: vulnNodeId,
-      label: "Security Issues",
-      type: "storage", // Using storage type for different visual
-      ring: 3, // Outer ring
-      data: {
-        description: `${results.vulnerability_assessment.vulnerabilities.length} vulnerabilities found`,
-        severity: results.vulnerability_assessment.severity || "Unknown",
-      },
-    });
-
-    // Link vulnerabilities to all algorithm nodes
-    nodes
-      .filter((n) => n.type === "algorithm")
-      .forEach((algoNode) => {
+      // If not linked to any algorithm, link to Root
+      if (!linked) {
         edges.push({
-          source: algoNode.id,
-          target: vulnNodeId,
-          label: "has issue",
-          weight: 0.5,
+          source: rootNode.id,
+          target: nodeId,
+          label: isCrypto ? "defines" : "contains",
+          weight: 0.5
         });
-      });
-  }
-
-  // If we have very few nodes, add a central "File" node
-  if (nodes.length > 0 && nodes.length < 3) {
-    const fileNodeId = "file-center";
-    nodes.unshift({
-      id: fileNodeId,
-      label: analysisResult.filename || "Analyzed File",
-      type: "key",
-      ring: 0, // Center
-      data: {
-        description: "Source file",
-        fileType: results.file_metadata?.file_type || "Unknown",
-        size: results.file_metadata?.size_bytes
-          ? `${(results.file_metadata.size_bytes / 1024).toFixed(2)} KB`
-          : "N/A",
-      },
-    });
-
-    // Connect all nodes to the center
-    nodes.slice(1).forEach((node) => {
-      edges.push({
-        source: fileNodeId,
-        target: node.id,
-        label: "contains",
-        weight: 1,
-      });
+      }
     });
   }
 
