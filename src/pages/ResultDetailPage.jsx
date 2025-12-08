@@ -101,24 +101,14 @@ const ResultDetailPage = () => {
     <div className="space-y-8">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => navigate(ROUTES.RESULTS)}
-          >
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Back
-          </Button>
-          <div>
-            <h1 className="text-3xl font-display font-bold text-white">
-              {job.filename}
-            </h1>
-            <p className="text-white/70 mt-1 text-sm">
-              Analyzed on{" "}
-              {format(new Date(job.createdAt), "MMMM dd, yyyy 'at' HH:mm")}
-            </p>
-          </div>
+        <div>
+          <h1 className="text-3xl font-display font-bold text-white">
+            {job.filename}
+          </h1>
+          <p className="text-white/70 mt-1 text-sm">
+            Analyzed on{" "}
+            {format(new Date(job.createdAt), "MMMM dd, yyyy 'at' HH:mm")}
+          </p>
         </div>
 
         {/* View toggle */}
@@ -386,99 +376,6 @@ const ResultDetailPage = () => {
         transition={{ duration: 0.3 }}
         className="space-y-6"
       >
-      {/* Summary Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center gap-4">
-              <div
-                className={`p-3 rounded-lg ${
-                  results?.vulnerability_assessment?.has_vulnerabilities
-                    ? "bg-red-500/20"
-                    : "bg-purple-500/20"
-                }`}
-              >
-                {results?.vulnerability_assessment?.has_vulnerabilities ? (
-                  <AlertTriangle className="w-6 h-6 text-red-400" />
-                ) : (
-                  <CheckCircle className="w-6 h-6 text-purple-400" />
-                )}
-              </div>
-              <div>
-                <p className="text-sm text-white/70">Status</p>
-                <p className="text-lg font-bold text-white">
-                  {results?.vulnerability_assessment?.has_vulnerabilities
-                    ? "Vulnerabilities Found"
-                    : "Secure"}
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center gap-4">
-              <div
-                className={`p-3 rounded-lg ${
-                  results?.vulnerability_assessment?.severity === "High"
-                    ? "bg-red-500/20"
-                    : results?.vulnerability_assessment?.severity === "Medium"
-                    ? "bg-yellow-500/20"
-                    : "bg-purple-500/20"
-                }`}
-              >
-                <Shield
-                  className={`w-6 h-6 ${
-                    results?.vulnerability_assessment?.severity === "High"
-                      ? "text-red-400"
-                      : results?.vulnerability_assessment?.severity === "Medium"
-                      ? "text-yellow-400"
-                      : "text-purple-400"
-                  }`}
-                />
-              </div>
-              <div>
-                <p className="text-sm text-white/70">Severity</p>
-                <p className="text-lg font-bold text-white">
-                  {results?.vulnerability_assessment?.severity || "Low"}
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center gap-4">
-              <div className="p-3 rounded-lg bg-purple-500/20">
-                <Clock className="w-6 h-6 text-purple-400" />
-              </div>
-              <div>
-                <p className="text-sm text-white/70">Processing Time</p>
-                <p className="text-lg font-bold text-white">
-                  {job.completedAt && job.startedAt
-                    ? (() => {
-                        const seconds = Math.round(
-                          (new Date(job.completedAt) -
-                            new Date(job.startedAt)) /
-                            1000
-                        );
-                        if (seconds < 60) return `${seconds}s`;
-                        const minutes = Math.floor(seconds / 60);
-                        const remainingSeconds = seconds % 60;
-                        return `${minutes}m ${remainingSeconds}s`;
-                      })()
-                    : job.status === "processing"
-                    ? "In Progress..."
-                    : "N/A"}
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
       {/* Processing/Failed Status Messages */}
       {isProcessing && (
         <Card>
@@ -564,6 +461,32 @@ const ResultDetailPage = () => {
                 </p>
               </div>
               <div>
+                <p className="text-sm text-white/70">Processing Time</p>
+                <p className="font-medium text-white">
+                  {job.completedAt && job.startedAt
+                    ? (() => {
+                        const seconds = Math.round(
+                          (new Date(job.completedAt) -
+                            new Date(job.startedAt)) /
+                            1000
+                        );
+                        if (seconds < 60) return `${seconds}s`;
+                        const minutes = Math.floor(seconds / 60);
+                        const remainingSeconds = seconds % 60;
+                        return `${minutes}m ${remainingSeconds}s`;
+                      })()
+                    : job.status === "processing"
+                    ? "In Progress..."
+                    : "N/A"}
+                </p>
+              </div>
+              <div>
+                <p className="text-sm text-white/70">Architecture</p>
+                <p className="font-medium text-white">
+                  {results.file_metadata.architecture || "N/A"}
+                </p>
+              </div>
+              <div>
                 <p className="text-sm text-white/70">MD5</p>
                 <p className="font-mono text-xs text-white break-all">
                   {results.file_metadata.md5 || "N/A"}
@@ -584,19 +507,16 @@ const ResultDetailPage = () => {
       {hasResults && (
         <Card>
           <CardHeader>
-            <CardTitle>Security Analysis</CardTitle>
+            <CardTitle>Analysis Results</CardTitle>
             <CardDescription>
-              Detailed cryptographic security assessment
+              Detected cryptographic implementations
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             {/* Check if we have any actual analysis data */}
-            {!results?.vulnerability_assessment?.vulnerabilities?.length &&
-              !results?.overall_assessment &&
-              !results?.vulnerability_assessment?.recommendations?.length &&
+            {!results?.detected_protocols?.length &&
               !results?.detected_algorithms?.length &&
-              !results?.function_analyses?.length &&
-              !results?.xai_explanation && (
+              !results?.function_analyses?.length && (
                 <div className="text-center py-8">
                   <div className="flex flex-col items-center gap-4">
                     <div className="p-4 rounded-full bg-purple-500/20">
@@ -604,156 +524,58 @@ const ResultDetailPage = () => {
                     </div>
                     <div>
                       <h3 className="text-lg font-semibold text-white mb-2">
-                        Analysis Complete - No Security Issues Found
+                        Analysis Complete
                       </h3>
                       <p className="text-white/70">
-                        The file was analyzed successfully. No cryptographic vulnerabilities or security concerns were detected.
+                        No cryptographic implementations detected in this file.
                       </p>
                     </div>
                   </div>
                 </div>
               )}
 
-            {/* Vulnerabilities */}
-            {results?.vulnerability_assessment?.vulnerabilities &&
-              results.vulnerability_assessment.vulnerabilities.length > 0 && (
-              <div>
-                <h3 className="text-lg font-semibold text-white mb-4">
-                  Vulnerabilities Detected (
-                  {results.vulnerability_assessment.vulnerabilities.length})
-                </h3>
-                <div className="space-y-3 text-black">
-                  {results.vulnerability_assessment.vulnerabilities.map(
-                    (vuln, index) => (
-                      <div
-                        key={index}
-                        className="p-4 border border-red-500/30 rounded-lg bg-red-500/10"
-                      >
-                        <div className="flex items-start gap-3">
-                          <AlertTriangle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
-                          <p className="text-sm text-white">{vuln}</p>
-                        </div>
-                      </div>
-                    )
-                  )}
-                </div>
-              </div>
-            )}
-
-          {/* Overall Assessment */}
-          {results?.overall_assessment && (
-            <div>
-              <h3 className="text-lg font-semibold text-white mb-3">
-                Overall Assessment
-              </h3>
-              <div className="p-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg">
-                <p className="text-white/90 whitespace-pre-wrap">
-                  {results.overall_assessment}
-                </p>
-              </div>
-            </div>
-          )}
-
-          {/* Recommendations */}
-          {results?.vulnerability_assessment?.recommendations &&
-            results.vulnerability_assessment.recommendations.length > 0 && (
-              <div>
-                <h3 className="text-lg font-semibold text-white mb-3">
-                  Security Recommendations
-                </h3>
-                <ul className="space-y-2">
-                  {results.vulnerability_assessment.recommendations.map(
-                    (rec, index) => (
-                      <li
-                        key={index}
-                        className="flex items-start gap-3 text-white/90"
-                      >
-                        <TrendingUp className="w-5 h-5 text-purple-400 flex-shrink-0 mt-0.5" />
-                        <span>{rec}</span>
-                      </li>
-                    )
-                  )}
-                </ul>
-              </div>
-            )}
-
-          {/* Detected Algorithms */}
-          {results?.detected_algorithms &&
-            results.detected_algorithms.length > 0 && (
-              <div>
-                <h3 className="text-lg font-semibold text-white mb-3">
-                  Detected Cryptographic Algorithms
-                </h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  {results.detected_algorithms.map((algo, index) => (
-                    <div
-                      key={index}
-                      className="p-4 border border-purple-500/30 rounded-lg bg-purple-500/5"
-                    >
-                      <div className="flex items-center justify-between mb-2">
-                        <h4 className="font-medium text-white flex items-center gap-2">
-                          <Code className="w-4 h-4 text-purple-400" />
-                          {algo.algorithm_name}
-                        </h4>
-                        <Badge variant="secondary" size="sm">
-                          {Math.round(algo.confidence_score * 100)}% confidence
-                        </Badge>
-                      </div>
-                      <p className="text-sm text-white/70">
-                        {algo.algorithm_class}
-                      </p>
-                      {algo.structural_signature && (
-                        <p className="text-xs text-white/50 mt-1">
-                          Pattern: {algo.structural_signature}
-                        </p>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-          {/* Function Analyses */}
+          {/* Function Analyses - FIRST */}
           {results?.function_analyses &&
             results.function_analyses.length > 0 && (
               <div>
-                <h3 className="text-lg font-semibold text-white mb-3">
-                  Function Analysis
+                <h3 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
+                  <FileText className="w-5 h-5 text-pink-400" />
+                  Cryptographic Functions ({results.function_analyses.length})
                 </h3>
                 <div className="space-y-3">
                   {results.function_analyses.map((func, index) => (
                     <div
                       key={index}
-                      className="p-4 border border-purple-500/30 rounded-lg bg-purple-500/5"
+                      className="p-4 border border-pink-500/30 rounded-lg bg-pink-500/5 hover:bg-pink-500/10 transition-colors"
                     >
                       <div className="flex items-center justify-between mb-2">
-                        <h4 className="font-mono text-sm font-medium text-white">
+                        <h4 className="font-mono text-sm font-semibold text-white">
                           {func.function_name}
                         </h4>
-                        <div className="flex items-center gap-2">
-                          {func.is_crypto && (
-                            <Badge variant="primary" size="sm">
-                              Cryptographic
-                            </Badge>
-                          )}
-                          <Badge variant="secondary" size="sm">
-                            {Math.round(func.confidence_score * 100)}%
+                        {func.is_crypto && (
+                          <Badge variant="primary" size="sm">
+                            Cryptographic
                           </Badge>
-                        </div>
+                        )}
                       </div>
-                      <p className="text-sm text-white/90 mb-2">
-                        {func.function_summary}
-                      </p>
-                      {func.semantic_tags && func.semantic_tags.length > 0 && (
-                        <div className="flex flex-wrap gap-1">
-                          {func.semantic_tags.map((tag, i) => (
-                            <span
-                              key={i}
-                              className="px-2 py-0.5 text-xs bg-white/5 backdrop-blur-sm border border-white/10 text-white/70 rounded"
-                            >
-                              {tag}
-                            </span>
-                          ))}
+                      {func.related_algorithm && (
+                        <p className="text-sm text-pink-300 mb-2 flex items-center gap-1">
+                          <span className="text-white/60">Implements:</span> {func.related_algorithm}
+                        </p>
+                      )}
+                      {func.crypto_operations && func.crypto_operations.length > 0 && (
+                        <div className="mt-2">
+                          <p className="text-xs text-white/60 mb-1">Operations:</p>
+                          <div className="flex flex-wrap gap-1">
+                            {func.crypto_operations.map((op, i) => (
+                              <span
+                                key={i}
+                                className="px-2 py-0.5 text-xs bg-pink-500/10 border border-pink-500/20 text-pink-300 rounded"
+                              >
+                                {op}
+                              </span>
+                            ))}
+                          </div>
                         </div>
                       )}
                     </div>
@@ -762,18 +584,105 @@ const ResultDetailPage = () => {
               </div>
             )}
 
-          {/* XAI Explanation */}
-          {results?.xai_explanation && (
-            <div>
-              <h3 className="text-lg font-semibold text-white mb-3">
-                AI Analysis Explanation
-              </h3>
-              <div className="p-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg">
-                <p className="text-sm text-white/90 whitespace-pre-wrap">
-                  {results.xai_explanation}
-                </p>
+          {/* Detected Algorithms - SECOND */}
+          {results?.detected_algorithms &&
+            results.detected_algorithms.length > 0 && (
+              <div>
+                <h3 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
+                  <Code className="w-5 h-5 text-purple-400" />
+                  Detected Algorithms ({results.detected_algorithms.length})
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  {results.detected_algorithms.map((algo, index) => (
+                    <div
+                      key={index}
+                      className="p-4 border border-purple-500/30 rounded-lg bg-purple-500/5 hover:bg-purple-500/10 transition-colors"
+                    >
+                      <div className="flex items-center justify-between mb-2">
+                        <h4 className="font-semibold text-white">
+                          {algo.algorithm_name}
+                        </h4>
+                        <Badge variant="secondary" size="sm">
+                          {Math.round((algo.confidence_score || 0) * 100)}% confidence
+                        </Badge>
+                      </div>
+                      <p className="text-sm text-white/70 mb-2">
+                        {algo.algorithm_class}
+                      </p>
+                      {algo.locations && algo.locations.length > 0 && (
+                        <div className="mt-2">
+                          <p className="text-xs text-white/60 mb-1">Found in:</p>
+                          <div className="flex flex-wrap gap-1">
+                            {algo.locations.slice(0, 3).map((loc, i) => (
+                              <span
+                                key={i}
+                                className="px-2 py-0.5 text-xs bg-purple-500/10 border border-purple-500/20 text-purple-300 rounded font-mono"
+                              >
+                                {loc.length > 30 ? `${loc.substring(0, 30)}...` : loc}
+                              </span>
+                            ))}
+                            {algo.locations.length > 3 && (
+                              <span className="px-2 py-0.5 text-xs text-white/50">
+                                +{algo.locations.length - 3} more
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
+
+            {/* Detected Protocols - THIRD */}
+            {results?.detected_protocols &&
+              results.detected_protocols.length > 0 && (
+              <div>
+                <h3 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
+                  <Shield className="w-5 h-5 text-cyan-400" />
+                  Detected Protocols ({results.detected_protocols.length})
+                </h3>
+                <div className="space-y-3">
+                  {results.detected_protocols.map((proto, index) => (
+                    <div
+                      key={index}
+                      className="p-4 border border-cyan-500/30 rounded-lg bg-cyan-500/5 hover:bg-cyan-500/10 transition-colors"
+                    >
+                      <div className="mb-2">
+                        <h4 className="font-semibold text-white flex items-center gap-2">
+                          {proto.protocol} {proto.version && `v${proto.version}`}
+                        </h4>
+                      </div>
+                      {proto.cipher_suites && proto.cipher_suites.length > 0 && (
+                        <div className="mt-2">
+                          <p className="text-xs text-white/60 mb-1">Cipher Suites:</p>
+                          <div className="flex flex-wrap gap-1">
+                            {proto.cipher_suites.map((suite, i) => (
+                              <span
+                                key={i}
+                                className="px-2 py-0.5 text-xs bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 rounded"
+                              >
+                                {suite}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                      {proto.implementation_status && (
+                        <div className="mt-2">
+                          <Badge 
+                            variant={proto.implementation_status === 'complete' ? 'primary' : 'secondary'} 
+                            size="sm"
+                          >
+                            {proto.implementation_status}
+                          </Badge>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
             )}
           </CardContent>
         </Card>
