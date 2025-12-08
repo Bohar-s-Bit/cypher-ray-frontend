@@ -25,6 +25,7 @@ import Button from "../components/ui/Button";
 import Badge from "../components/ui/Badge";
 import Spinner from "../components/ui/Spinner";
 import CryptoGraphVisualization from "../components/ui/CryptoGraphVisualization";
+import AlgorithmConfidenceChart from "../components/ui/AlgorithmConfidenceChart";
 import { analysisService } from "../services/analysisService";
 import { QUERY_KEYS, ROUTES } from "../config/constants";
 import {
@@ -588,10 +589,17 @@ const ResultDetailPage = () => {
           {results?.detected_algorithms &&
             results.detected_algorithms.length > 0 && (
               <div>
-                <h3 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
+                <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
                   <Code className="w-5 h-5 text-purple-400" />
                   Detected Algorithms ({results.detected_algorithms.length})
                 </h3>
+                
+                {/* Algorithm Confidence Visualization */}
+                <div className="mb-6">
+                  <AlgorithmConfidenceChart data={results.detected_algorithms} />
+                </div>
+
+                <h4 className="text-md font-semibold text-white mb-3 mt-6">Algorithm Details</h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   {results.detected_algorithms.map((algo, index) => (
                     <div
