@@ -29,6 +29,7 @@ const RadialGraph = forwardRef(({
   width,
   height = 600,
   config = {},
+  layout = "radial",
   className,
 }, ref) => {
   const graphRef = useRef();
@@ -85,6 +86,92 @@ const RadialGraph = forwardRef(({
     }
   }, [width, height]);
 
+  /**
+   * Apply custom tree layout with fixed positions
+   * Ensures children are directly underneath parents and prevents tangling
+   */
+  const applyTreeLayout = useCallback((nodes, links) => {
+    if (!nodes.length) return;
+
+    // Build tree structure
+    const childrenMap = {};
+    const hasParent = new Set();
+    
+    nodes.forEach(n => childrenMap[n.id] = []);
+    
+    links.forEach(link => {
+      const sourceId = link.source.id || link.source;
+      const targetId = link.target.id || link.target;
+      if (childrenMap[sourceId]) {
+        childrenMap[sourceId].push(targetId);
+        hasParent.add(targetId);
+      }
+    });
+
+    // Find roots (nodes with no parents)
+    const roots = nodes.filter(n => !hasParent.has(n.id));
+    
+    // Layout configuration
+    const LEVEL_HEIGHT = 120;
+    const NODE_WIDTH = 100; 
+    
+    // Calculate subtree widths recursively
+    const subtreeWidths = new Map();
+    
+    const calculateWidth = (nodeId) => {
+      const children = childrenMap[nodeId] || [];
+      if (children.length === 0) {
+        subtreeWidths.set(nodeId, NODE_WIDTH);
+        return NODE_WIDTH;
+      }
+      
+      const width = children.reduce((sum, childId) => sum + calculateWidth(childId), 0);
+      subtreeWidths.set(nodeId, width);
+      return width;
+    };
+    
+    roots.forEach(root => calculateWidth(root.id));
+
+    // Assign positions recursively
+    const assignNodePosition = (nodeId, x, y) => {
+      const node = nodes.find(n => n.id === nodeId);
+      if (node) {
+        node.fx = x;
+        node.fy = y;
+      }
+      
+      const children = childrenMap[nodeId] || [];
+      if (children.length === 0) return;
+      
+      const totalWidth = subtreeWidths.get(nodeId);
+      let currentX = x - (totalWidth / 2);
+      
+      children.forEach(childId => {
+        const width = subtreeWidths.get(childId);
+        assignNodePosition(childId, currentX + (width / 2), y + LEVEL_HEIGHT);
+        currentX += width;
+      });
+    };
+
+    // Position all trees
+    let rootX = 0;
+    roots.forEach(root => {
+      const width = subtreeWidths.get(root.id);
+      assignNodePosition(root.id, rootX + (width / 2), -200);
+      rootX += width + NODE_WIDTH; // Gap between trees
+    });
+    
+    // Center the whole graph
+    const totalGraphWidth = rootX - NODE_WIDTH;
+    const offsetX = totalGraphWidth / 2;
+    
+    nodes.forEach(node => {
+      if (node.fx !== undefined) {
+        node.fx -= offsetX;
+      }
+    });
+  }, []);
+
   // Transform input data and apply radial layout
   useEffect(() => {
     if (!nodes.length) return;
@@ -107,70 +194,31 @@ const RadialGraph = forwardRef(({
       weight: edge.weight || 1,
     }));
 
+    // Apply fixed tree layout IMMEDIATELY before setting state
+    // This prevents the "flash" of unpositioned nodes
+    applyTreeLayout(transformedNodes, transformedLinks);
+
     setGraphData({
       nodes: transformedNodes,
       links: transformedLinks,
     });
 
-    // Apply radial force layout after a brief delay to let the graph initialize
+    // Apply force configuration
     setTimeout(() => {
       if (graphRef.current) {
-        applyRadialLayout(transformedNodes);
+        const fg = graphRef.current;
+        
+        // Reset forces
+        fg.d3Force("charge").strength(config.chargeStrength || -300);
+        fg.d3Force("link").distance(config.linkDistance || 50);
+        fg.d3Force("collide", d3.forceCollide(node => (node.val || 5) * 2)); 
+        fg.d3Force("radial", null);
+
+        // Reheat slightly to settle links
+        fg.d3ReheatSimulation();
       }
-    }, 100);
-  }, [nodes, edges]);
-
-  /**
-   * Apply radial/hierarchical layout based on node.ring property
-   * Inner rings (lower ring numbers) are closer to center
-   */
-  const applyRadialLayout = (nodes) => {
-    if (!graphRef.current) return;
-
-    const fg = graphRef.current;
-    
-    // Get max ring level
-    const maxRing = Math.max(...nodes.map((n) => n.ring || 0));
-    const ringGap = Math.min(dimensions.width, dimensions.height) / (maxRing + 2) / 2;
-
-    nodes.forEach((node) => {
-      const ring = node.ring || 0;
-      const radius = ring * ringGap;
-      
-      // Distribute nodes evenly around their ring
-      const nodesInRing = nodes.filter((n) => n.ring === ring);
-      const index = nodesInRing.findIndex((n) => n.id === node.id);
-      const angle = (index / nodesInRing.length) * 2 * Math.PI;
-
-      // Set initial positions
-      node.fx = radius * Math.cos(angle);
-      node.fy = radius * Math.sin(angle);
-    });
-
-    // Update the graph
-    fg.d3Force("charge").strength(config.chargeStrength || -300);
-    fg.d3Force("link").distance(config.linkDistance || 50);
-    
-    // Add radial force to maintain ring structure
-    fg.d3Force(
-      "radial",
-      d3.forceRadial((node) => {
-        const ring = node.ring || 0;
-        return ring * ringGap;
-      }, 0, 0).strength(config.radialStrength || 0.8)
-    );
-
-    // Reheat simulation
-    fg.d3ReheatSimulation();
-    
-    // Release fixed positions after layout stabilizes
-    setTimeout(() => {
-      nodes.forEach((node) => {
-        node.fx = undefined;
-        node.fy = undefined;
-      });
-    }, 2000);
-  };
+    }, 50);
+  }, [nodes, edges, config, applyTreeLayout]);
 
   // Node click handler
   const handleNodeClick = useCallback(
@@ -481,17 +529,17 @@ const RadialGraph = forwardRef(({
             className="absolute top-4 right-4 z-10 max-w-xs"
           >
             <div className="bg-black/90 backdrop-blur-md border border-purple-500/30 rounded-lg p-4 shadow-2xl">
-              <div className="flex items-start justify-between mb-3">
-                <div className="flex items-center gap-3">
+              <div className="flex items-start justify-between mb-3 gap-4">
+                <div className="flex items-start gap-3 min-w-0">
                   <div
-                    className="w-4 h-4 rounded-full"
+                    className="w-4 h-4 rounded-full mt-1 shrink-0"
                     style={{ backgroundColor: selectedNode.color }}
                   />
-                  <div>
-                    <p className="text-white font-semibold text-base">
+                  <div className="min-w-0">
+                    <p className="text-white font-semibold text-base break-words leading-tight">
                       {selectedNode.name}
                     </p>
-                    <p className="text-purple-300 text-xs capitalize">
+                    <p className="text-purple-300 text-xs capitalize mt-0.5">
                       {selectedNode.type}
                     </p>
                   </div>
@@ -501,9 +549,9 @@ const RadialGraph = forwardRef(({
                     setSelectedNode(null);
                     if (onNodeSelect) onNodeSelect(null);
                   }}
-                  className="text-white/50 hover:text-white transition-colors"
+                  className="text-white/50 hover:text-white transition-colors shrink-0"
                 >
-                  ×
+                  <span className="text-xl leading-none">&times;</span>
                 </button>
               </div>
               
