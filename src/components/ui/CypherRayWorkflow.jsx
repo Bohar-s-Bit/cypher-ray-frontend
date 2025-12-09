@@ -15,94 +15,103 @@ import {
 
 const workflowSteps = [
   {
-    title: "Secure Upload & Deduplication",
-    description: "The journey begins with a secure, encrypted upload of the firmware binary. We utilize enterprise-grade cloud storage with automatic hash-based deduplication to ensure efficiency. Every file is scanned for initial integrity before entering the pipeline.",
-    details: ["AES-256 Encryption at Rest", "SHA-256 Hash Deduplication", "80MB+ File Support"],
+    title: "File Upload & Storage",
+    description: "Binary files are securely uploaded to Cloudinary with SHA-256 hash-based deduplication. Each file undergoes initial validation for size (80MB max) and integrity before being stored with a unique identifier for later retrieval.",
+    details: ["Cloudinary Cloud Storage", "SHA-256 Deduplication", "80MB File Limit"],
     icon: UploadCloud,
     color: "text-blue-400",
     bgColor: "bg-blue-400/10",
     borderColor: "border-blue-400/20"
   },
   {
-    title: "Job Initialization",
-    description: "A dedicated analysis job is instantiated in our MongoDB cluster. This record acts as the central source of truth, tracking user metadata, file properties, and the real-time state of the analysis lifecycle from start to finish.",
-    details: ["Atomic Job Creation", "Metadata Extraction", "State Tracking"],
+    title: "Job Creation & Database Record",
+    description: "A comprehensive analysis job record is created in MongoDB containing user metadata, file information, status tracking, and credit estimation. This serves as the central source of truth throughout the entire analysis lifecycle.",
+    details: ["MongoDB Job Record", "User & File Metadata", "Real-time Status Tracking"],
     icon: Database,
     color: "text-green-400",
     bgColor: "bg-green-400/10",
     borderColor: "border-green-400/20"
   },
   {
-    title: "Intelligent Queue Routing",
-    description: "The job is dispatched to a high-performance Redis-backed Bull queue. Our smart routing algorithm prioritizes tasks based on user tiers (Enterprise, Pro, Free) and current system load to ensure optimal throughput.",
-    details: ["Priority-based Scheduling", "Redis Persistence", "Load Balancing"],
+    title: "Tier-Based Queue Management",
+    description: "Jobs are added to Redis-backed Bull queues with tier-based prioritization. Tier 1 users get higher priority (concurrency: 10) while Tier 2 users have standard priority (concurrency: 5), ensuring fair resource allocation.",
+    details: ["Bull Queue (Redis)", "Tier 1 Priority: High", "Tier 2 Priority: Standard"],
     icon: Layers,
     color: "text-purple-400",
     bgColor: "bg-purple-400/10",
     borderColor: "border-purple-400/20"
   },
   {
-    title: "Worker Orchestration",
-    description: "An isolated worker node claims the job from the queue. Our scalable worker pool dynamically adjusts to demand, ensuring that heavy analysis tasks are isolated from the main application thread to maintain responsiveness.",
-    details: ["Isolated Processes", "Concurrency Management", "Auto-scaling Workers"],
+    title: "Worker Process & File Download",
+    description: "An isolated worker node claims the job from the queue and securely downloads the binary from Cloudinary to a temporary sandboxed environment. The worker manages retries (3 attempts) and emits progress updates via WebSocket.",
+    details: ["Isolated Worker Nodes", "Cloudinary Download", "3 Retry Attempts"],
     icon: Cpu,
     color: "text-orange-400",
     bgColor: "bg-orange-400/10",
     borderColor: "border-orange-400/20"
   },
   {
-    title: "Secure Retrieval",
-    description: "The worker securely retrieves the binary from cloud storage into an ephemeral, sandboxed environment. This ensures that the analysis takes place in a clean state, preventing cross-contamination between different analysis jobs.",
-    details: ["Ephemeral Sandboxes", "Secure Stream Download", "Temp File Management"],
-    icon: Download,
+    title: "Model 1: Crypto Presence Detection",
+    description: "The first ML model analyzes whether the binary contains cryptographic implementations. This binary classifier (trained on 66,000+ multi-architecture binaries) determines if further analysis is needed, saving credits on non-crypto files.",
+    details: ["Binary Classifier", "66K+ Training Dataset", "Multi-Architecture Support"],
+    icon: BrainCircuit,
     color: "text-cyan-400",
     bgColor: "bg-cyan-400/10",
     borderColor: "border-cyan-400/20"
   },
   {
-    title: "Multi-Model AI Analysis",
-    description: "The core of CypherRay. The binary undergoes deep inspection using a hybrid engine combining symbolic execution (Angr) with Large Language Models (OpenAI, Claude) to detect vulnerabilities and cryptographic patterns.",
-    details: ["Symbolic Execution (Angr)", "LLM Vulnerability Detection", "Pattern Matching"],
-    icon: BrainCircuit,
+    title: "Angr Structural Analysis",
+    description: "Using the open-source Angr framework, the binary undergoes deep structural analysis including metadata extraction, function discovery, crypto string analysis, constant detection, and advanced pattern recognition (MIR, Feistel detection) at zero AI cost.",
+    details: ["Angr Binary Analysis", "Function Discovery", "Constant Detection"],
+    icon: Download,
     color: "text-pink-400",
     bgColor: "bg-pink-400/10",
     borderColor: "border-pink-400/20"
   },
   {
-    title: "Result Synthesis & Storage",
-    description: "Raw analysis data is synthesized into a structured, human-readable report. Vulnerabilities are categorized by severity, and the final JSON report is securely persisted in the database for instant retrieval.",
-    details: ["Structured JSON Reports", "Severity Categorization", "Persistent Storage"],
-    icon: Save,
+    title: "Model 2: Algorithm Classification",
+    description: "The multi-class classifier identifies specific cryptographic algorithms (AES, RSA, SHA, ChaCha20, etc.) using structural signatures and pattern matching. Achieves 96% accuracy across symmetric/asymmetric encryption, hashing, and protocols with confidence scoring (60-99%).",
+    details: ["Multi-class Classifier", "Known Algorithm Database", "96% Accuracy"],
+    icon: BrainCircuit,
     color: "text-yellow-400",
     bgColor: "bg-yellow-400/10",
     borderColor: "border-yellow-400/20"
   },
   {
-    title: "Dynamic Credit Billing",
-    description: "Our fair billing engine calculates the exact cost of the analysis. Credits are deducted based on a combination of file size and the actual compute time consumed, ensuring users only pay for the resources they use.",
-    details: ["Compute-time Calculation", "Size-based Tiers", "Atomic Transaction"],
-    icon: CreditCard,
+    title: "Model 3: Proprietary Detection (Deep Scan)",
+    description: "When deep scan is enabled, Model 3 detects custom/proprietary cryptographic implementations using similarity scoring (< 75% threshold). Newly discovered algorithms are automatically added to Model 2's database, enabling cross-user learning.",
+    details: ["Similarity-Based Detection", "Database Enrichment", "Cross-User Learning"],
+    icon: BrainCircuit,
     color: "text-red-400",
     bgColor: "bg-red-400/10",
     borderColor: "border-red-400/20"
   },
   {
-    title: "Real-time Notification",
-    description: "As soon as the analysis concludes, the user is notified instantly via a dedicated WebSocket channel. The frontend dashboard updates in real-time, displaying the results without requiring a page refresh.",
-    details: ["WebSocket Events", "Instant UI Update", "Push Notifications"],
-    icon: Bell,
+    title: "Function-to-Algorithm Mapping",
+    description: "Detected functions are mapped to their corresponding cryptographic algorithms. This analysis identifies which functions implement specific encryption, hashing, or protocol operations with confidence scores and operational details.",
+    details: ["Function Mapping", "Operation Identification", "Confidence Scoring"],
+    icon: Layers,
     color: "text-indigo-400",
     bgColor: "bg-indigo-400/10",
     borderColor: "border-indigo-400/20"
   },
   {
-    title: "Privacy-First Cleanup",
-    description: "To uphold strict data privacy standards, the uploaded binary is automatically purged from our storage systems immediately after analysis. We retain only the metadata and the generated report.",
-    details: ["Auto-deletion Policy", "Zero-retention Storage", "Compliance Ready"],
-    icon: Trash2,
-    color: "text-gray-400",
-    bgColor: "bg-gray-400/10",
-    borderColor: "border-gray-400/20"
+    title: "Results Storage & Credit Deduction",
+    description: "Analysis results are structured into a comprehensive JSON report and stored in MongoDB. Dynamic credit calculation based on file size and actual processing time determines the final cost, which is deducted from the user's balance (supports debt model).",
+    details: ["JSON Report Generation", "Dynamic Credit Pricing", "Debt Model Support"],
+    icon: Save,
+    color: "text-purple-400",
+    bgColor: "bg-purple-400/10",
+    borderColor: "border-purple-400/20"
+  },
+  {
+    title: "WebSocket Notification & File Cleanup",
+    description: "Users receive instant WebSocket notifications (job:completed event) with real-time dashboard updates. The binary file is automatically deleted from Cloudinary immediately after analysis, maintaining zero-retention privacy standards.",
+    details: ["WebSocket Events", "Real-time Updates", "Auto-file Deletion"],
+    icon: Bell,
+    color: "text-green-400",
+    bgColor: "bg-green-400/10",
+    borderColor: "border-green-400/20"
   }
 ];
 
@@ -129,15 +138,15 @@ const CypherRayWorkflow = () => {
             transition={{ duration: 0.6 }}
             className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-400 to-purple-400 mb-6"
           >
-            Analysis Pipeline
+            Three-Model ML Pipeline
           </motion.h2>
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-lg text-gray-400 max-w-2xl mx-auto"
+            className="text-lg text-gray-400 max-w-3xl mx-auto"
           >
-            Trace the journey of a binary file through our secure, AI-powered analysis infrastructure.
+            Explore our progressive cryptographic detection system: Model 1 (Presence Detection) → Angr Structural Analysis → Model 2 (Algorithm Classification) → Model 3 (Proprietary Detection with Cross-User Learning).
           </motion.p>
         </div>
 

@@ -314,31 +314,51 @@ export const transformAnalysisToGraph = (analysisResult) => {
           description: func.function_summary,
           confidence: `${Math.round(func.confidence_score * 100)}%`,
           tags: func.semantic_tags?.join(", ") || "None",
+          implements: func.related_algorithm || "N/A",
         },
       };
       nodes.push(funcNode);
 
-      // Link to matching Algorithm
+      // Link to matching Algorithm based on what it implements
       let linked = false;
-      if (algorithmNodes.length > 0) {
-        const tags = (func.semantic_tags || []).map(t => t.toLowerCase());
-        const name = func.function_name.toLowerCase();
+      if (func.related_algorithm && algorithmNodes.length > 0) {
+        // Try to find exact or partial match with the related_algorithm
+        const implementsLower = func.related_algorithm.toLowerCase();
         
         let bestMatch = null;
         let maxScore = 0;
 
         algorithmNodes.forEach(algo => {
           const algoName = algo.label.toLowerCase();
-          const algoParts = algoName.split(/[^a-z0-9]/).filter(p => p.length >= 2);
+          const algoClass = (algo.data?.description || "").toLowerCase();
           
           let score = 0;
-          if (name.includes(algoName)) score += 10;
           
-          const matchingParts = algoParts.filter(part => name.includes(part));
-          if (matchingParts.length > 0) score += matchingParts.length * 2;
-          
-          const matchingTags = tags.filter(t => t.includes(algoName) || algoParts.some(p => t.includes(p)));
-          if (matchingTags.length > 0) score += matchingTags.length;
+          // Exact match gets highest priority
+          if (algoName === implementsLower) {
+            score = 100;
+          }
+          // Check if algorithm name is contained in what function implements
+          else if (implementsLower.includes(algoName)) {
+            score = 50;
+          }
+          // Check if what function implements is contained in algorithm name
+          else if (algoName.includes(implementsLower)) {
+            score = 40;
+          }
+          // Check for partial matches by splitting on common delimiters
+          else {
+            const algoParts = algoName.split(/[-_\s]/).filter(p => p.length >= 2);
+            const implParts = implementsLower.split(/[-_\s]/).filter(p => p.length >= 2);
+            
+            const matchingParts = algoParts.filter(part => 
+              implParts.some(ip => ip.includes(part) || part.includes(ip))
+            );
+            
+            if (matchingParts.length > 0) {
+              score = matchingParts.length * 10;
+            }
+          }
 
           if (score > maxScore) {
             maxScore = score;
