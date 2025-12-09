@@ -63,7 +63,7 @@ const GraphControls = ({
 
   const layouts = [
     { value: "radial", label: "Radial", icon: Grid3x3 },
-    { value: "force", label: "Force", icon: Move },
+    { value: "force", label: "Tree", icon: Move },
   ];
 
   return (

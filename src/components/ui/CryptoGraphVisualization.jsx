@@ -28,7 +28,16 @@ const CryptoGraphVisualization = ({
   className,
 }) => {
   const graphRef = useRef();
-  const [layout, setLayout] = useState("radial");
+  // Always use tree layout
+  const layout = "force";
+
+  // Memoize config to prevent unnecessary re-renders
+  const config = React.useMemo(() => ({
+    chargeStrength: -1500,
+    linkDistance: 150,
+    radialStrength: 0.1,
+    showArrows: true,
+  }), []);
 
   // Node type legend based on the data
   const nodeTypes = React.useMemo(() => {
@@ -73,12 +82,6 @@ const CryptoGraphVisualization = ({
       graphRef.current.centerAt(0, 0, 1000);
       graphRef.current.zoom(1, 1000);
     }
-  }, []);
-
-  const handleLayoutChange = useCallback((newLayout) => {
-    setLayout(newLayout);
-    // You can implement different layout algorithms here
-    // For now, we'll just update the state
   }, []);
 
   // Keyboard shortcuts
@@ -149,7 +152,7 @@ const CryptoGraphVisualization = ({
             onZoomOut={handleZoomOut}
             onFitView={handleFitView}
             onReset={handleReset}
-            onLayoutChange={handleLayoutChange}
+            // Layout switching disabled
             currentLayout={layout}
           />
         )}
@@ -168,13 +171,9 @@ const CryptoGraphVisualization = ({
           nodes={nodes}
           edges={edges}
           height={height}
+          layout={layout}
           onNodeSelect={onNodeSelect}
-          config={{
-            chargeStrength: layout === "force" ? -400 : -300,
-            linkDistance: layout === "force" ? 100 : 60,
-            radialStrength: layout === "radial" ? 0.8 : 0.1,
-            showArrows: true,
-          }}
+          config={config}
         />
 
         {/* Legend */}
