@@ -212,8 +212,8 @@ const AnalyzePage = () => {
                   <Shield className="w-5 h-5 text-purple-400" />
                 </div>
                 <div>
-                  <h3 className="text-white font-semibold mb-1">Vulnerability Detection</h3>
-                  <p className="text-sm text-white/60">Identify security flaws and potential exploits</p>
+                  <h3 className="text-white font-semibold mb-1">Function Detection</h3>
+                  <p className="text-sm text-white/60">Identify All the hidden function in your binary</p>
                 </div>
               </div>
             </motion.div>
@@ -247,7 +247,7 @@ const AnalyzePage = () => {
                 </div>
                 <div>
                   <h3 className="text-white font-semibold mb-1">Fast Processing</h3>
-                  <p className="text-sm text-white/60">Results in minutes with ML-powered analysis</p>
+                  <p className="text-sm text-white/60">Results in few minutes with ML-powered analysis</p>
                 </div>
               </div>
             </motion.div>

@@ -41,7 +41,7 @@ const SDKWorkflowPage = () => {
     },
     {
       icon: Rocket,
-      title: "CI/CD Integration",
+      title: "CS/CR Integration",
       description: "Automate security checks in your pipeline",
       command: "GitHub Actions / GitLab CI",
       color: "text-fuchsia-400"
@@ -145,7 +145,7 @@ const SDKWorkflowPage = () => {
 
         {/* CI/CD Integration Examples */}
         <div className="max-w-6xl mx-auto relative z-10">
-          <h2 className="text-2xl md:text-3xl font-bold text-white mb-8 text-center">CI/CD Integration</h2>
+          <h2 className="text-2xl md:text-3xl font-bold text-white mb-8 text-center">CS/CR Integration</h2>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* GitHub Actions */}
             <Card className="bg-neutral-900/50 border-purple-800/30 backdrop-blur-sm">

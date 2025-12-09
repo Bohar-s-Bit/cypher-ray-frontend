@@ -43,13 +43,13 @@ export const UserDockNavigation = () => {
       ),
       onClick: () => navigate(ROUTES.RESULTS),
     },
-    {
-      title: "API Docs",
-      icon: (
-        <Code2 className="w-full h-full text-purple-300 dark:text-purple-300" />
-      ),
-      onClick: () => navigate(ROUTES.API_DOCS),
-    },
+    // {
+    //   title: "API Docs",
+    //   icon: (
+    //     <Code2 className="w-full h-full text-purple-300 dark:text-purple-300" />
+    //   ),
+    //   onClick: () => navigate(ROUTES.API_DOCS),
+    // },
     {
       title: "Profile",
       icon: (

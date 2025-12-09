@@ -15,11 +15,11 @@ const Navbar = () => {
       bgColor: "#1a0d2e",
       textColor: "#fff",
       links: [
-        { 
-          label: "View All Features", 
-          ariaLabel: "View All Features",
-          href: "/features",
-        },
+        // { 
+        //   label: "View All Features", 
+        //   ariaLabel: "View All Features",
+        //   href: "/features",
+        // },
       ]
     },
     {
@@ -27,11 +27,11 @@ const Navbar = () => {
       bgColor: "#2d1b47",
       textColor: "#fff",
       links: [
-        { 
-          label: "System Workflow", 
-          ariaLabel: "System Workflow",
-          href: "/workflow",
-        },
+        // { 
+        //   label: "System Workflow", 
+        //   ariaLabel: "System Workflow",
+        //   href: "/workflow",
+        // },
         { 
           label: "SDK Workflow", 
           ariaLabel: "SDK Workflow",
