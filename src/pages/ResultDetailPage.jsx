@@ -26,21 +26,28 @@ import Badge from "../components/ui/Badge";
 import Spinner from "../components/ui/Spinner";
 import CryptoGraphVisualization from "../components/ui/CryptoGraphVisualization";
 import AlgorithmConfidenceChart from "../components/ui/AlgorithmConfidenceChart";
+import ProtocolHandshakeTimeline from "../components/ui/ProtocolHandshakeTimeline";
 import { analysisService } from "../services/analysisService";
 import { QUERY_KEYS, ROUTES } from "../config/constants";
 import {
   transformAnalysisToGraph,
   calculateGraphStats,
 } from "../utils/graphUtils";
+import {
+  transformToProtocolTimeline,
+  getProtocolStats,
+} from "../utils/protocolUtils";
 import { format } from "date-fns";
 
 const ResultDetailPage = () => {
   const { jobId } = useParams();
   const navigate = useNavigate();
-  const [viewMode, setViewMode] = useState("details"); // 'graph' or 'details'
+  const [viewMode, setViewMode] = useState("details"); // 'graph', 'details', or 'protocol'
   const [selectedNode, setSelectedNode] = useState(null);
   const [graphData, setGraphData] = useState({ nodes: [], edges: [] });
   const [graphStats, setGraphStats] = useState(null);
+  const [protocolTimelines, setProtocolTimelines] = useState([]);
+  const [protocolStats, setProtocolStats] = useState(null);
 
   // Fetch job result
   const { data, isLoading, error } = useQuery({
@@ -48,16 +55,27 @@ const ResultDetailPage = () => {
     queryFn: () => analysisService.getJobResult(jobId),
   });
 
-  // Transform API data to graph format
+  // Transform API data to graph format and protocol timeline
   useEffect(() => {
     if (data?.data?.job) {
       const job = data.data.job;
+      
+      // Graph transformation
       const transformed = transformAnalysisToGraph(job);
       setGraphData(transformed);
 
       if (transformed.nodes.length > 0) {
         const stats = calculateGraphStats(transformed);
         setGraphStats(stats);
+      }
+
+      // Protocol timeline transformation
+      const timelines = transformToProtocolTimeline(job);
+      setProtocolTimelines(timelines);
+
+      if (timelines.length > 0) {
+        const pStats = getProtocolStats(timelines);
+        setProtocolStats(pStats);
       }
     }
   }, [data]);
@@ -123,7 +141,18 @@ const ResultDetailPage = () => {
             }`}
           >
             <Network className="w-4 h-4" />
-            Graph View
+            Graph
+          </button>
+          <button
+            onClick={() => setViewMode("protocol")}
+            className={`flex items-center gap-2 px-4 py-2 rounded-md transition-all ${
+              viewMode === "protocol"
+                ? "bg-purple-500/30 text-white"
+                : "text-white/60 hover:text-white"
+            }`}
+          >
+            <Shield className="w-4 h-4" />
+            Protocol
           </button>
           <button
             onClick={() => setViewMode("details")}
@@ -134,7 +163,7 @@ const ResultDetailPage = () => {
             }`}
           >
             <List className="w-4 h-4" />
-            Details View
+            Details
           </button>
         </div>
       </div>
@@ -365,6 +394,149 @@ const ResultDetailPage = () => {
               </CardContent>
             </Card>
           )}
+        </motion.div>
+
+        {/* Protocol Timeline View */}
+        <motion.div
+          initial={{ opacity: 0, display: "none" }}
+          animate={{ 
+            opacity: viewMode === "protocol" ? 1 : 0,
+            display: viewMode === "protocol" ? "block" : "none"
+          }}
+          transition={{ duration: 0.3 }}
+          className="space-y-6"
+        >
+          {/* Protocol Stats */}
+          {protocolStats && (
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1, duration: 0.5 }}
+              >
+                <Card className="hover:border-blue-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/20">
+                  <CardContent className="p-4">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm text-white/70">Protocols</p>
+                        <motion.p 
+                          initial={{ scale: 0.5 }}
+                          animate={{ scale: 1 }}
+                          transition={{ delay: 0.3, type: "spring" }}
+                          className="text-2xl font-bold text-white"
+                        >
+                          {protocolStats.totalProtocols}
+                        </motion.p>
+                      </div>
+                      <Shield className="w-8 h-8 text-blue-400" />
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2, duration: 0.5 }}
+              >
+                <Card className="hover:border-purple-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/20">
+                  <CardContent className="p-4">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm text-white/70">Algorithms</p>
+                        <motion.p 
+                          initial={{ scale: 0.5 }}
+                          animate={{ scale: 1 }}
+                          transition={{ delay: 0.4, type: "spring" }}
+                          className="text-2xl font-bold text-white"
+                        >
+                          {protocolStats.totalAlgorithms}
+                        </motion.p>
+                      </div>
+                      <Code className="w-8 h-8 text-purple-400" />
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3, duration: 0.5 }}
+              >
+                <Card className="hover:border-green-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-green-500/20">
+                  <CardContent className="p-4">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm text-white/70">Functions</p>
+                        <motion.p 
+                          initial={{ scale: 0.5 }}
+                          animate={{ scale: 1 }}
+                          transition={{ delay: 0.5, type: "spring" }}
+                          className="text-2xl font-bold text-white"
+                        >
+                          {protocolStats.totalFunctions}
+                        </motion.p>
+                      </div>
+                      <FileText className="w-8 h-8 text-green-400" />
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4, duration: 0.5 }}
+              >
+                <Card className="hover:border-pink-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-pink-500/20">
+                  <CardContent className="p-4">
+                    <div>
+                      <p className="text-sm text-white/70 mb-2">Category Distribution</p>
+                      <div className="flex flex-wrap gap-1">
+                        {Object.entries(protocolStats.categoryDistribution || {}).map(
+                          ([category, count], index) => (
+                            <motion.div
+                              key={category}
+                              initial={{ scale: 0 }}
+                              animate={{ scale: 1 }}
+                              transition={{ delay: 0.5 + index * 0.1, type: "spring" }}
+                            >
+                              <Badge variant="secondary" size="sm">
+                                {category.split('/')[0]}: {count}
+                              </Badge>
+                            </motion.div>
+                          )
+                        )}
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            </div>
+          )}
+
+          {/* Protocol Timeline Visualization */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.98 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, delay: 0.5 }}
+          >
+            <Card className="overflow-hidden border-blue-500/20 shadow-xl shadow-blue-500/10">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Shield className="w-5 h-5 text-blue-400" />
+                  Protocol Handshake Timeline
+                </CardTitle>
+                <CardDescription>
+                  Cryptographic algorithms mapped to their protocol stages
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="p-6">
+                <ProtocolHandshakeTimeline timelines={protocolTimelines} />
+              </CardContent>
+            </Card>
+          </motion.div>
         </motion.div>
 
       {/* Details View */}
