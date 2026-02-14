@@ -900,17 +900,34 @@ const ResultDetailPage = () => {
                 </h4>
                 <div className="p-3 bg-black/20 rounded-lg border border-white/10">
                   {typeof dynamicAnalysis.behavioralAnalysis.networkActivity === "object" ? (
-                    <div className="space-y-2">
+                    <div className="space-y-3">
                       {Object.entries(dynamicAnalysis.behavioralAnalysis.networkActivity).map(([key, value]) => (
-                        <div key={key} className="flex items-start gap-2">
-                          <span className="text-cyan-400 text-sm font-medium min-w-[80px]">{key}:</span>
-                          <span className="text-white/70 text-sm break-all">
-                            {Array.isArray(value)
-                              ? value.length > 0 ? value.join(", ") : "None"
-                              : typeof value === "object"
-                              ? JSON.stringify(value, null, 2)
-                              : String(value)}
-                          </span>
+                        <div key={key}>
+                          <span className="text-cyan-400 text-sm font-medium">{key}:</span>
+                          {Array.isArray(value) && value.length > 0 ? (
+                            typeof value[0] === "object" ? (
+                              <div className="mt-1 space-y-1 ml-3">
+                                {value.slice(0, 20).map((item, i) => (
+                                  <div key={i} className="p-2 bg-black/30 rounded border border-white/5 font-mono text-xs text-white/70">
+                                    {Object.entries(item).map(([k, v]) => (
+                                      <span key={k} className="mr-3">
+                                        <span className="text-cyan-400/70">{k}:</span> {String(v)}
+                                      </span>
+                                    ))}
+                                  </div>
+                                ))}
+                                {value.length > 20 && (
+                                  <p className="text-white/40 text-xs ml-2">+{value.length - 20} more entries</p>
+                                )}
+                              </div>
+                            ) : (
+                              <span className="text-white/70 text-sm ml-2">{value.join(", ")}</span>
+                            )
+                          ) : (
+                            <span className="text-white/50 text-sm ml-2">
+                              {Array.isArray(value) ? "None" : typeof value === "object" && value !== null ? JSON.stringify(value) : String(value)}
+                            </span>
+                          )}
                         </div>
                       ))}
                     </div>
