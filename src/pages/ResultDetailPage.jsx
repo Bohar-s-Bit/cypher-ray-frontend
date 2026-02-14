@@ -941,12 +941,32 @@ const ResultDetailPage = () => {
             {/* File Operations */}
             {dynamicAnalysis.behavioralAnalysis.fileOperations?.length > 0 && (
               <div>
-                <h4 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
-                  <HardDrive className="w-4 h-4 text-green-400" />
-                  File Operations ({dynamicAnalysis.behavioralAnalysis.fileOperations.length})
-                </h4>
+                <div className="flex items-center justify-between mb-3">
+                  <h4 className="text-sm font-semibold text-white flex items-center gap-2">
+                    <HardDrive className="w-4 h-4 text-green-400" />
+                    File Operations ({dynamicAnalysis.behavioralAnalysis.fileOperations.length})
+                  </h4>
+                  <button
+                    onClick={() => {
+                      const blob = new Blob(
+                        [JSON.stringify(dynamicAnalysis.behavioralAnalysis.fileOperations, null, 2)],
+                        { type: "application/json" }
+                      );
+                      const url = URL.createObjectURL(blob);
+                      const a = document.createElement("a");
+                      a.href = url;
+                      a.download = `${job.filename}-file-operations.json`;
+                      a.click();
+                      URL.revokeObjectURL(url);
+                    }}
+                    className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-green-400 bg-green-500/10 border border-green-500/20 rounded-lg hover:bg-green-500/20 transition-colors"
+                  >
+                    <Download className="w-3.5 h-3.5" />
+                    Download JSON
+                  </button>
+                </div>
                 <div className="space-y-1">
-                  {dynamicAnalysis.behavioralAnalysis.fileOperations.map((op, index) => (
+                  {dynamicAnalysis.behavioralAnalysis.fileOperations.slice(0, 10).map((op, index) => (
                     <div
                       key={index}
                       className="p-2 bg-black/20 rounded border border-white/10 font-mono text-xs text-white/70 break-all"
@@ -954,6 +974,11 @@ const ResultDetailPage = () => {
                       {op}
                     </div>
                   ))}
+                  {dynamicAnalysis.behavioralAnalysis.fileOperations.length > 10 && (
+                    <p className="text-white/40 text-xs text-center py-2">
+                      Showing 10 of {dynamicAnalysis.behavioralAnalysis.fileOperations.length} entries. Download the full JSON for complete data.
+                    </p>
+                  )}
                 </div>
               </div>
             )}
@@ -961,12 +986,32 @@ const ResultDetailPage = () => {
             {/* Registry Operations */}
             {dynamicAnalysis.behavioralAnalysis.registryOperations?.length > 0 && (
               <div>
-                <h4 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
-                  <Settings className="w-4 h-4 text-orange-400" />
-                  Registry Operations ({dynamicAnalysis.behavioralAnalysis.registryOperations.length})
-                </h4>
+                <div className="flex items-center justify-between mb-3">
+                  <h4 className="text-sm font-semibold text-white flex items-center gap-2">
+                    <Settings className="w-4 h-4 text-orange-400" />
+                    Registry Operations ({dynamicAnalysis.behavioralAnalysis.registryOperations.length})
+                  </h4>
+                  <button
+                    onClick={() => {
+                      const blob = new Blob(
+                        [JSON.stringify(dynamicAnalysis.behavioralAnalysis.registryOperations, null, 2)],
+                        { type: "application/json" }
+                      );
+                      const url = URL.createObjectURL(blob);
+                      const a = document.createElement("a");
+                      a.href = url;
+                      a.download = `${job.filename}-registry-operations.json`;
+                      a.click();
+                      URL.revokeObjectURL(url);
+                    }}
+                    className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-orange-400 bg-orange-500/10 border border-orange-500/20 rounded-lg hover:bg-orange-500/20 transition-colors"
+                  >
+                    <Download className="w-3.5 h-3.5" />
+                    Download JSON
+                  </button>
+                </div>
                 <div className="space-y-1">
-                  {dynamicAnalysis.behavioralAnalysis.registryOperations.map((op, index) => (
+                  {dynamicAnalysis.behavioralAnalysis.registryOperations.slice(0, 10).map((op, index) => (
                     <div
                       key={index}
                       className="p-2 bg-black/20 rounded border border-white/10 font-mono text-xs text-white/70 break-all"
@@ -974,6 +1019,11 @@ const ResultDetailPage = () => {
                       {op}
                     </div>
                   ))}
+                  {dynamicAnalysis.behavioralAnalysis.registryOperations.length > 10 && (
+                    <p className="text-white/40 text-xs text-center py-2">
+                      Showing 10 of {dynamicAnalysis.behavioralAnalysis.registryOperations.length} entries. Download the full JSON for complete data.
+                    </p>
+                  )}
                 </div>
               </div>
             )}
