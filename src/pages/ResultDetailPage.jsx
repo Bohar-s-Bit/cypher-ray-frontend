@@ -13,6 +13,13 @@ import {
   Code,
   Network,
   List,
+  Activity,
+  Bug,
+  Key,
+  Globe,
+  HardDrive,
+  Settings,
+  Download,
 } from "lucide-react";
 import {
   Card,
@@ -55,11 +62,15 @@ const ResultDetailPage = () => {
     queryFn: () => analysisService.getJobResult(jobId),
   });
 
-  // Transform API data to graph format and protocol timeline
+  // Detect dynamic-only mode
+  const isDynamicOnly =
+    data?.data?.job?.results?.dynamic_analysis?.mode === "primary";
+
+  // Transform API data to graph format and protocol timeline (only for static results)
   useEffect(() => {
-    if (data?.data?.job) {
+    if (data?.data?.job && !isDynamicOnly) {
       const job = data.data.job;
-      
+
       // Graph transformation
       const transformed = transformAnalysisToGraph(job);
       setGraphData(transformed);
@@ -78,11 +89,17 @@ const ResultDetailPage = () => {
         setProtocolStats(pStats);
       }
     }
-  }, [data]);
+  }, [data, isDynamicOnly]);
+
+  // Default to details view for dynamic-only results
+  useEffect(() => {
+    if (isDynamicOnly && (viewMode === "graph" || viewMode === "protocol")) {
+      setViewMode("details");
+    }
+  }, [isDynamicOnly, viewMode]);
 
   const handleNodeSelect = (node) => {
     setSelectedNode(node);
-    console.log("Selected node:", node);
   };
 
   if (isLoading) {
@@ -110,11 +127,43 @@ const ResultDetailPage = () => {
 
   const job = data.data.job;
   const results = job.results;
+  const dynamicAnalysis = results?.dynamic_analysis;
 
   // Check if results are empty or incomplete
   const hasResults = results && Object.keys(results).length > 0;
   const isProcessing = job.status === "processing" || job.status === "queued";
   const isFailed = job.status === "failed";
+
+  const getRiskScoreColor = (score) => {
+    if (score >= 8) return "text-red-400";
+    if (score >= 5) return "text-orange-400";
+    if (score >= 3) return "text-yellow-400";
+    if (score >= 1) return "text-green-400";
+    return "text-emerald-400";
+  };
+
+  const getRiskScoreBg = (score) => {
+    if (score >= 8) return "from-red-500/20 to-red-900/10 border-red-500/30";
+    if (score >= 5) return "from-orange-500/20 to-orange-900/10 border-orange-500/30";
+    if (score >= 3) return "from-yellow-500/20 to-yellow-900/10 border-yellow-500/30";
+    if (score >= 1) return "from-green-500/20 to-green-900/10 border-green-500/30";
+    return "from-emerald-500/20 to-emerald-900/10 border-emerald-500/30";
+  };
+
+  const getSignatureSeverityColor = (severity) => {
+    switch (severity?.toLowerCase()) {
+      case "critical":
+        return "border-red-500/40 bg-red-500/10";
+      case "high":
+        return "border-red-500/30 bg-red-500/5";
+      case "medium":
+        return "border-yellow-500/30 bg-yellow-500/5";
+      case "low":
+        return "border-green-500/30 bg-green-500/5";
+      default:
+        return "border-white/10 bg-white/5";
+    }
+  };
 
   return (
     <div className="space-y-8">
@@ -130,30 +179,34 @@ const ResultDetailPage = () => {
           </p>
         </div>
 
-        {/* View toggle */}
+        {/* View toggle - hide Graph/Protocol for dynamic-only */}
         <div className="flex items-center gap-2 bg-black/40 backdrop-blur-sm border border-white/10 rounded-lg p-1">
-          <button
-            onClick={() => setViewMode("graph")}
-            className={`flex items-center gap-2 px-4 py-2 rounded-md transition-all ${
-              viewMode === "graph"
-                ? "bg-purple-500/30 text-white"
-                : "text-white/60 hover:text-white"
-            }`}
-          >
-            <Network className="w-4 h-4" />
-            Graph
-          </button>
-          <button
-            onClick={() => setViewMode("protocol")}
-            className={`flex items-center gap-2 px-4 py-2 rounded-md transition-all ${
-              viewMode === "protocol"
-                ? "bg-purple-500/30 text-white"
-                : "text-white/60 hover:text-white"
-            }`}
-          >
-            <Shield className="w-4 h-4" />
-            Protocol
-          </button>
+          {!isDynamicOnly && (
+            <>
+              <button
+                onClick={() => setViewMode("graph")}
+                className={`flex items-center gap-2 px-4 py-2 rounded-md transition-all ${
+                  viewMode === "graph"
+                    ? "bg-purple-500/30 text-white"
+                    : "text-white/60 hover:text-white"
+                }`}
+              >
+                <Network className="w-4 h-4" />
+                Graph
+              </button>
+              <button
+                onClick={() => setViewMode("protocol")}
+                className={`flex items-center gap-2 px-4 py-2 rounded-md transition-all ${
+                  viewMode === "protocol"
+                    ? "bg-purple-500/30 text-white"
+                    : "text-white/60 hover:text-white"
+                }`}
+              >
+                <Shield className="w-4 h-4" />
+                Protocol
+              </button>
+            </>
+          )}
           <button
             onClick={() => setViewMode("details")}
             className={`flex items-center gap-2 px-4 py-2 rounded-md transition-all ${
@@ -170,9 +223,10 @@ const ResultDetailPage = () => {
 
       <div className="relative">
         {/* Graph View */}
+        {!isDynamicOnly && (
         <motion.div
           initial={{ opacity: 0, display: "none" }}
-          animate={{ 
+          animate={{
             opacity: viewMode === "graph" ? 1 : 0,
             display: viewMode === "graph" ? "block" : "none"
           }}
@@ -193,7 +247,7 @@ const ResultDetailPage = () => {
                     <div className="flex items-center justify-between">
                       <div>
                         <p className="text-sm text-white/70">Total Nodes</p>
-                        <motion.p 
+                        <motion.p
                           initial={{ scale: 0.5 }}
                           animate={{ scale: 1 }}
                           transition={{ delay: 0.3, type: "spring" }}
@@ -219,7 +273,7 @@ const ResultDetailPage = () => {
                     <div className="flex items-center justify-between">
                       <div>
                         <p className="text-sm text-white/70">Relationships</p>
-                        <motion.p 
+                        <motion.p
                           initial={{ scale: 0.5 }}
                           animate={{ scale: 1 }}
                           transition={{ delay: 0.4, type: "spring" }}
@@ -275,7 +329,7 @@ const ResultDetailPage = () => {
                   <CardContent className="p-4">
                     <div>
                       <p className="text-sm text-white/70 mb-2">Most Connected</p>
-                      <motion.p 
+                      <motion.p
                         initial={{ opacity: 0, x: -10 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: 0.6 }}
@@ -283,7 +337,7 @@ const ResultDetailPage = () => {
                       >
                         {graphStats.mostConnected?.[0]?.label || "N/A"}
                       </motion.p>
-                      <motion.p 
+                      <motion.p
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.7 }}
@@ -315,8 +369,8 @@ const ResultDetailPage = () => {
                 showLegend={true}
                 showControls={true}
               />
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
           </motion.div>
 
           {/* Selected Node Details */}
@@ -348,7 +402,7 @@ const ResultDetailPage = () => {
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     {selectedNode.data &&
                       Object.entries(selectedNode.data).map(([key, value], index) => (
-                        <motion.div 
+                        <motion.div
                           key={key}
                           initial={{ opacity: 0, y: 10 }}
                           animate={{ opacity: 1, y: 0 }}
@@ -395,11 +449,13 @@ const ResultDetailPage = () => {
             </Card>
           )}
         </motion.div>
+        )}
 
         {/* Protocol Timeline View */}
+        {!isDynamicOnly && (
         <motion.div
           initial={{ opacity: 0, display: "none" }}
-          animate={{ 
+          animate={{
             opacity: viewMode === "protocol" ? 1 : 0,
             display: viewMode === "protocol" ? "block" : "none"
           }}
@@ -419,7 +475,7 @@ const ResultDetailPage = () => {
                     <div className="flex items-center justify-between">
                       <div>
                         <p className="text-sm text-white/70">Protocols</p>
-                        <motion.p 
+                        <motion.p
                           initial={{ scale: 0.5 }}
                           animate={{ scale: 1 }}
                           transition={{ delay: 0.3, type: "spring" }}
@@ -444,7 +500,7 @@ const ResultDetailPage = () => {
                     <div className="flex items-center justify-between">
                       <div>
                         <p className="text-sm text-white/70">Algorithms</p>
-                        <motion.p 
+                        <motion.p
                           initial={{ scale: 0.5 }}
                           animate={{ scale: 1 }}
                           transition={{ delay: 0.4, type: "spring" }}
@@ -469,7 +525,7 @@ const ResultDetailPage = () => {
                     <div className="flex items-center justify-between">
                       <div>
                         <p className="text-sm text-white/70">Functions</p>
-                        <motion.p 
+                        <motion.p
                           initial={{ scale: 0.5 }}
                           animate={{ scale: 1 }}
                           transition={{ delay: 0.5, type: "spring" }}
@@ -538,11 +594,12 @@ const ResultDetailPage = () => {
             </Card>
           </motion.div>
         </motion.div>
+        )}
 
       {/* Details View */}
       <motion.div
         initial={{ opacity: 0, display: "none" }}
-        animate={{ 
+        animate={{
           opacity: viewMode === "details" ? 1 : 0,
           display: viewMode === "details" ? "block" : "none"
         }}
@@ -605,6 +662,88 @@ const ResultDetailPage = () => {
                 <p className="text-white/70">
                   The analysis completed but no results were generated. This might be due to an incompatible file format or processing error.
                 </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Dynamic Analysis Overview (dynamic-only mode) */}
+      {hasResults && isDynamicOnly && dynamicAnalysis && (
+        <Card className={`border bg-gradient-to-br ${getRiskScoreBg(dynamicAnalysis.malScore)}`}>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Activity className="w-5 h-5 text-purple-400" />
+              Dynamic Analysis Overview
+            </CardTitle>
+            <CardDescription>
+              CAPEv2 sandbox behavioral analysis results
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {/* Mal Score Gauge */}
+              <div className="flex flex-col items-center justify-center p-4">
+                <p className="text-sm text-white/70 mb-2">Malware Score</p>
+                <div className="relative w-32 h-32">
+                  <svg className="w-full h-full -rotate-90" viewBox="0 0 100 100">
+                    <circle
+                      cx="50" cy="50" r="40"
+                      fill="none" stroke="currentColor"
+                      className="text-white/10"
+                      strokeWidth="8"
+                    />
+                    <circle
+                      cx="50" cy="50" r="40"
+                      fill="none"
+                      stroke="currentColor"
+                      className={getRiskScoreColor(dynamicAnalysis.malScore)}
+                      strokeWidth="8"
+                      strokeDasharray={`${(dynamicAnalysis.malScore / 10) * 251.2} 251.2`}
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                  <div className="absolute inset-0 flex flex-col items-center justify-center">
+                    <span className={`text-3xl font-bold ${getRiskScoreColor(dynamicAnalysis.malScore)}`}>
+                      {dynamicAnalysis.malScore}
+                    </span>
+                    <span className="text-xs text-white/50">/10</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Risk Level */}
+              <div className="flex flex-col items-center justify-center p-4">
+                <p className="text-sm text-white/70 mb-3">Risk Level</p>
+                <Badge
+                  variant={
+                    dynamicAnalysis.riskLevel === "Clean" ? "success" :
+                    dynamicAnalysis.riskLevel === "Low" ? "success" :
+                    dynamicAnalysis.riskLevel === "Medium" ? "warning" : "error"
+                  }
+                  size="lg"
+                >
+                  {dynamicAnalysis.riskLevel}
+                </Badge>
+                <p className="text-xs text-white/50 mt-3">
+                  {dynamicAnalysis.signatures?.length || 0} behavioral signatures detected
+                </p>
+              </div>
+
+              {/* Task Info */}
+              <div className="flex flex-col justify-center p-4 space-y-3">
+                <div>
+                  <p className="text-xs text-white/50">CAPE Task ID</p>
+                  <p className="font-mono text-sm text-white">{dynamicAnalysis.taskId || "N/A"}</p>
+                </div>
+                <div>
+                  <p className="text-xs text-white/50">Analysis Engine</p>
+                  <p className="text-sm text-white">CAPEv2 Dynamic Sandbox</p>
+                </div>
+                <div>
+                  <p className="text-xs text-white/50">Security Score</p>
+                  <p className="text-sm text-white">{results.vulnerability_assessment?.security_score ?? "N/A"}/10</p>
+                </div>
               </div>
             </div>
           </CardContent>
@@ -676,8 +815,200 @@ const ResultDetailPage = () => {
         </Card>
       )}
 
-      {/* Detailed Results */}
-      {hasResults && (
+      {/* Behavioral Signatures (dynamic-only) */}
+      {hasResults && isDynamicOnly && dynamicAnalysis?.signatures?.length > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Bug className="w-5 h-5 text-red-400" />
+              Behavioral Signatures ({dynamicAnalysis.signatures.length})
+            </CardTitle>
+            <CardDescription>
+              Suspicious behaviors detected during sandbox execution
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            {dynamicAnalysis.signatures.map((sig, index) => (
+              <div
+                key={index}
+                className={`p-4 border rounded-lg ${getSignatureSeverityColor(sig.severity)} transition-colors`}
+              >
+                <div className="flex items-center justify-between mb-2">
+                  <h4 className="font-semibold text-white text-sm">{sig.name}</h4>
+                  <Badge
+                    variant={
+                      sig.severity === "critical" || sig.severity === "high" ? "error" :
+                      sig.severity === "medium" ? "warning" : "secondary"
+                    }
+                    size="sm"
+                  >
+                    {sig.severity}
+                  </Badge>
+                </div>
+                <p className="text-sm text-white/70">{sig.description}</p>
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Behavioral Analysis (dynamic-only) */}
+      {hasResults && isDynamicOnly && dynamicAnalysis?.behavioralAnalysis && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Activity className="w-5 h-5 text-blue-400" />
+              Behavioral Analysis
+            </CardTitle>
+            <CardDescription>
+              Runtime behavior observed in the sandbox
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            {/* Process Tree */}
+            {dynamicAnalysis.behavioralAnalysis.processTree?.length > 0 && (
+              <div>
+                <h4 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
+                  <Settings className="w-4 h-4 text-purple-400" />
+                  Process Tree ({dynamicAnalysis.behavioralAnalysis.processTree.length})
+                </h4>
+                <div className="space-y-2">
+                  {dynamicAnalysis.behavioralAnalysis.processTree.map((proc, index) => (
+                    <div
+                      key={index}
+                      className="p-3 bg-black/20 rounded-lg border border-white/10 font-mono text-sm"
+                    >
+                      <div className="flex items-center gap-2">
+                        <span className="text-purple-400">PID {proc.pid || proc.process_id || index}</span>
+                        <span className="text-white">{proc.name || proc.process_name || JSON.stringify(proc)}</span>
+                      </div>
+                      {proc.command_line && (
+                        <p className="text-white/50 text-xs mt-1 break-all">{proc.command_line}</p>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Network Activity */}
+            {dynamicAnalysis.behavioralAnalysis.networkActivity && (
+              <div>
+                <h4 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
+                  <Globe className="w-4 h-4 text-cyan-400" />
+                  Network Activity
+                </h4>
+                <div className="p-3 bg-black/20 rounded-lg border border-white/10">
+                  {typeof dynamicAnalysis.behavioralAnalysis.networkActivity === "object" ? (
+                    <div className="space-y-2">
+                      {Object.entries(dynamicAnalysis.behavioralAnalysis.networkActivity).map(([key, value]) => (
+                        <div key={key} className="flex items-start gap-2">
+                          <span className="text-cyan-400 text-sm font-medium min-w-[80px]">{key}:</span>
+                          <span className="text-white/70 text-sm break-all">
+                            {Array.isArray(value)
+                              ? value.length > 0 ? value.join(", ") : "None"
+                              : typeof value === "object"
+                              ? JSON.stringify(value, null, 2)
+                              : String(value)}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-white/70 text-sm">No network activity recorded</p>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* File Operations */}
+            {dynamicAnalysis.behavioralAnalysis.fileOperations?.length > 0 && (
+              <div>
+                <h4 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
+                  <HardDrive className="w-4 h-4 text-green-400" />
+                  File Operations ({dynamicAnalysis.behavioralAnalysis.fileOperations.length})
+                </h4>
+                <div className="space-y-1">
+                  {dynamicAnalysis.behavioralAnalysis.fileOperations.map((op, index) => (
+                    <div
+                      key={index}
+                      className="p-2 bg-black/20 rounded border border-white/10 font-mono text-xs text-white/70 break-all"
+                    >
+                      {op}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Registry Operations */}
+            {dynamicAnalysis.behavioralAnalysis.registryOperations?.length > 0 && (
+              <div>
+                <h4 className="text-sm font-semibold text-white mb-3 flex items-center gap-2">
+                  <Settings className="w-4 h-4 text-orange-400" />
+                  Registry Operations ({dynamicAnalysis.behavioralAnalysis.registryOperations.length})
+                </h4>
+                <div className="space-y-1">
+                  {dynamicAnalysis.behavioralAnalysis.registryOperations.map((op, index) => (
+                    <div
+                      key={index}
+                      className="p-2 bg-black/20 rounded border border-white/10 font-mono text-xs text-white/70 break-all"
+                    >
+                      {op}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Empty state for behavioral analysis */}
+            {!dynamicAnalysis.behavioralAnalysis.processTree?.length &&
+              !dynamicAnalysis.behavioralAnalysis.networkActivity &&
+              !dynamicAnalysis.behavioralAnalysis.fileOperations?.length &&
+              !dynamicAnalysis.behavioralAnalysis.registryOperations?.length && (
+                <p className="text-white/50 text-sm text-center py-4">
+                  No behavioral data was captured during execution.
+                </p>
+              )}
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Extracted Keys (dynamic-only) */}
+      {hasResults && isDynamicOnly && dynamicAnalysis?.extractedKeys?.length > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Key className="w-5 h-5 text-yellow-400" />
+              Extracted Keys ({dynamicAnalysis.extractedKeys.length})
+            </CardTitle>
+            <CardDescription>
+              Cryptographic keys extracted during dynamic execution
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            {dynamicAnalysis.extractedKeys.map((key, index) => (
+              <div
+                key={index}
+                className="p-4 border border-yellow-500/30 rounded-lg bg-yellow-500/5"
+              >
+                <div className="flex items-center justify-between mb-2">
+                  <Badge variant="warning" size="sm">{key.type || "Unknown"}</Badge>
+                  {key.sha256 && (
+                    <span className="text-xs text-white/50 font-mono">{key.sha256.substring(0, 16)}...</span>
+                  )}
+                </div>
+                <pre className="text-xs text-white/70 font-mono overflow-x-auto whitespace-pre-wrap break-all">
+                  {typeof key.data === "object" ? JSON.stringify(key.data, null, 2) : String(key.data)}
+                </pre>
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Static Analysis Results (backward compatibility) */}
+      {hasResults && !isDynamicOnly && (
         <Card>
           <CardHeader>
             <CardTitle>Analysis Results</CardTitle>
@@ -765,7 +1096,7 @@ const ResultDetailPage = () => {
                   <Code className="w-5 h-5 text-purple-400" />
                   Detected Algorithms ({results.detected_algorithms.length})
                 </h3>
-                
+
                 {/* Algorithm Confidence Visualization */}
                 <div className="mb-6">
                   <AlgorithmConfidenceChart data={results.detected_algorithms} />
@@ -851,8 +1182,8 @@ const ResultDetailPage = () => {
                       )}
                       {proto.implementation_status && (
                         <div className="mt-2">
-                          <Badge 
-                            variant={proto.implementation_status === 'complete' ? 'primary' : 'secondary'} 
+                          <Badge
+                            variant={proto.implementation_status === 'complete' ? 'primary' : 'secondary'}
                             size="sm"
                           >
                             {proto.implementation_status}
@@ -864,6 +1195,55 @@ const ResultDetailPage = () => {
                 </div>
               </div>
             )}
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Dynamic-only: empty crypto message */}
+      {hasResults && isDynamicOnly && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Analysis Results</CardTitle>
+            <CardDescription>
+              Behavioral analysis summary
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div>
+                <p className="text-sm text-white/70 mb-1">Overall Assessment</p>
+                <p className="text-white text-sm">{results.overall_assessment}</p>
+              </div>
+              {results.xai_explanation && (
+                <div>
+                  <p className="text-sm text-white/70 mb-1">Detailed Explanation</p>
+                  <p className="text-white/80 text-sm">{results.xai_explanation}</p>
+                </div>
+              )}
+              {results.key_findings?.length > 0 && (
+                <div>
+                  <p className="text-sm text-white/70 mb-2">Key Findings</p>
+                  <div className="flex flex-wrap gap-2">
+                    {results.key_findings.map((finding, i) => (
+                      <Badge key={i} variant="secondary" size="sm">{finding}</Badge>
+                    ))}
+                  </div>
+                </div>
+              )}
+              {results.vulnerability_assessment?.recommendations?.length > 0 && (
+                <div>
+                  <p className="text-sm text-white/70 mb-2">Recommendations</p>
+                  <ul className="space-y-1">
+                    {results.vulnerability_assessment.recommendations.map((rec, i) => (
+                      <li key={i} className="text-sm text-white/60 flex items-start gap-2">
+                        <span className="text-purple-400 mt-0.5">&#8226;</span>
+                        {rec}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
           </CardContent>
         </Card>
       )}

@@ -109,6 +109,12 @@ const ResultsPage = () => {
     if (!severity) return null;
 
     switch (severity.toLowerCase()) {
+      case "critical":
+        return (
+          <Badge variant="error" size="sm">
+            Critical
+          </Badge>
+        );
       case "high":
         return (
           <Badge variant="error" size="sm">
@@ -127,6 +133,13 @@ const ResultsPage = () => {
             Low
           </Badge>
         );
+      case "none":
+      case "clean":
+        return (
+          <Badge variant="success" size="sm">
+            Clean
+          </Badge>
+        );
       default:
         return (
           <Badge variant="secondary" size="sm">
@@ -134,6 +147,14 @@ const ResultsPage = () => {
           </Badge>
         );
     }
+  };
+
+  const getRiskScoreColor = (score) => {
+    if (score >= 8) return "text-red-400";
+    if (score >= 5) return "text-orange-400";
+    if (score >= 3) return "text-yellow-400";
+    if (score >= 1) return "text-green-400";
+    return "text-emerald-400";
   };
 
   return (
@@ -227,6 +248,7 @@ const ResultsPage = () => {
                     <Column isRowHeader className="text-white/90 text-sm font-semibold">Filename</Column>
                     <Column className="text-white/90 text-sm font-semibold">Status</Column>
                     <Column className="text-white/90 text-sm font-semibold">Date</Column>
+                    <Column className="text-white/90 text-sm font-semibold">Risk Score</Column>
                     <Column className="text-white/90 text-sm font-semibold">Severity</Column>
                     <Column className="text-white/90 text-sm font-semibold">Actions</Column>
                   </TableHeader>
@@ -243,6 +265,22 @@ const ResultsPage = () => {
                           {format(
                             new Date(job.createdAt),
                             "MMM dd, yyyy HH:mm"
+                          )}
+                        </Cell>
+                        <Cell>
+                          {job.status === "completed" && job.malScore != null ? (
+                            <div className="flex items-center gap-2">
+                              <span className={`font-bold text-sm ${getRiskScoreColor(job.malScore)}`}>
+                                {job.malScore}/10
+                              </span>
+                              {job.riskLevel && (
+                                <Badge variant={job.riskLevel === "Clean" ? "success" : job.riskLevel === "Low" ? "success" : job.riskLevel === "Medium" ? "warning" : "error"} size="sm">
+                                  {job.riskLevel}
+                                </Badge>
+                              )}
+                            </div>
+                          ) : (
+                            <span className="text-white/50 text-sm">—</span>
                           )}
                         </Cell>
                         <Cell>
